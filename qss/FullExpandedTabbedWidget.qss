@@ -1,0 +1,17 @@
+::tab{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 1.0 #8C52FF, stop: 0.0 #1BDAFF);
+    padding: 5px;
+    font-weight: bold;
+}
+
+::tab:hover{
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0.9 #8C52FF, stop: 0.2 #1BDAFF);
+}
+
+::tab:pressed{
+    background: #1BDAFF;
+}
+
+::tab:selected{
+    border: 2px solid #fff;
+}
