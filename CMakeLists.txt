@@ -84,4 +84,5 @@ add_custom_command(
 )
 
 qt_finalize_executable(InLink)
-# for testing the merge from cmake to main
+# finalize the merge request
+# wh have to find a way for merging two branches
