@@ -15,31 +15,31 @@ find_package(bsoncxx CONFIG REQUIRED)
 find_package(mongocxx CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
 
+set(COMPONENTS_DIR Components)
 set(TS_FILES InLink_en_US.ts)
+set(RESOURCE_FILES resource.qrc icon.rc)
 
-set(RESOURCE_FILES resource.qrc)
+file(GLOB COMPONENTS_FILES ${COMPONENTS_DIR}/*.h ${COMPONENTS_DIR}/*.cpp ${COMPONENTS_DIR}/*.ui)
+file(GLOB QSS_FILES qss/*.qss)
 
-set(PROJECT_SOURCES
+set(TEST_FILES test/test_captcha.cpp test/test_captcha.h test/test_captcha.ui)
+
+set(PROJECT_MAIN_FILES
     main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
-    Components/captcha.cpp Components/captcha.h
-    Components/captchaimage.cpp Components/captchaimage.h
-    Components/captchaverifier.cpp Components/captchaverifier.h
-    Components/loginform.cpp Components/loginform.h Components/loginform.ui
-    Components/fullexapndedtabbedwidget.cpp Components/fullexapndedtabbedwidget.h
-    Components/footerimageview.cpp Components/footerimageview.h
-    Components/imageviewer.cpp Components/imageviewer.h
-    test/test_captcha.cpp test/test_captcha.h test/test_captcha.ui
+    mainwindow.cpp mainwindow.h mainwindow.ui
     loginsignin.cpp loginsignin.h loginsignin.ui
-    ${RESOURCE_FILES}
 )
+
+file(GLOB UTILS_FILES utils/*.h utils/*.cpp)
 
 qt6_add_executable(InLink
     MANUAL_FINALIZATION
-    ${PROJECT_SOURCES}
-    icon.rc
+    ${COMPONENTS_FILES}
+    ${PROJECT_MAIN_FILES}
+    ${RESOURCE_FILES}
+    ${TEST_FILES}
+    ${QSS_FILES}
+    ${UTILS_FILES}
 )
 
 qt6_add_translations(InLink
@@ -65,9 +65,9 @@ target_link_libraries(InLink PRIVATE
     ${MONGOCXX_LIB}
     ${BSONCXX_LIB}
     Database
-    )
+)
 
-target_include_directories(InLink PRIVATE db)
+target_include_directories(InLink PRIVATE db PUBLIC .)
 
 include(GNUInstallDirs)
 install(TARGETS InLink
@@ -84,5 +84,3 @@ add_custom_command(
 )
 
 qt_finalize_executable(InLink)
-# finalize the merge request
-# wh have to find a way for merging two branches

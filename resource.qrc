@@ -22,5 +22,8 @@
     <qresource prefix="/qss">
         <file alias="FETW.qss">qss/FullExpandedTabbedWidget.qss</file>
         <file alias="PBS.qss">qss/PushButtonStyle.qss</file>
+        <file alias="SS.qss">qss/SplashScreen.qss</file>
+        <file alias="LS.qss">qss/LoginStyle.qss</file>
+        <file alias="CVTBS.qss">qss/CaptchaVerifierTextBoxStyle.qss</file>
     </qresource>
 </RCC>

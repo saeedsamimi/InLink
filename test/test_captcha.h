@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QPainter>
 #include <QPaintEvent>
-#include "../Components/captcha.h"
+#include <Components/captcha.h>
 
 namespace Ui {
 class test_captcha;

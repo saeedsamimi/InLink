@@ -1,14 +1,11 @@
 #include "captchaverifier.h"
+#include <utils/Style.h>
 
 CaptchaVerifier::CaptchaVerifier(QWidget *parent)
     : QWidget{parent}
 {
     QPixmap codeIcon(":/key.png");
     QPixmap changeIcon(":/refresh.png");
-    QFile btnStyleFile(":/qss/PBS.qss");
-    btnStyleFile.open(QIODevice::ReadOnly | QIODevice::Text);
-    QString btnStyleString(btnStyleFile.readAll());
-    btnStyleFile.close();
     layout = new QGridLayout(this);
     setLayout(layout);
     Ci = new CaptchaImage();
@@ -16,9 +13,8 @@ CaptchaVerifier::CaptchaVerifier(QWidget *parent)
     changeCptcha = new QPushButton();
     changeCptcha->setText(tr("changeCaptcha"));
     changeCptcha->setIcon(QIcon(changeIcon));
-    changeCptcha->setStyleSheet(btnStyleString);
-    textBox->setStyleSheet("QLineEdit{padding: 5px;border: none;border-bottom: 1px solid blue;}"
-                           "QLineEdit:focus{border-bottom-width: 2px;}");
+    enableStyle(this,"PBS.qss");
+    enableStyle(textBox,"CVTBS.qss");
     textBox->setClearButtonEnabled(true);
     textBox->addAction(QIcon(codeIcon),QLineEdit::LeadingPosition);
     textBox->setMaxLength(5);

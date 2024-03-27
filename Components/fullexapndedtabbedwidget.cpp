@@ -1,11 +1,8 @@
 #include "fullexapndedtabbedwidget.h"
+#include <utils/Style.h>
 
 FullExapndedTabbedWidget::FullExapndedTabbedWidget(QWidget *parent) : QTabWidget(parent),tabBar(new TabBar(this)){
-    QFile styleFile(":/qss/FETW.qss");
-    styleFile.open(QIODevice::ReadOnly | QIODevice::Text);
-    QString styleString (styleFile.readAll());
-    setStyleSheet(styleString);
-    styleFile.close();
+    enableStyle(this,"FETW.qss");
     tabBar->setExpanding(true);
     setTabBar(tabBar);
 }

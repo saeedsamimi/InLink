@@ -1,5 +1,6 @@
 #include "loginform.h"
 #include "ui_loginform.h"
+#include <utils/Style.h>
 
 LoginForm::LoginForm(QWidget *parent)
     : QWidget(parent)
@@ -8,6 +9,7 @@ LoginForm::LoginForm(QWidget *parent)
     QPixmap businessLogo(":/businessman.png");
     QPixmap padlockLogo(":/padlock.png");
     ui->setupUi(this);
+    enableStyle(this,"LS.qss");
     ui->userNameEdit->addAction(QIcon(businessLogo),QLineEdit::LeadingPosition);
     ui->passwordEdit->addAction(QIcon(padlockLogo),QLineEdit::LeadingPosition);
     ui->PasswordVisibility->setText(showText);

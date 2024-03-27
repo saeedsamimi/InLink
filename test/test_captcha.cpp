@@ -19,8 +19,6 @@ void test_captcha::paintEvent(QPaintEvent *)
     Captcha cp;
     cp.randomize();
     cp.setDifficulty(3);
-    /*cp.loadDictionary("dictionary.txt");
-    cp.setTextGeneration(Captcha::TextGeneration_Dictionary);*/
     cp.generateText();
     painter.drawImage(30, 30, cp.captchaImage());
 }
