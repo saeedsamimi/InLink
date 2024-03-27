@@ -13,6 +13,7 @@ set(CMAKE_TOOLCHAIN_FILE "C:/src/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE S
 find_package(Qt6 REQUIRED COMPONENTS Gui Core Widgets LinguistTools)
 find_package(bsoncxx CONFIG REQUIRED)
 find_package(mongocxx CONFIG REQUIRED)
+find_package(OpenSSL REQUIRED)
 
 set(TS_FILES InLink_en_US.ts)
 
@@ -56,11 +57,17 @@ set_target_properties(InLink PROPERTIES
 
 set_target_properties(InLink PROPERTIES FOLDER "qtc_runnable")
 
+set(BSONCXX_LIB $<IF:$<TARGET_EXISTS:mongo::bsoncxx_static>,mongo::bsoncxx_static,mongo::bsoncxx_shared>)
+set(MONGOCXX_LIB $<IF:$<TARGET_EXISTS:mongo::mongocxx_static>,mongo::mongocxx_static,mongo::mongocxx_shared>)
+
 target_link_libraries(InLink PRIVATE
     Qt6::Widgets Qt6::Core Qt6::Gui
-    $<IF:$<TARGET_EXISTS:mongo::bsoncxx_static>,mongo::bsoncxx_static,mongo::bsoncxx_shared>
-    $<IF:$<TARGET_EXISTS:mongo::mongocxx_static>,mongo::mongocxx_static,mongo::mongocxx_shared>
+    ${MONGOCXX_LIB}
+    ${BSONCXX_LIB}
+    Database
     )
+
+target_include_directories(InLink PRIVATE db)
 
 include(GNUInstallDirs)
 install(TARGETS InLink
