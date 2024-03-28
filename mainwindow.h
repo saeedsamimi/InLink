@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QLabel>
 #include <QPropertyAnimation>
+#include <loginsignin.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,9 +19,11 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+private slots:
+    void on_SignInBtn_clicked();
 private:
     Ui::MainWindow *ui;
     QLabel *FindCourceLbl;
+    LoginSignIn *loginPage;
 };
 #endif // MAINWINDOW_H

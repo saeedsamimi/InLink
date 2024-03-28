@@ -1,5 +1,5 @@
 #include "fullexapndedtabbedwidget.h"
-#include <utils/Style.h>
+#include <utils/Util.h>
 
 FullExapndedTabbedWidget::FullExapndedTabbedWidget(QWidget *parent) : QTabWidget(parent),tabBar(new TabBar(this)){
     enableStyle(this,"FETW.qss");

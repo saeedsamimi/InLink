@@ -23,6 +23,7 @@ private:
     CaptchaImage *Ci;
     QLineEdit *textBox;
     QPushButton *changeCptcha;
+    void setupUi();
 };
 
 #endif // CAPTCHAVERIFIER_H

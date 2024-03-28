@@ -5,6 +5,7 @@
 #include <QLocale>
 #include <QTranslator>
 #include <db_config.h>
+#include <utils/Util.h>
 #include <mongocxx/instance.hpp>
 
 using db::db_config;
@@ -12,13 +13,10 @@ using db::db_config;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    QTranslator translator;
-    Q_UNUSED(translator.load("InLink_en_US"));
-    a.installTranslator(&translator);
-    db_config config("testDB");
+    auto translatorTemporary = installTranslator(&a);
     MainWindow w;
-    LoginSignIn page;
-    page.show();
     w.show();
-    return a.exec();
+    int exec = a.exec();
+    delete translatorTemporary;
+    return exec;
 }

@@ -1,19 +1,18 @@
 #include "loginform.h"
 #include "ui_loginform.h"
-#include <utils/Style.h>
+#include <utils/Util.h>
 
 LoginForm::LoginForm(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::LoginForm) , showText(tr("ShowPasswordText")) , hideText(tr("HidePasswordText"))
+    , ui(new Ui::LoginForm) , hideLogo(":/hide.png"), showLogo(":/eye.png")
 {
-    QPixmap businessLogo(":/businessman.png");
-    QPixmap padlockLogo(":/padlock.png");
     ui->setupUi(this);
     enableStyle(this,"LS.qss");
-    ui->userNameEdit->addAction(QIcon(businessLogo),QLineEdit::LeadingPosition);
-    ui->passwordEdit->addAction(QIcon(padlockLogo),QLineEdit::LeadingPosition);
-    ui->PasswordVisibility->setText(showText);
-    QObject::connect(ui->PasswordVisibility,&QCheckBox::stateChanged,this,&LoginForm::passwordVisibilityChanged);
+    ui->userNameEdit->addAction(QIcon(QPixmap(":/businessman.png")),QLineEdit::LeadingPosition);
+    ui->passwordEdit->addAction(QIcon(QPixmap(":/padlock.png")),QLineEdit::LeadingPosition);
+    eyeAction = ui->passwordEdit->addAction(QIcon(showLogo),QLineEdit::TrailingPosition);
+    eyeAction->setCheckable(true);
+    QObject::connect(eyeAction,&QAction::triggered,this,&LoginForm::passwordVisibilityChanged);
 }
 
 LoginForm::~LoginForm()
@@ -23,11 +22,11 @@ LoginForm::~LoginForm()
 
 void LoginForm::passwordVisibilityChanged()
 {
-    if(ui->PasswordVisibility->checkState() == Qt::Checked){
+    if(eyeAction->isChecked()){
         ui->passwordEdit->setEchoMode(QLineEdit::Normal);
-        ui->PasswordVisibility->setText(hideText);
+        eyeAction->setIcon(hideLogo);
     }else{
         ui->passwordEdit->setEchoMode(QLineEdit::Password);
-        ui->PasswordVisibility->setText(showText);
+        eyeAction->setIcon(showLogo);
     }
 }

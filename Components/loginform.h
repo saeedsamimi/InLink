@@ -18,7 +18,8 @@ public:
 
 private:
     Ui::LoginForm *ui;
-    QString showText,hideText;
+    QAction *eyeAction;
+    QPixmap hideLogo,showLogo;
 
 private slots:
     void passwordVisibilityChanged();

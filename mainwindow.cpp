@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <utils/Style.h>
+#include <loginsignin.h>
+#include <utils/Util.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -19,4 +20,13 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete loginPage;
+}
+
+void MainWindow::on_SignInBtn_clicked()
+{
+    loginPage = new LoginSignIn();
+    qDebug() << "the SignInBtn in main window clicked! the login page will be show!!!";
+    loginPage->show();
+    close();
 }

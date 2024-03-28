@@ -25,6 +25,19 @@
    </property>
    <item>
     <widget class="QLineEdit" name="userNameEdit">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>18</pointsize>
+       <bold>false</bold>
+      </font>
+     </property>
      <property name="inputMethodHints">
       <set>Qt::ImhNone</set>
      </property>
@@ -44,6 +57,18 @@
    </item>
    <item>
     <widget class="QLineEdit" name="passwordEdit">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>18</pointsize>
+      </font>
+     </property>
      <property name="maxLength">
       <number>16</number>
      </property>
@@ -52,31 +77,6 @@
      </property>
      <property name="placeholderText">
       <string>PassText:</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="PasswordVisibility">
-     <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QCheckBox{
-	color: black;
-}
-QCheckBox::indicator{
-	width: 20px;
-	height: 20px;
-}
-QCheckBox::indicator:unchecked{
-	image: url(&quot;:/eye.png&quot;);
-}
-QCheckBox::indicator:checked{
-	image: url(&quot;:/hide.png&quot;);
-}</string>
-     </property>
-     <property name="text">
-      <string/>
      </property>
     </widget>
    </item>

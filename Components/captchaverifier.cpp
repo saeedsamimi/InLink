@@ -1,8 +1,27 @@
 #include "captchaverifier.h"
-#include <utils/Style.h>
+#include <utils/Util.h>
 
 CaptchaVerifier::CaptchaVerifier(QWidget *parent)
     : QWidget{parent}
+{
+    setupUi();
+}
+
+CaptchaVerifier::~CaptchaVerifier()
+{
+    delete changeCptcha;
+    delete Ci;
+    delete layout;
+    delete textBox;
+}
+
+void CaptchaVerifier::on_changeCaptchaBtnClicked()
+{
+    Ci->updateCaptcha();
+    textBox->clear();
+}
+
+void CaptchaVerifier::setupUi()
 {
     QPixmap codeIcon(":/key.png");
     QPixmap changeIcon(":/refresh.png");
@@ -24,20 +43,6 @@ CaptchaVerifier::CaptchaVerifier(QWidget *parent)
     layout->addWidget(textBox,1,0,1,2);
 
     QObject::connect(changeCptcha,&QPushButton::clicked,this,&CaptchaVerifier::on_changeCaptchaBtnClicked);
-}
-
-CaptchaVerifier::~CaptchaVerifier()
-{
-    delete changeCptcha;
-    delete Ci;
-    delete layout;
-    delete textBox;
-}
-
-void CaptchaVerifier::on_changeCaptchaBtnClicked()
-{
-    Ci->updateCaptcha();
-    textBox->clear();
 }
 
 
