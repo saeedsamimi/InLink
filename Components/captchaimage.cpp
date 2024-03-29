@@ -4,6 +4,7 @@ CaptchaImage::CaptchaImage(QWidget *parent)
     : QGraphicsView{parent}
 {
     setScene(new QGraphicsScene());
+    scene()->setBackgroundBrush(QBrush(QGradient(QGradient::CloudyApple)));
     ch.randomize();
     ch.setDifficulty(3);
     ch.setFont(QFont("Arial",25));
@@ -15,7 +16,8 @@ CaptchaImage::CaptchaImage(QWidget *parent)
 
 void CaptchaImage::resizeEvent(QResizeEvent *event)
 {
-    fitInView(pixmapItem,Qt::KeepAspectRatio);
+    if(isEnabled())
+        fitInView(pixmapItem,Qt::KeepAspectRatio);
     QGraphicsView::resizeEvent(event);
 }
 
@@ -27,7 +29,19 @@ void CaptchaImage::updateCaptcha(){
     pixmapItem = scene()->addPixmap(QPixmap::fromImage(ch.captchaImage()));
 }
 
+void CaptchaImage::setEnabled(bool _enabled)
+{
+    if(_enabled)
+        pixmapItem = scene()->addPixmap(QPixmap::fromImage(ch.captchaImage()));
+    else{
+        scene()->removeItem(pixmapItem);
+        pixmapItem = nullptr; //prevent from null pointers exceptions
+        scene()->clear();
+    }
+    QGraphicsView::setEnabled(_enabled);
+}
+
 bool CaptchaImage::validate(const QString &text)
 {
-    return QString::compare(currText,text,Qt::CaseInsensitive);
+    return !QString::compare(currText,text,Qt::CaseInsensitive);
 }

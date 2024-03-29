@@ -24,9 +24,7 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
-    <string notr="true">#centralwidget{
-	background-color: rgb(255, 255, 255);
-}</string>
+    <string notr="true"/>
    </property>
    <layout class="QGridLayout" name="gridLayout" rowstretch="2,0,1" columnstretch="5,3">
     <property name="leftMargin">

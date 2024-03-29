@@ -7,6 +7,7 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QLabel>
 #include <QIODevice>
 
 class CaptchaVerifier : public QWidget
@@ -16,14 +17,26 @@ public:
     explicit CaptchaVerifier(QWidget *parent = nullptr);
 
     ~CaptchaVerifier();
+
+    bool isValidated();
+    void reset();
 protected slots:
-    void on_changeCaptchaBtnClicked();
+    void on_updateCaptcha_clicked();
+    void on_captchaVerify_triggered();
 private:
     QGridLayout *layout;
     CaptchaImage *Ci;
+    QLabel *msg;
     QLineEdit *textBox;
+    QAction *captchaVerify;
     QPushButton *changeCptcha;
+    bool isValid;
+
     void setupUi();
+    void setError(const QString &);
+    void setWarning(const QString &);
+    void setSuccess(const QString &);
+    void statusUtil(const QString &,QColor color);
 };
 
 #endif // CAPTCHAVERIFIER_H

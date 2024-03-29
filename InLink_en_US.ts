@@ -4,12 +4,27 @@
 <context>
     <name>CaptchaVerifier</name>
     <message>
-        <location filename="Components/captchaverifier.cpp" line="33"/>
+        <location filename="Components/captchaverifier.cpp" line="42"/>
+        <source>fillCaptcha</source>
+        <translation>Please enter the captcha code</translation>
+    </message>
+    <message>
+        <location filename="Components/captchaverifier.cpp" line="48"/>
+        <source>captchValidatedSuccess</source>
+        <translation>Captcha code validated successfully</translation>
+    </message>
+    <message>
+        <location filename="Components/captchaverifier.cpp" line="52"/>
+        <source>incorrectCaptcha</source>
+        <translation>Captcha code is incorrect</translation>
+    </message>
+    <message>
+        <location filename="Components/captchaverifier.cpp" line="71"/>
         <source>changeCaptcha</source>
         <translation>Change Captcha</translation>
     </message>
     <message>
-        <location filename="Components/captchaverifier.cpp" line="40"/>
+        <location filename="Components/captchaverifier.cpp" line="78"/>
         <source>EnterDigitsCode: </source>
         <translation>Enter the 5 digits code: </translation>
     </message>
@@ -38,8 +53,9 @@
 <context>
     <name>LoginSignIn</name>
     <message>
-        <location filename="loginsignin.ui" line="146"/>
-        <location filename="loginsignin.cpp" line="27"/>
+        <location filename="loginsignin.ui" line="149"/>
+        <location filename="loginsignin.cpp" line="36"/>
+        <location filename="loginsignin.cpp" line="37"/>
         <source>SignInText</source>
         <translation>Sign in</translation>
     </message>
@@ -54,19 +70,20 @@
         <translation>Join your professional platform</translation>
     </message>
     <message>
-        <location filename="loginsignin.ui" line="135"/>
-        <location filename="loginsignin.cpp" line="26"/>
+        <location filename="loginsignin.ui" line="138"/>
+        <location filename="loginsignin.cpp" line="35"/>
         <source>HaveAccount</source>
         <translation>Already have an account?</translation>
     </message>
     <message>
         <location filename="loginsignin.ui" line="32"/>
-        <location filename="loginsignin.cpp" line="24"/>
+        <location filename="loginsignin.cpp" line="32"/>
+        <location filename="loginsignin.cpp" line="33"/>
         <source>LoginText</source>
         <translation>Login</translation>
     </message>
     <message>
-        <location filename="loginsignin.cpp" line="23"/>
+        <location filename="loginsignin.cpp" line="31"/>
         <source>dontHaveAccount</source>
         <translation>Dont have account?</translation>
     </message>
@@ -74,55 +91,55 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="mainwindow.ui" line="122"/>
+        <location filename="mainwindow.ui" line="120"/>
         <source>find a job</source>
         <translation>Find a new job</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="96"/>
+        <location filename="mainwindow.ui" line="94"/>
         <source>find a coworker</source>
         <translation>Find a coworker or classmate</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="263"/>
+        <location filename="mainwindow.ui" line="261"/>
         <source>find a employer</source>
         <translation>Find an employer</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="243"/>
+        <location filename="mainwindow.ui" line="241"/>
         <source>find a course</source>
         <translation>Find a course or training</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="187"/>
+        <location filename="mainwindow.ui" line="185"/>
         <source>Who is for</source>
         <oldsource>Who is InLink for?</oldsource>
         <translation>Who is InLink for?</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="206"/>
+        <location filename="mainwindow.ui" line="204"/>
         <source>anyone looking</source>
         <translation>Anyone Looking to navigate their professional life.</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="281"/>
+        <location filename="mainwindow.ui" line="279"/>
         <source>Join College</source>
         <translation>Join your celleagues, classmates, and friends on InLink</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="290"/>
+        <location filename="mainwindow.ui" line="288"/>
         <source>LoginText</source>
         <oldsource>LogIn</oldsource>
         <translation>Login</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="297"/>
+        <location filename="mainwindow.ui" line="295"/>
         <source>GetStartedTxt</source>
         <oldsource>Get Started</oldsource>
         <translation>Get Started</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="304"/>
+        <location filename="mainwindow.ui" line="302"/>
         <source>SignInText</source>
         <oldsource>Sign In</oldsource>
         <translation>Sign in</translation>

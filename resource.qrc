@@ -18,6 +18,7 @@
         <file alias="hide.png">icons/mini-icons/hide.png</file>
         <file alias="key.png">icons/mini-icons/key.png</file>
         <file alias="refresh.png">icons/mini-icons/refresh.png</file>
+        <file alias="check.png">icons/mini-icons/check.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file alias="FETW.qss">qss/FullExpandedTabbedWidget.qss</file>

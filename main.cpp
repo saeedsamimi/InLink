@@ -14,7 +14,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     auto translatorTemporary = installTranslator(&a);
-    MainWindow w;
+    db_config config("testDB");
+    MainWindow w(&config);
     w.show();
     int exec = a.exec();
     delete translatorTemporary;

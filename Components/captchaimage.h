@@ -18,6 +18,7 @@ public:
     void resizeEvent(QResizeEvent *event);
     bool validate(const QString & text);
     void updateCaptcha();
+    void setEnabled(bool);
 signals:
 
 private:

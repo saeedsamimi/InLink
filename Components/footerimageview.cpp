@@ -4,7 +4,7 @@
 FooterImageView::FooterImageView(QWidget *parent) : QGraphicsView(parent)
 {
     setScene(new QGraphicsScene(this));
-    setStyleSheet("background-color: transparent;border: none");
+    setStyleSheet("background-color: transparent;border: none;");
     m_footerPixmap = scene()->addPixmap(QPixmap());
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

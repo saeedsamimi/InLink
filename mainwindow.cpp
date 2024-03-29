@@ -3,8 +3,8 @@
 #include <loginsignin.h>
 #include <utils/Util.h>
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+MainWindow::MainWindow(db::db_config *_config, QWidget *parent)
+    : QMainWindow(parent),config(config)
     , ui(new Ui::MainWindow)
 {
     QPixmap iconPic(":/ico-cap-light.png");
@@ -25,7 +25,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_SignInBtn_clicked()
 {
-    loginPage = new LoginSignIn();
+    loginPage = new LoginSignIn(config);
     qDebug() << "the SignInBtn in main window clicked! the login page will be show!!!";
     loginPage->show();
     close();
