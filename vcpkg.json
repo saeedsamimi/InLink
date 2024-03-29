@@ -1,0 +1,6 @@
+{
+  "dependencies": [
+    "mongo-cxx-driver",
+    "openssl"
+  ]
+}

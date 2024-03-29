@@ -30,6 +30,7 @@ set(PROJECT_MAIN_FILES
     loginsignin.cpp loginsignin.h loginsignin.ui
 )
 
+
 file(GLOB UTILS_FILES utils/*.h utils/*.cpp)
 
 qt6_add_executable(InLink
@@ -60,6 +61,17 @@ set_target_properties(InLink PROPERTIES FOLDER "qtc_runnable")
 set(BSONCXX_LIB $<IF:$<TARGET_EXISTS:mongo::bsoncxx_static>,mongo::bsoncxx_static,mongo::bsoncxx_shared>)
 set(MONGOCXX_LIB $<IF:$<TARGET_EXISTS:mongo::mongocxx_static>,mongo::mongocxx_static,mongo::mongocxx_shared>)
 
+file(GLOB LIBRARY_EXECUTABLES db/*.cpp)
+add_library(Database STATIC ${LIBRARY_EXECUTABLES})
+
+target_link_libraries(Database PUBLIC
+    ${MONGOCXX_LIB}
+    ${BSONCXX_LIB}
+)
+
+target_link_libraries(Database PRIVATE
+    OpenSSL::SSL OpenSSL::Crypto)
+
 target_link_libraries(InLink PRIVATE
     Qt6::Widgets Qt6::Core Qt6::Gui
     ${MONGOCXX_LIB}
@@ -67,7 +79,7 @@ target_link_libraries(InLink PRIVATE
     Database
 )
 
-target_include_directories(InLink PRIVATE db PUBLIC .)
+include_directories(InLink PRIVATE db PUBLIC .)
 
 include(GNUInstallDirs)
 install(TARGETS InLink
