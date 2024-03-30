@@ -20,6 +20,8 @@ public:
     void changeMethod(bool mode);
 private slots:
     void on_changeMode_clicked();
+    void on_SignInBtn_clicked();
+
 private:
     Ui::LoginSignIn *ui;
     QMainWindow *referrer;

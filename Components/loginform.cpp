@@ -1,6 +1,7 @@
 #include "loginform.h"
 #include "ui_loginform.h"
 #include <utils/Util.h>
+#include <string>
 
 LoginForm::LoginForm(QWidget *parent)
     : QWidget(parent)
@@ -18,6 +19,11 @@ LoginForm::LoginForm(QWidget *parent)
 LoginForm::~LoginForm()
 {
     delete ui;
+}
+
+QPair<QString,QString> LoginForm::getUser() const
+{
+    return {ui->userNameEdit->text(),ui->passwordEdit->text()};
 }
 
 void LoginForm::passwordVisibilityChanged()

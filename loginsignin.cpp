@@ -1,6 +1,7 @@
 #include "loginsignin.h"
 #include "ui_loginsignin.h"
 #include <utils/Util.h>
+#include <db/user.h>
 #include <QTabBar>
 
 using db::db_config;
@@ -43,5 +44,11 @@ void LoginSignIn::on_changeMode_clicked()
 {
     isLogin = !isLogin;
     this->changeMethod();
+}
+
+
+void LoginSignIn::on_SignInBtn_clicked()
+{
+    qDebug() << "Clicked!";
 }
 

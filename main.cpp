@@ -4,11 +4,11 @@
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>
-#include <db_config.h>
+#include <db/db_config.h>
 #include <utils/Util.h>
 #include <mongocxx/instance.hpp>
 
-using db::db_config;
+using namespace db;
 
 int main(int argc, char *argv[])
 {

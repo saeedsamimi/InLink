@@ -8,12 +8,14 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_TOOLCHAIN_FILE "C:/src/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
+
+if(DEFINED $ENV{VCPKG_ROOT})
+    set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
+elseif(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+    message(FATAL_ERROR "Please specify the CMAKE_TOOLCHAIN_FILE for the vcpkg.cmake file")
+endif()
 
 find_package(Qt6 REQUIRED COMPONENTS Gui Core Widgets LinguistTools)
-find_package(bsoncxx CONFIG REQUIRED)
-find_package(mongocxx CONFIG REQUIRED)
-find_package(OpenSSL REQUIRED)
 
 set(COMPONENTS_DIR Components)
 set(TS_FILES InLink_en_US.ts)
@@ -61,25 +63,10 @@ set_target_properties(InLink PROPERTIES FOLDER "qtc_runnable")
 set(BSONCXX_LIB $<IF:$<TARGET_EXISTS:mongo::bsoncxx_static>,mongo::bsoncxx_static,mongo::bsoncxx_shared>)
 set(MONGOCXX_LIB $<IF:$<TARGET_EXISTS:mongo::mongocxx_static>,mongo::mongocxx_static,mongo::mongocxx_shared>)
 
-file(GLOB LIBRARY_EXECUTABLES db/*.cpp)
-add_library(Database STATIC ${LIBRARY_EXECUTABLES})
-
-target_link_libraries(Database PUBLIC
-    ${MONGOCXX_LIB}
-    ${BSONCXX_LIB}
-)
-
-target_link_libraries(Database PRIVATE
-    OpenSSL::SSL OpenSSL::Crypto)
-
 target_link_libraries(InLink PRIVATE
-    Qt6::Widgets Qt6::Core Qt6::Gui
-    ${MONGOCXX_LIB}
-    ${BSONCXX_LIB}
-    Database
-)
+    Qt6::Widgets Qt6::Core Qt6::Gui)
 
-include_directories(InLink PRIVATE db PUBLIC .)
+target_include_directories(InLink PRIVATE ${CMAKE_SOURCE_DIR})
 
 include(GNUInstallDirs)
 install(TARGETS InLink
@@ -88,8 +75,8 @@ install(TARGETS InLink
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-add_custom_command(
-    OUTPUT ${TS_FILES}
+add_custom_command(OUTPUT ${TS_FILES}
+    PRE_BUILD
     COMMAND lupdate.exe . -ts "${TS_FILES}"
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     COMMENT "Updating translations.."
