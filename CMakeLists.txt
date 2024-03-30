@@ -9,12 +9,6 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if(DEFINED $ENV{VCPKG_ROOT})
-    set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
-elseif(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-    message(FATAL_ERROR "Please specify the CMAKE_TOOLCHAIN_FILE for the vcpkg.cmake file")
-endif()
-
 find_package(Qt6 REQUIRED COMPONENTS Gui Core Widgets LinguistTools)
 
 set(COMPONENTS_DIR Components)
