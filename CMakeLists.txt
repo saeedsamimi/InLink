@@ -9,7 +9,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Gui Core Widgets LinguistTools)
+find_package(Qt6 REQUIRED COMPONENTS Gui Core Widgets Sql LinguistTools)
 
 set(COMPONENTS_DIR Components)
 set(TS_FILES InLink_en_US.ts)
@@ -54,7 +54,7 @@ set_target_properties(InLink PROPERTIES
 set_target_properties(InLink PROPERTIES FOLDER "qtc_runnable")
 
 target_link_libraries(InLink PRIVATE
-    Qt6::Widgets Qt6::Core Qt6::Gui)
+    Qt6::Widgets Qt6::Core Qt6::Gui Qt6::Sql)
 
 target_include_directories(InLink PRIVATE ${CMAKE_SOURCE_DIR})
 
