@@ -37,11 +37,6 @@ QPair<QString,QString> LoginForm::getUser() const
     throw QObject::tr("the password must be at least 8 characters and must have letters and numbers!");
 }
 
-QPair<QString,QString> LoginForm::getUser() const
-{
-    return {ui->userNameEdit->text(),ui->passwordEdit->text()};
-}
-
 void LoginForm::passwordVisibilityChanged()
 {
     if(eyeAction->isChecked()){
