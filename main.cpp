@@ -5,11 +5,14 @@
 #include <QLocale>
 #include <QTranslator>
 #include <utils/Util.h>
+#include <database/dbinit.h>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     auto translatorTemporary = installTranslator(&a);
+    initDB();
+
     MainWindow w;
     w.show();
     int exec = a.exec();
