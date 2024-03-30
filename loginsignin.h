@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include <QMainWindow>
-#include <db/db_config.h>
 
 namespace Ui {
 class LoginSignIn;
@@ -14,7 +13,7 @@ class LoginSignIn : public QWidget
     Q_OBJECT
 
 public:
-    explicit LoginSignIn(db::db_config *config,QWidget *parent = nullptr,bool loginMode = false);
+    explicit LoginSignIn(bool loginMode = false,QWidget *parent = nullptr);
     ~LoginSignIn();
 
     void changeMethod(bool mode);
@@ -26,7 +25,6 @@ private:
     Ui::LoginSignIn *ui;
     QMainWindow *referrer;
     bool isLogin;
-    db::db_config *config;
 
     void changeMethod();
 };

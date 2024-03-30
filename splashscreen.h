@@ -1,31 +1,31 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef SPLASHSCREEN_H
+#define SPLASHSCREEN_H
 
 #include <QMainWindow>
 #include <QLabel>
 #include <QPropertyAnimation>
 #include <loginsignin.h>
-#include <db/db_config.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class MainWindow;
+class SplashScreen;
 }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+class SplashScreen : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(db::db_config *,QWidget *parent = nullptr);
-    ~MainWindow();
+    SplashScreen(QWidget *parent = nullptr);
+    ~SplashScreen();
 private slots:
     void on_SignInBtn_clicked();
+    void on_LoginBtn_clicked();
+
 private:
-    Ui::MainWindow *ui;
+    Ui::SplashScreen *ui;
     QLabel *FindCourceLbl;
     LoginSignIn *loginPage;
-    db::db_config *config;
 };
-#endif // MAINWINDOW_H
+#endif // SPLASHSCREEN_H

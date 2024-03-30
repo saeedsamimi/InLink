@@ -10,8 +10,8 @@
         <file alias="link256.png">icons/icons/link256.png</file>
         <file alias="link512.png">icons/icons/link512.png</file>
         <file alias="arrow-right.png">icons/mini-icons/arrow-right.png</file>
-        <file alias="sp-woman.png">pics/SplashWoman.png</file>
-        <file alias="city-footer.png">pics/footer-city.png</file>
+        <file alias="sp-woman.png">icons/pics/SplashWoman.png</file>
+        <file alias="city-footer.png">icons/pics/footer-city.png</file>
         <file alias="businessman.png">icons/mini-icons/businessman.png</file>
         <file alias="padlock.png">icons/mini-icons/padlock.png</file>
         <file alias="eye.png">icons/mini-icons/eye.png</file>
