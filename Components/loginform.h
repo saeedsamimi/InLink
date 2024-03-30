@@ -11,11 +11,11 @@ class LoginForm;
 class LoginForm : public QWidget
 {
     Q_OBJECT
-
 public:
     explicit LoginForm(QWidget *parent = nullptr);
     ~LoginForm();
 
+    QPair<QString,QString> getUser() const;
 private:
     Ui::LoginForm *ui;
     QAction *eyeAction;

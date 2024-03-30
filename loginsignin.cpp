@@ -3,10 +3,8 @@
 #include <utils/Util.h>
 #include <QTabBar>
 
-using db::db_config;
-
-LoginSignIn::LoginSignIn(db_config *config,QWidget *parent,bool loginMode)
-    : QWidget(parent),config(config)
+LoginSignIn::LoginSignIn(QWidget *parent,bool loginMode)
+    : QWidget(parent)
     , ui(new Ui::LoginSignIn),isLogin(loginMode)
 {
     ui->setupUi(this);
@@ -43,5 +41,11 @@ void LoginSignIn::on_changeMode_clicked()
 {
     isLogin = !isLogin;
     this->changeMethod();
+}
+
+
+void LoginSignIn::on_SignInBtn_clicked()
+{
+    qDebug() << "Clicked!";
 }
 
