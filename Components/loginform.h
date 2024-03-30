@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QString>
+#include <QRegularExpressionValidator>
 
 namespace Ui {
 class LoginForm;
@@ -20,6 +21,7 @@ private:
     Ui::LoginForm *ui;
     QAction *eyeAction;
     QPixmap hideLogo,showLogo;
+    QValidator *userValidator;
 
 private slots:
     void passwordVisibilityChanged();

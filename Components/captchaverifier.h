@@ -20,6 +20,7 @@ public:
 
     bool isValidated();
     void reset();
+    bool Hint();
 protected slots:
     void on_updateCaptcha_clicked();
     void on_captchaVerify_triggered();

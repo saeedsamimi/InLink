@@ -30,6 +30,12 @@ void CaptchaVerifier::reset()
     msg->clear();
 }
 
+bool CaptchaVerifier::Hint()
+{
+    on_captchaVerify_triggered();
+    return isValid;
+}
+
 void CaptchaVerifier::on_updateCaptcha_clicked()
 {
     Ci->updateCaptcha();

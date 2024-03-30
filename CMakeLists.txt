@@ -26,7 +26,7 @@ set(TEST_FILES
 # Project main runners files
 set(PROJECT_MAIN_FILES
     main.cpp
-    mainwindow.cpp mainwindow.h mainwindow.ui
+    splashscreen.cpp splashscreen.h splashscreen.ui
     loginsignin.cpp loginsignin.h loginsignin.ui)
 
 qt6_standard_project_setup()

@@ -13,7 +13,7 @@ class LoginSignIn : public QWidget
     Q_OBJECT
 
 public:
-    explicit LoginSignIn(QWidget *parent = nullptr,bool loginMode = false);
+    explicit LoginSignIn(bool loginMode = false,QWidget *parent = nullptr);
     ~LoginSignIn();
 
     void changeMethod(bool mode);

@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "splashscreen.h"
 #include "loginsignin.h"
 #include "test/test_captcha.h"
 #include <QApplication>
@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     auto translatorTemporary = installTranslator(&a);
     initDB();
 
-    MainWindow w;
+    SplashScreen w;
     w.show();
     int exec = a.exec();
     delete translatorTemporary;

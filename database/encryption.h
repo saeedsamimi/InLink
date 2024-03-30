@@ -1,5 +1,6 @@
 #ifndef ENCRYPTION_H
 #define ENCRYPTION_H
+
 #include <QCryptographicHash>
 
 QString hashUsingSHA256(const QString &input){

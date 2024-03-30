@@ -1,11 +1,11 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "splashscreen.h"
+#include "ui_splashscreen.h"
 #include <loginsignin.h>
 #include <utils/Util.h>
 
-MainWindow::MainWindow( QWidget *parent)
+SplashScreen::SplashScreen( QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::SplashScreen)
 {
     QPixmap iconPic(":/ico-cap-light.png");
     QPixmap womanPic(":/sp-woman.png");
@@ -17,16 +17,23 @@ MainWindow::MainWindow( QWidget *parent)
     ui->FooterPic->setPixmap(footerPic);
 }
 
-MainWindow::~MainWindow()
+SplashScreen::~SplashScreen()
 {
     delete ui;
     delete loginPage;
 }
 
-void MainWindow::on_SignInBtn_clicked()
+void SplashScreen::on_SignInBtn_clicked()
 {
     loginPage = new LoginSignIn();
-    qDebug() << "the SignInBtn in main window clicked! the login page will be show!!!";
     loginPage->show();
     close();
 }
+
+void SplashScreen::on_LoginBtn_clicked()
+{
+    loginPage = new LoginSignIn(true);
+    loginPage->show();
+    close();
+}
+

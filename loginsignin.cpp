@@ -2,8 +2,10 @@
 #include "ui_loginsignin.h"
 #include <utils/Util.h>
 #include <QTabBar>
+#include <QMessageBox>
+#include <database/user.h>
 
-LoginSignIn::LoginSignIn(QWidget *parent,bool loginMode)
+LoginSignIn::LoginSignIn(bool loginMode,QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::LoginSignIn),isLogin(loginMode)
 {
@@ -43,9 +45,39 @@ void LoginSignIn::on_changeMode_clicked()
     this->changeMethod();
 }
 
-
 void LoginSignIn::on_SignInBtn_clicked()
 {
-    qDebug() << "Clicked!";
+    QPair<QString,QString> res;
+    try{
+        res = ui->widget->getUser();
+    }catch(QString &e){
+        QMessageBox::critical(this,"Error",e,QMessageBox::Ok);
+        return;
+    }
+    if(!ui->captchaCode->isValidated() && !ui->captchaCode->Hint())
+        return;
+    if(isLogin){
+        try{
+            validateUser(res.first,res.second);
+            QMessageBox::information(this,"Success",QObject::tr("You are logged in successfully!"),QMessageBox::Ok);
+            close();
+        }catch(QPair<QString,bool>& err){
+            if(err.second)
+                QMessageBox::critical(this,"Error",err.first,QMessageBox::Ok,QMessageBox::Cancel);
+            else
+                QMessageBox::critical(this,"Error",err.first,QMessageBox::Ok);
+        }catch(QSqlError &err){
+            QMessageBox::critical(this,"Unexpected Error",err.databaseText().append(". Please try again!"),QMessageBox::Ok);
+        }
+    }else{
+        try{
+            insertUser(res.first,res.second);
+            QMessageBox::information(this,"Success",QObject::tr("You are Signed in successfully!"),QMessageBox::Ok);
+            close();
+        }catch(QString &err){
+            QMessageBox::critical(this,"Error",err,QMessageBox::Ok,QMessageBox::Cancel);
+        }catch(QSqlError &err){
+            QMessageBox::critical(this,"Unexpected Error",err.databaseText().append("Please try again!"),QMessageBox::Ok);
+        }
+    }
 }
-
