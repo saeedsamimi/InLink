@@ -2,3 +2,5 @@
 vcpkg_installed
 # IDE directory
 .idea
+# IDE files
+CMakeLists.txt.user
