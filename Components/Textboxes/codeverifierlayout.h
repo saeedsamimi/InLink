@@ -19,12 +19,11 @@ public:
     ~CodeVerifierLayout();
 
 signals:
-    void onTextFinalized(const QString &code);
+    void onAccepted();
 
 private slots:
     void onBoxFilled(uchar index);
     void onBoxCleared(uchar index);
-    void onTextFinalizedSigned(const QString &);
 
 private:
     CodeVerifyEdit boxes[4];

@@ -13,10 +13,6 @@ CodeVerifierLayout::CodeVerifierLayout(QWidget *parent)
 {
     setupUI();
     dialog.show();
-    connect(this,
-            &CodeVerifierLayout::onTextFinalized,
-            this,
-            &CodeVerifierLayout::onTextFinalizedSigned);
 }
 
 QString CodeVerifierLayout::getText()
@@ -36,8 +32,15 @@ void CodeVerifierLayout::onBoxFilled(uchar i)
             boxes[j].setFocus();
     }else{
         const QString&temp = getText();
-        if(temp.length() == 4)
-            emit onTextFinalized(temp);
+        if(temp.length() == 4){
+            if(dialog.validate(temp))
+                emit onAccepted();
+            else{
+                if(dialog.isHidden())
+                    dialog.show();
+                dialog.randomize();
+            }
+        }
     }
 }
 
@@ -46,18 +49,6 @@ void CodeVerifierLayout::onBoxCleared(uchar i)
     int j;
     for(j = i - 1;j >= 0 && boxes[j].text().isEmpty();j--);
     boxes[std::max(0,j)].setFocus();
-}
-
-void CodeVerifierLayout::onTextFinalizedSigned(const QString &text)
-{
-    qDebug() << text;
-    if(dialog.validate(text))
-        close();
-    else{
-        if(dialog.isHidden())
-            dialog.show();
-        dialog.randomize();
-    }
 }
 
 CodeVerifierLayout::~CodeVerifierLayout() = default;

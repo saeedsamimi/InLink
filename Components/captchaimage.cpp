@@ -10,6 +10,7 @@ CaptchaImage::CaptchaImage(QWidget *parent)
     ch.setFont(QFont("Arial",25));
     ch.generateText();
     setStyleSheet("background: transparent; border: none;");
+    currText = ch.captchaText();
     pixmapItem = scene()->addPixmap(QPixmap::fromImage(ch.captchaImage()));
 }
 

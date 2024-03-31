@@ -10,6 +10,7 @@ LoginSignIn::LoginSignIn(bool loginMode, QWidget *parent)
     : QWidget(parent), ui(new Ui::LoginSignIn), isLogin(loginMode)
 {
     ui->setupUi(this);
+    changeMethod();
     enableStyle(ui->SignInBtn, "PBS.qss");
     ui->IconImageViewer->setPixmap(QPixmap(":/ico-cap-light.png"));
 }
@@ -42,6 +43,20 @@ void LoginSignIn::changeMethod()
     ui->captchaCode->reset();
 }
 
+void LoginSignIn::doExit(const QString &username, const QString &password)
+{
+    bool isActive = isUserActivated(username);
+    qDebug() << "user activation: " << isActive;
+    int ID = addAccount(username);
+    if(isActive){
+        close();
+    }else{
+        verifier = new CodeVerifier(ID);
+        verifier->show();
+        close();
+    }
+}
+
 void LoginSignIn::on_changeMode_clicked()
 {
     isLogin = !isLogin;
@@ -68,12 +83,15 @@ void LoginSignIn::on_SignInBtn_clicked()
         {
             validateUser(res.first, res.second);
             QMessageBox::information(this, "Success", QObject::tr("You are logged in successfully!"), QMessageBox::Ok);
-            close();
+            doExit(res.first,res.second);
         }
         catch (QPair<QString, bool> &err)
         {
-            if (err.second)
-                QMessageBox::critical(this, "Error", err.first, QMessageBox::Ok, QMessageBox::Cancel);
+            if (err.second){
+                int res = QMessageBox::critical(this, "Error", err.first, QMessageBox::Ok, QMessageBox::Cancel);
+                if(res == QMessageBox::Ok)
+                    changeMethod(!isLogin);
+            }
             else
                 QMessageBox::critical(this, "Error", err.first, QMessageBox::Ok);
         }
@@ -88,11 +106,13 @@ void LoginSignIn::on_SignInBtn_clicked()
         {
             insertUser(res.first, res.second);
             QMessageBox::information(this, "Success", QObject::tr("You are Signed in successfully!"), QMessageBox::Ok);
-            close();
+            doExit(res.first,res.second);
         }
         catch (QString &err)
         {
-            QMessageBox::critical(this, "Error", err, QMessageBox::Ok, QMessageBox::Cancel);
+            int res = QMessageBox::critical(this, "Error", err, QMessageBox::Ok, QMessageBox::Cancel);
+            if(res == QMessageBox::Ok)
+                changeMethod(!isLogin);
         }
         catch (QSqlError &err)
         {

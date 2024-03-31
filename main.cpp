@@ -16,7 +16,6 @@ int main(int argc, char *argv[])
     a.setPalette(pal);
     auto translatorTemporary = installTranslator(&a);
     initDB();
-
     SplashScreen w;
     w.show();
     int exec = a.exec();

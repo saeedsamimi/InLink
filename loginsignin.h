@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QMainWindow>
+#include <Pages/codeverifier.h>
 
 namespace Ui {
 class LoginSignIn;
@@ -24,9 +25,12 @@ private slots:
 private:
     Ui::LoginSignIn *ui;
     QMainWindow *referrer;
+    CodeVerifier *verifier = nullptr;
+
     bool isLogin;
 
     void changeMethod();
+    void doExit(const QString&,const QString&);
 };
 
 #endif // LOGINSIGNIN_H

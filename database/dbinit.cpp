@@ -10,6 +10,8 @@ QSqlError initDB(){
     QSqlQuery query;
     if(!query.exec(USERS_SQL))
         return query.lastError();
+    if(!query.exec(ACCOUNTS_SQL))
+        return query.lastError();
     // return empty error
     return QSqlError();
 }
