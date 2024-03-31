@@ -26,5 +26,6 @@
         <file alias="SS.qss">qss/SplashScreen.qss</file>
         <file alias="LS.qss">qss/LoginStyle.qss</file>
         <file alias="CVTBS.qss">qss/CaptchaVerifierTextBoxStyle.qss</file>
+        <file alias="CVS.qss">qss/CodeVerifyStyle.qss</file>
     </qresource>
 </RCC>
