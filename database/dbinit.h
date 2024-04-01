@@ -3,22 +3,24 @@
 #include <QtSql>
 
 const auto USERS_SQL  = QLatin1String(R"(
-    CREATE TABLE IF NOT EXISTS users(
-        ID INTEGER PRIMARY KEY AUTOINCREMENT,
-        username VARCHAR(30) UNIQUE NOT NULL,
-        password VARCHAR(64) NOT NULL,
-        activated INTEGER DEFAULT 0
-    );
-)");
+CREATE TABLE IF NOT EXISTS users(
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    username VARCHAR(30) UNIQUE NOT NULL,
+    password VARCHAR(64) NOT NULL,
+    activated INTEGER DEFAULT 0,
+    first_name TEXT,last_name TEXT,birth_date VARCHAR(8),
+    country TEXT, city TEXT,
+    school TEXT,start_year INTEGER,end_year INTEGER,is_student INTEGER,
+    recent_job TEXT,emp_type TEXT,recent_company TEXT
+);)");
 
 const auto ACCOUNTS_SQL = QLatin1String(R"(
-    CREATE TABLE IF NOT EXISTS accounts(
-        account_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_ID INTEGER NOT NULL UNIQUE,
-        last_view TEXT NOT NULL,
-        state INTEGER DEFAULT 0
-    );
-)");
+CREATE TABLE IF NOT EXISTS accounts(
+    account_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_ID INTEGER NOT NULL UNIQUE,
+    last_view TEXT NOT NULL,
+    state INTEGER DEFAULT 0
+);)");
 
 const auto INSERT_USER_SQL = QLatin1String(R"(
     INSERT INTO users(username ,password) VALUES(?,?);
@@ -46,6 +48,11 @@ const auto ADD_ACCOUNT_SQL = QLatin1String(R"(
 
 const auto UPDATE_ACCOUNT_LEVEL_SQL = QLatin1String(R"(
     UPDATE accounts SET state = ? WHERE user_ID = ?;
+)");
+
+const auto SELECT_ALL_ACCOUNTS_ID_AND_STATES = QLatin1String(R"(
+    SELECT user_ID,state FROM accounts WHERE NOT state = 0 AND
+    strftime('%s', last_view) > strftime('%s', datetime('now','localtime','-1 month'));
 )");
 
 QSqlError initDB();

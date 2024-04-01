@@ -25,7 +25,9 @@ void CodeVerifier::on_widget_onAccepted()
     msg->setPixmap(QPixmap(":/check.png"));
     ui->verticalLayout->addWidget(msg,1,Qt::AlignCenter);
     setUserActive(ID,true);
-    changeAccountLevel(ID, 1);
+    changeAccountLevel(ID, UserLevel::Activated);
+    complete = new CompleteProfile(ID);
+    QTimer::singleShot(1000,complete,&CompleteProfile::show);
     QTimer::singleShot(1500,this,&CodeVerifier::close);
 }
 

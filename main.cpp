@@ -6,7 +6,9 @@
 #include <QTranslator>
 #include <utils/Util.h>
 #include <database/dbinit.h>
+#include <database/user.h>
 #include <Pages/codeverifier.h>
+#include <Pages/completeprofile.h>
 
 int main(int argc, char *argv[])
 {
@@ -16,8 +18,15 @@ int main(int argc, char *argv[])
     a.setPalette(pal);
     auto translatorTemporary = installTranslator(&a);
     initDB();
-    SplashScreen w;
-    w.show();
+    auto accounts = getActiveAccountUser();
+    if(accounts.empty()){
+        SplashScreen *splash = new SplashScreen();
+        splash->show();
+    }else{
+        qDebug() << accounts;
+    }
+    CompleteProfile CP(0);
+    CP.show();
     int exec = a.exec();
     delete translatorTemporary;
     return exec;

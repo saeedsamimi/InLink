@@ -100,7 +100,7 @@ int addAccount(const QString &username)
     return ID;
 }
 
-void changeAccountLevel(int ID, int level)
+void changeAccountLevel(int ID, UserLevel level)
 {
     QSqlQuery query;
     // handle in-server errors
@@ -111,4 +111,19 @@ void changeAccountLevel(int ID, int level)
     query.addBindValue(ID);
     if(!query.exec())
         throw query.lastError();
+}
+
+QList<QPair<int,int>> getActiveAccountUser()
+{
+    QSqlQuery query;
+    // handle in-server errors
+    if(!query.prepare(SELECT_ALL_ACCOUNTS_ID_AND_STATES))
+        throw query.lastError();
+    // beacause no argument is provided we dont have to bind values for it
+    if(!query.exec())
+        throw query.lastError();
+    QList<QPair<int,int>> temp;
+    while(query.next())
+        temp.emplaceBack(query.value(0).toInt(),query.value(1).toInt());
+    return temp;
 }

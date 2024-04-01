@@ -43,6 +43,7 @@ qt6_add_executable(InLink
     Components/Textboxes/codeverifyedit.h Components/Textboxes/codeverifyedit.cpp
     Components/Textboxes/codeverifierlayout.h Components/Textboxes/codeverifierlayout.cpp
     Pages/verifycodedialog.h Pages/verifycodedialog.cpp Pages/verifycodedialog.ui
+    Pages/completeprofile.h Pages/completeprofile.cpp Pages/completeprofile.ui
 )
 # set translations and then install the .qm file into CURRENT_BIN_DIR
 qt6_add_translations(InLink
