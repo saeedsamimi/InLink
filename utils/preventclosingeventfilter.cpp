@@ -10,6 +10,10 @@ void PreventClosingEventFilter::disable()
     disabled = true;
 }
 
+bool PreventClosingEventFilter::isDisabled(){
+    return disabled;
+}
+
 bool PreventClosingEventFilter::eventFilter(QObject *obj, QEvent *event)
 {
     if(event->type() == QEvent::Close && !disabled){

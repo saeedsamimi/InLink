@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     }else{
         qDebug() << accounts;
     }
-    CompleteProfile CP(0);
+    CompleteProfile CP(1);
     CP.show();
     int exec = a.exec();
     delete translatorTemporary;

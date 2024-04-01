@@ -22,6 +22,10 @@ CREATE TABLE IF NOT EXISTS accounts(
     state INTEGER DEFAULT 0
 );)");
 
+const auto UPDATE_USER_IDENTITIES_SQL = QLatin1String(R"(
+    UPDATE users SET %1 = ? WHERE ID = ?
+)");
+
 const auto INSERT_USER_SQL = QLatin1String(R"(
     INSERT INTO users(username ,password) VALUES(?,?);
 )");

@@ -2,6 +2,8 @@
 #include "dbinit.h"
 #include "encryption.h"
 
+const char *identity_list[12] ={"first_name","last_name","birth_date","country","city","school","start_year","end_year","is_student","recent_job","emp_type","recent_company"};
+
 void insertUser(const QString &username, const QString &password){
     QSqlQuery query;
     // handle in-server errors
@@ -126,4 +128,22 @@ QList<QPair<int,int>> getActiveAccountUser()
     while(query.next())
         temp.emplaceBack(query.value(0).toInt(),query.value(1).toInt());
     return temp;
+}
+
+void updateUserIdentity(int ID, const char *identity, const QVariant &value)
+{
+    QSqlQuery query;
+    // handle in-server errors
+    if(!query.prepare(UPDATE_USER_IDENTITIES_SQL.arg(identity)))
+        throw query.lastError();
+    // this function is capable to have errors so the error handling have to enabled for that
+    query.addBindValue(value);
+    query.addBindValue(ID);
+    // execute the query
+    if(!query.exec())
+        throw query.lastError();
+}
+
+void updateUserIdentity(int ID, UserIdentity identity, const QVariant &value){
+    updateUserIdentity(ID,identity_list[identity],value);
 }

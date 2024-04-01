@@ -3,7 +3,7 @@
 QSqlError initDB(){
     // create connection and try to connect
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("InLink");
+    db.setDatabaseName("InLink.db");
     if(!db.open())
         return db.lastError();
     // run the query for create table if not exist

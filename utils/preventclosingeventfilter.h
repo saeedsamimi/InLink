@@ -12,6 +12,7 @@ public:
     explicit PreventClosingEventFilter(QWidget *parent);
 
     void disable();
+    bool isDisabled();
 
 signals:
     void onCloseRequested();

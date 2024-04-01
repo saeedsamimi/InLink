@@ -20,40 +20,40 @@ QLineEdit:focus{
         border-width: 2px;
         background-color: #efefef;
 }
-QSpinBox{
+QAbstractSpinBox{
         padding: 3px 5px;
         border: 1px solid blue;
 }
-QSpinBox::up-button {
+QAbstractSpinBox::up-button {
     subcontrol-position: top right;
         background-color: #b5e2fa;
     width: 16px;
     border: none;
 }
-QSpinBox::up-button:hover, QSpinBox::down-button:hover{
+QAbstractSpinBox::up-button:hover, QAbstractSpinBox::down-button:hover{
         background-color: #90e0ef;
 }
-QSpinBox::up-button:pressed, QSpinBox::down-button:pressed{
+QAbstractSpinBox::up-button:pressed, QAbstractSpinBox::down-button:pressed{
         background-color: #00b4d8;
 }
-QSpinBox::up-arrow:off, QSpinBox::up-arrow:disabled{
+QAbstractSpinBox::up-arrow:off, QAbstractSpinBox::up-arrow:disabled{
         image: url(:/e_uarrow.png);
 }
-QSpinBox::down-arrow:off, QSpinBox::down-arrow:disabled{
+QAbstractSpinBox::down-arrow:off, QAbstractSpinBox::down-arrow:disabled{
         image: url(:/e_darrow.png);
 }
-QSpinBox::up-arrow {
+QAbstractSpinBox::up-arrow {
     image: url(:/uarrow.png);
     width: 8px;
     height: 8px;
 }
-QSpinBox::down-button {
+QAbstractSpinBox::down-button {
     subcontrol-position: bottom right;
         background-color: #b5e2fa;
     width: 16px;
     border: none;
 }
-QSpinBox::down-arrow {
+QAbstractSpinBox::down-arrow {
     image: url(:/darrow.png);
     width: 8px;
     height: 8px;

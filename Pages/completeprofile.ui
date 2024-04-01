@@ -77,20 +77,10 @@
           <string>Personal Information</string>
          </property>
          <layout class="QGridLayout" name="gridLayout" columnstretch="1,1,1,1">
-          <item row="1" column="0">
-           <widget class="QLabel" name="birthdayLbl">
-            <property name="text">
-             <string>Birthday:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2" colspan="2">
-           <widget class="QLineEdit" name="lastNameInput">
-            <property name="maxLength">
-             <number>15</number>
-            </property>
-            <property name="placeholderText">
-             <string>Lastname</string>
+          <item row="3" column="1">
+           <widget class="QComboBox" name="countryCombobox">
+            <property name="editable">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -104,40 +94,48 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="2">
-           <widget class="QSpinBox" name="monthSpinbox"/>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="yearSpinbox"/>
-          </item>
-          <item row="1" column="3">
-           <widget class="QSpinBox" name="daySpinbox"/>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="countryLbl">
-            <property name="text">
-             <string>Country:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
+          <item row="3" column="2">
            <widget class="QLabel" name="cityLbl">
             <property name="text">
              <string>City:</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QComboBox" name="countryCombobox">
+          <item row="0" column="2" colspan="2">
+           <widget class="QLineEdit" name="lastNameInput">
+            <property name="maxLength">
+             <number>15</number>
+            </property>
+            <property name="placeholderText">
+             <string>Lastname</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="birthdayLbl">
+            <property name="text">
+             <string>Birthday:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="countryLbl">
+            <property name="text">
+             <string>Country:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QComboBox" name="cityCombobox">
             <property name="editable">
              <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="2" column="3">
-           <widget class="QComboBox" name="cityCombobox">
-            <property name="editable">
-             <bool>true</bool>
+          <item row="1" column="1" colspan="3">
+           <widget class="QDateEdit" name="dateEdit">
+            <property name="displayFormat">
+             <string>yyyy/MM/dd</string>
             </property>
            </widget>
           </item>
@@ -158,13 +156,27 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QSpinBox" name="endYearSpibbox"/>
+           <widget class="QSpinBox" name="endYearSpibbox">
+            <property name="minimum">
+             <number>1970</number>
+            </property>
+            <property name="maximum">
+             <number>2100</number>
+            </property>
+           </widget>
           </item>
           <item row="0" column="1">
            <widget class="QComboBox" name="schoolCombobox"/>
           </item>
           <item row="2" column="0">
-           <widget class="QSpinBox" name="startYearSpinbox"/>
+           <widget class="QSpinBox" name="startYearSpinbox">
+            <property name="minimum">
+             <number>1970</number>
+            </property>
+            <property name="maximum">
+             <number>2100</number>
+            </property>
+           </widget>
           </item>
           <item row="1" column="1">
            <widget class="QLabel" name="endYearLbl">
@@ -180,14 +192,14 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
-           <widget class="QCheckBox" name="notStudentCheckBox">
-            <property name="text">
-             <string>I am not a student!</string>
-            </property>
-           </widget>
-          </item>
          </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="notStudentCheckBox">
+         <property name="text">
+          <string>I am not a student!</string>
+         </property>
         </widget>
        </item>
        <item>
@@ -199,12 +211,9 @@
           <item row="0" column="0">
            <widget class="QLabel" name="mostRecentJobLbl">
             <property name="text">
-             <string>Most revent job title:</string>
+             <string>Most recent job title:</string>
             </property>
            </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="mostRecentJobInput"/>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="empTypeLbl">
@@ -227,8 +236,22 @@
             </property>
            </widget>
           </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="mostRecentJobInput">
+            <property name="editable">
+             <bool>false</bool>
+            </property>
+            <property name="placeholderText">
+             <string>Select a job</string>
+            </property>
+           </widget>
+          </item>
           <item row="2" column="1">
-           <widget class="QLineEdit" name="mostRecentCompanyInput"/>
+           <widget class="QLineEdit" name="mostRecentCompanyInput">
+            <property name="maxLength">
+             <number>50</number>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -236,7 +259,7 @@
        <item>
         <widget class="QPushButton" name="continueBtn">
          <property name="text">
-          <string>Continue</string>
+          <string>Save</string>
          </property>
         </widget>
        </item>
