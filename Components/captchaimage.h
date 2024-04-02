@@ -1,30 +1,30 @@
 #ifndef CAPTCHAIMAGE_H
 #define CAPTCHAIMAGE_H
 
-#include "captcha.h"
-#include <QObject>
-#include <QWidget>
-#include <QGraphicsView>
-#include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QObject>
 #include <QResizeEvent>
+#include <QWidget>
 
-class CaptchaImage : public QGraphicsView
-{
-    Q_OBJECT
-public:
-    explicit CaptchaImage(QWidget *parent = nullptr);
+#include "captcha.h"
 
-    void resizeEvent(QResizeEvent *event);
-    bool validate(const QString & text);
-    void updateCaptcha();
-    void setEnabled(bool);
-signals:
+class CaptchaImage : public QGraphicsView {
+  Q_OBJECT
+ public:
+  explicit CaptchaImage(QWidget *parent = nullptr);
 
-private:
-    Captcha ch;
-    QGraphicsPixmapItem *pixmapItem;
-    QString currText;
+  void resizeEvent(QResizeEvent *event);
+  bool validate(const QString &text);
+  void updateCaptcha();
+  void setEnabled(bool);
+ signals:
+
+ private:
+  Captcha ch;
+  QGraphicsPixmapItem *pixmapItem;
+  QString currText;
 };
 
-#endif // CAPTCHAIMAGE_H
+#endif  // CAPTCHAIMAGE_H

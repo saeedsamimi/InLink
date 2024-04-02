@@ -19,6 +19,10 @@
         <file alias="key.png">icons/mini-icons/key.png</file>
         <file alias="refresh.png">icons/mini-icons/refresh.png</file>
         <file alias="check.png">icons/mini-icons/check.png</file>
+        <file alias="darrow.png">icons/mini-icons/down-arrow.png</file>
+        <file alias="uarrow.png">icons/mini-icons/up-arrow.png</file>
+        <file alias="e_darrow.png">icons/mini-icons/down-arrow-empty.png</file>
+        <file alias="e_uarrow.png">icons/mini-icons/up-arrow-empty.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file alias="FETW.qss">qss/FullExpandedTabbedWidget.qss</file>
@@ -27,5 +31,6 @@
         <file alias="LS.qss">qss/LoginStyle.qss</file>
         <file alias="CVTBS.qss">qss/CaptchaVerifierTextBoxStyle.qss</file>
         <file alias="CVS.qss">qss/CodeVerifyStyle.qss</file>
+        <file alias="CPS.qss">qss/CompleteProfileStyle.qss</file>
     </qresource>
 </RCC>

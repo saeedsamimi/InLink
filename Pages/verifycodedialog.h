@@ -7,19 +7,18 @@ namespace Ui {
 class VerifyCodeDialog;
 }
 
-class VerifyCodeDialog : public QDialog
-{
-    Q_OBJECT
+class VerifyCodeDialog : public QDialog {
+  Q_OBJECT
 
-public:
-    explicit VerifyCodeDialog(QWidget *parent = nullptr);
-    ~VerifyCodeDialog();
+ public:
+  explicit VerifyCodeDialog(QWidget *parent = nullptr);
+  ~VerifyCodeDialog();
 
-    void randomize();
-    bool validate(const QString &text);
+  void randomize();
+  bool validate(const QString &text);
 
-private:
-    Ui::VerifyCodeDialog *ui;
+ private:
+  Ui::VerifyCodeDialog *ui;
 };
 
-#endif // VERIFYCODEDIALOG_H
+#endif  // VERIFYCODEDIALOG_H
