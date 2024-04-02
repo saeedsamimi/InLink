@@ -19,22 +19,25 @@
   <property name="windowTitle">
    <string notr="true"/>
   </property>
-  <property name="styleSheet">
-   <string notr="true">QLineEdit{
-	padding: 5px;
-	border: none;
-	border-bottom: 1px solid blue;
-}
-QLineEdit:focus{
-	border-bottom-width: 2px;
-}</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="sizeConstraint">
     <enum>QLayout::SetDefaultConstraint</enum>
    </property>
    <item>
     <widget class="QLineEdit" name="userNameEdit">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>18</pointsize>
+       <bold>false</bold>
+      </font>
+     </property>
      <property name="inputMethodHints">
       <set>Qt::ImhNone</set>
      </property>
@@ -54,6 +57,18 @@ QLineEdit:focus{
    </item>
    <item>
     <widget class="QLineEdit" name="passwordEdit">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>18</pointsize>
+      </font>
+     </property>
      <property name="maxLength">
       <number>16</number>
      </property>
@@ -62,31 +77,6 @@ QLineEdit:focus{
      </property>
      <property name="placeholderText">
       <string>PassText:</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="PasswordVisibility">
-     <property name="layoutDirection">
-      <enum>Qt::RightToLeft</enum>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QCheckBox{
-	color: black;
-}
-QCheckBox::indicator{
-	width: 20px;
-	height: 20px;
-}
-QCheckBox::indicator:unchecked{
-	image: url(&quot;:/eye.png&quot;);
-}
-QCheckBox::indicator:checked{
-	image: url(&quot;:/hide.png&quot;);
-}</string>
-     </property>
-     <property name="text">
-      <string/>
      </property>
     </widget>
    </item>

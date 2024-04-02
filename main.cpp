@@ -1,24 +1,43 @@
-#include "mainwindow.h"
-#include "loginsignin.h"
-#include "test/test_captcha.h"
+#include <Pages/codeverifier.h>
+#include <Pages/completeprofile.h>
+#include <database/dbinit.h>
+#include <database/user.h>
+#include <utils/Util.h>
+#include <utils/waitformorefeature.h>
+
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>
-#include <db_config.h>
-#include <mongocxx/instance.hpp>
 
-using db::db_config;
+#include "loginsignin.h"
+#include "splashscreen.h"
+#include "test/test_captcha.h"
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    QTranslator translator;
-    Q_UNUSED(translator.load("InLink_en_US"));
-    a.installTranslator(&translator);
-    db_config config("testDB");
-    MainWindow w;
-    LoginSignIn page;
-    page.show();
-    w.show();
-    return a.exec();
+int main(int argc, char *argv[]) {
+  QApplication a(argc, argv);
+  QPalette pal = a.palette();
+  pal.setColor(QPalette::Window, Qt::white);
+  a.setPalette(pal);
+  auto translatorTemporary = installTranslator(&a);
+  initDB();
+  auto account = getActiveAccountUser();
+  if (account == nullptr) {
+    SplashScreen *splash = new SplashScreen();
+    splash->show();
+  } else {
+    // make decision
+    if (account->second == Added) {
+      CodeVerifier *verifier = new CodeVerifier(account->first);
+      verifier->show();
+    } else if (account->second == Activated) {
+      CompleteProfile *complete = new CompleteProfile(account->second);
+      complete->show();
+    } else {
+      WaitForMoreFeature *dialog = new WaitForMoreFeature(account->first);
+      dialog->show();
+    }
+  }
+  int exec = a.exec();
+  delete translatorTemporary;
+  return exec;
 }
