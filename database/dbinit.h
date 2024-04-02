@@ -33,10 +33,6 @@ const auto FIND_USER_SQL = QLatin1String(R"(
     SELECT password FROM users WHERE username = ?;
 )");
 
-const auto FIND_USER_ACTIVATION_SQL = QLatin1String(R"(
-    SELECT activated FROM users WHERE username = ?;
-)");
-
 const auto GET_USERS_ID_SQL = QLatin1String(R"(
     SELECT ID FROM users WHERE username = ?;
 )");

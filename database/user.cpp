@@ -44,20 +44,6 @@ void validateUser(const QString &username, const QString &password) {
   }
 }
 
-bool isUserActivated(const QString &username) {
-  QSqlQuery query;
-  // handle in-server errors
-  if (!query.prepare(FIND_USER_ACTIVATION_SQL)) throw query.lastError();
-  // handle in-find errors
-  query.addBindValue(username);
-  // no error code is provided
-  if (!query.exec()) throw query.lastError();
-  if (query.next()) return query.value(0).toBool();
-  // we consider  that the user is exists and the query is called correctly
-  // so we'll throw an exeption
-  throw QSqlError("", "the selected user not exists");
-}
-
 int getUserID(const QString &username) {
   QSqlQuery query;
   // handle in-server errors

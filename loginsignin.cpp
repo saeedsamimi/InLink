@@ -37,16 +37,10 @@ void LoginSignIn::changeMethod() {
 }
 
 void LoginSignIn::doExit(const QString &username, const QString &password) {
-  bool isActive = isUserActivated(username);
-  qDebug() << "user activation: " << isActive;
   int ID = addAccount(username);
-  if (isActive) {
-    close();
-  } else {
-    verifier = new CodeVerifier(ID);
-    verifier->show();
-    close();
-  }
+  verifier = new CodeVerifier(ID);
+  verifier->show();
+  close();
 }
 
 void LoginSignIn::on_changeMode_clicked() {
