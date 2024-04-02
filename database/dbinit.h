@@ -2,7 +2,7 @@
 #define DBINIT_H
 #include <QtSql>
 
-const auto USERS_SQL  = QLatin1String(R"(
+const auto USERS_SQL = QLatin1String(R"(
 CREATE TABLE IF NOT EXISTS users(
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
     username VARCHAR(30) UNIQUE NOT NULL,
@@ -61,4 +61,4 @@ const auto SELECT_ALL_ACCOUNTS_ID_AND_STATES = QLatin1String(R"(
 
 QSqlError initDB();
 
-#endif //DBINIT_H
+#endif  // DBINIT_H

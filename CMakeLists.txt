@@ -12,11 +12,13 @@ find_package(Qt6 REQUIRED COMPONENTS Gui Core Widgets Sql LinguistTools)
 # set main items dirs, such that Components and Database and Resources and Translations
 set(COMPONENTS_DIR Components)
 set(DATABASE_DIR database)
+set(PAGES_DIR Pages)
 set(TS_FILES InLink_en_US.ts)
 set(RESOURCE_FILES resource.qrc icon.rc)
 # fetch files specified by each dir by using GLOB
 file(GLOB DATABASE_FILES ${DATABASE_DIR}/*.h ${DATABASE_DIR}/*.cpp)
 file(GLOB COMPONENTS_FILES ${COMPONENTS_DIR}/*.h ${COMPONENTS_DIR}/*.cpp ${COMPONENTS_DIR}/*.ui)
+file(GLOB PAGES_FILES ${PAGES_DIR}/*.h ${PAGES_DIR}/*.cpp ${PAGES_DIR}/*.ui)
 file(GLOB QSS_FILES qss/*.qss)
 file(GLOB UTILS_FILES utils/*.h utils/*.cpp)
 # setting test files
@@ -39,11 +41,8 @@ qt6_add_executable(InLink
     ${QSS_FILES}
     ${UTILS_FILES}
     ${DATABASE_FILES}
-    Pages/codeverifier.h Pages/codeverifier.cpp Pages/codeverifier.ui
     Components/Textboxes/codeverifyedit.h Components/Textboxes/codeverifyedit.cpp
     Components/Textboxes/codeverifierlayout.h Components/Textboxes/codeverifierlayout.cpp
-    Pages/verifycodedialog.h Pages/verifycodedialog.cpp Pages/verifycodedialog.ui
-    Pages/completeprofile.h Pages/completeprofile.cpp Pages/completeprofile.ui
 )
 # set translations and then install the .qm file into CURRENT_BIN_DIR
 qt6_add_translations(InLink
