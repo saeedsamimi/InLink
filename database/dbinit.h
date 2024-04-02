@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS users(
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
     username VARCHAR(30) UNIQUE NOT NULL,
     password VARCHAR(64) NOT NULL,
-    activated INTEGER DEFAULT 0,
     first_name TEXT,last_name TEXT,birth_date VARCHAR(8),
     country TEXT, city TEXT,
     school TEXT,start_year INTEGER,end_year INTEGER,is_student INTEGER,
@@ -38,10 +37,6 @@ const auto FIND_USER_ACTIVATION_SQL = QLatin1String(R"(
     SELECT activated FROM users WHERE username = ?;
 )");
 
-const auto UPDATE_USER_ACTIVATION_SQL = QLatin1String(R"(
-    UPDATE users SET activated = ? WHERE ID = ?;
-)");
-
 const auto GET_USERS_ID_SQL = QLatin1String(R"(
     SELECT ID FROM users WHERE username = ?;
 )");
@@ -54,9 +49,12 @@ const auto UPDATE_ACCOUNT_LEVEL_SQL = QLatin1String(R"(
     UPDATE accounts SET state = ? WHERE user_ID = ?;
 )");
 
-const auto SELECT_ALL_ACCOUNTS_ID_AND_STATES = QLatin1String(R"(
-    SELECT user_ID,state FROM accounts WHERE NOT state = 0 AND
-    strftime('%s', last_view) > strftime('%s', datetime('now','localtime','-1 month'));
+const auto SELECT_ACCOUNTS_ID_AND_STATES = QLatin1String(R"(
+    SELECT user_ID,state FROM accounts WHERE strftime('%s', last_view) > strftime('%s', datetime('now','localtime','-1 month')) LIMIT 1;
+)");
+
+const auto GET_USERNAME_SQL = QLatin1String(R"(
+    SELECT username FROM users WHERE ID = ?;
 )");
 
 QSqlError initDB();

@@ -41,8 +41,10 @@ qt6_add_executable(InLink
     ${QSS_FILES}
     ${UTILS_FILES}
     ${DATABASE_FILES}
+    ${PAGES_FILES}
     Components/Textboxes/codeverifyedit.h Components/Textboxes/codeverifyedit.cpp
     Components/Textboxes/codeverifierlayout.h Components/Textboxes/codeverifierlayout.cpp
+    utils/waitformorefeature.h utils/waitformorefeature.cpp utils/waitformorefeature.ui
 )
 # set translations and then install the .qm file into CURRENT_BIN_DIR
 qt6_add_translations(InLink

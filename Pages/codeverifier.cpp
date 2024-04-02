@@ -16,15 +16,18 @@ CodeVerifier::CodeVerifier(int ID, QWidget *parent)
 CodeVerifier::~CodeVerifier() { delete ui; }
 
 void CodeVerifier::on_widget_onAccepted() {
-  qDebug() << "Accepted Successfully!";
-  ui->verticalLayout->removeWidget(ui->widget);
-  ui->widget->close();
-  msg = new QLabel();
-  msg->setPixmap(QPixmap(":/check.png"));
-  ui->verticalLayout->addWidget(msg, 1, Qt::AlignCenter);
-  setUserActive(ID, true);
-  changeAccountLevel(ID, UserLevel::Activated);
-  complete = new CompleteProfile(ID);
-  QTimer::singleShot(1000, complete, &CompleteProfile::show);
-  QTimer::singleShot(1500, this, &CodeVerifier::close);
+  try {
+    qDebug() << "Accepted Successfully!";
+    ui->verticalLayout->removeWidget(ui->widget);
+    ui->widget->close();
+    msg = new QLabel();
+    msg->setPixmap(QPixmap(":/check.png"));
+    ui->verticalLayout->addWidget(msg, 1, Qt::AlignCenter);
+    changeAccountLevel(ID, UserLevel::Activated);
+    complete = new CompleteProfile(ID);
+    QTimer::singleShot(1000, complete, &CompleteProfile::show);
+    QTimer::singleShot(1500, this, &CodeVerifier::close);
+  } catch (QSqlError &err) {
+    qDebug() << err;
+  }
 }

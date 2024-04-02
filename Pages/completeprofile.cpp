@@ -47,9 +47,15 @@ CompleteProfile::CompleteProfile(int ID, QWidget *parent)
 CompleteProfile::~CompleteProfile() { delete ui; }
 
 void CompleteProfile::closeEvent(QCloseEvent *event) {
-  if (closeFilter.isDisabled() && !QSqlDatabase::database().commit())
-    QMessageBox::critical(nullptr, "Error",
-                          "The information not saved. an error occured");
+  if (closeFilter.isDisabled()) {
+    if (!QSqlDatabase::database().commit())
+      QMessageBox::critical(nullptr, "Error",
+                            "The information not saved. an error occured");
+    else
+      QMessageBox::information(nullptr, "Successfull!",
+                               "Your profile successfully completed! please "
+                               "wait for more features!");
+  }
   QWidget::closeEvent(event);
 }
 
@@ -92,6 +98,7 @@ void CompleteProfile::on_continueBtn_clicked() {
   on_mostRecentJobInput_activated(ui->mostRecentJobInput->currentIndex());
   on_endYearSpibbox_editingFinished();
   on_startYearSpinbox_editingFinished();
+  changeAccountLevel(ID, FullyActivated);
   // end of running all savings
   closeFilter.disable();
   close();

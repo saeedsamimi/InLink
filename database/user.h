@@ -21,13 +21,11 @@ enum UserIdentity {
 
 void insertUser(const QString &username, const QString &password);
 
+QString getUsername(int ID);
+
 void validateUser(const QString &username, const QString &password);
 
 bool isUserActivated(const QString &username);
-
-// if the active is true the user state will change to Activated othwise Added
-// state will be considered!
-void setUserActive(int ID, bool active);
 
 void changeAccountLevel(int ID, UserLevel level);
 
@@ -37,7 +35,7 @@ int getUserID(const QString &username);
 int addAccount(const QString &username);
 
 // returns -1 if there is not any account
-QList<QPair<int, int>> getActiveAccountUser();
+QPair<int, int> *getActiveAccountUser();
 
 void updateUserIdentity(int ID, const char *identity, const QVariant &value);
 

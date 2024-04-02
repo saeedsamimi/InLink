@@ -3,6 +3,7 @@
 #include <database/dbinit.h>
 #include <database/user.h>
 #include <utils/Util.h>
+#include <utils/waitformorefeature.h>
 
 #include <QApplication>
 #include <QLocale>
@@ -19,15 +20,23 @@ int main(int argc, char *argv[]) {
   a.setPalette(pal);
   auto translatorTemporary = installTranslator(&a);
   initDB();
-  auto accounts = getActiveAccountUser();
-  if (accounts.empty()) {
+  auto account = getActiveAccountUser();
+  if (account == nullptr) {
     SplashScreen *splash = new SplashScreen();
     splash->show();
   } else {
-    qDebug() << accounts;
+    // make decision
+    if (account->second == Added) {
+      CodeVerifier *verifier = new CodeVerifier(account->first);
+      verifier->show();
+    } else if (account->second == Activated) {
+      CompleteProfile *complete = new CompleteProfile(account->second);
+      complete->show();
+    } else {
+      WaitForMoreFeature *dialog = new WaitForMoreFeature(account->first);
+      dialog->show();
+    }
   }
-  CompleteProfile CP(1);
-  CP.show();
   int exec = a.exec();
   delete translatorTemporary;
   return exec;

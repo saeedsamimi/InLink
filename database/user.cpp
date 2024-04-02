@@ -58,27 +58,16 @@ bool isUserActivated(const QString &username) {
   throw QSqlError("", "the selected user not exists");
 }
 
-void setUserActive(int ID, bool active) {
-  QSqlQuery query;
-  // handle in-server errors
-  if (!query.prepare(UPDATE_USER_ACTIVATION_SQL)) throw query.lastError();
-  // handle in-find errors
-  query.addBindValue(active);
-  query.addBindValue(ID);
-  // no error code is provided
-  if (!query.exec()) throw query.lastError();
-}
-
 int getUserID(const QString &username) {
   QSqlQuery query;
   // handle in-server errors
-  if (!query.prepare(FIND_USER_SQL)) throw query.lastError();
+  if (!query.prepare(GET_USERS_ID_SQL)) throw query.lastError();
   // find the user's ID in db
   query.addBindValue(username);
   // the returns always win if the argument username is true!
   if (!query.exec()) qDebug() << query.lastError();
   query.next();
-  return query.value(0).toInt();
+  return query.value(query.record().indexOf("ID")).toInt();
 }
 
 int addAccount(const QString &username) {
@@ -102,17 +91,14 @@ void changeAccountLevel(int ID, UserLevel level) {
   if (!query.exec()) throw query.lastError();
 }
 
-QList<QPair<int, int>> getActiveAccountUser() {
+QPair<int, int> *getActiveAccountUser() {
   QSqlQuery query;
   // handle in-server errors
-  if (!query.prepare(SELECT_ALL_ACCOUNTS_ID_AND_STATES))
-    throw query.lastError();
+  if (!query.prepare(SELECT_ACCOUNTS_ID_AND_STATES)) throw query.lastError();
   // beacause no argument is provided we dont have to bind values for it
   if (!query.exec()) throw query.lastError();
-  QList<QPair<int, int>> temp;
-  while (query.next())
-    temp.emplaceBack(query.value(0).toInt(), query.value(1).toInt());
-  return temp;
+  if (!query.next()) return nullptr;
+  return new QPair<int, int>(query.value(0).toInt(), query.value(1).toInt());
 }
 
 void updateUserIdentity(int ID, const char *identity, const QVariant &value) {
@@ -130,4 +116,14 @@ void updateUserIdentity(int ID, const char *identity, const QVariant &value) {
 
 void updateUserIdentity(int ID, UserIdentity identity, const QVariant &value) {
   updateUserIdentity(ID, identity_list[identity], value);
+}
+
+QString getUsername(int ID) {
+  QSqlQuery query;
+  // handle in-server errors
+  if (!query.prepare(GET_USERNAME_SQL)) throw query.lastError();
+  query.addBindValue(ID);
+  if (!query.exec()) qDebug() << query.lastError();
+  query.next();
+  return query.value(0).toString();
 }
