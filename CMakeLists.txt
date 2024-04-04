@@ -72,5 +72,12 @@ install(TARGETS InLink
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
+# configure deployement for windows
+if(WIN32)
+    add_custom_command(TARGET InLink POST_BUILD
+        COMMAND "${WINDEPLOYQT_EXECUTABLE}" . --no-translations --pdb
+        WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+        COMMENT "The windeploqt is running now!")
+endif()
 # finalize the project
 qt_finalize_executable(InLink)
