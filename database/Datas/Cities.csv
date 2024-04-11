@@ -1,0 +1,51 @@
+country_id,city
+0,Tehran
+0,Isfahan
+0,Shiraz
+0,Tabriz
+0,Mashhad
+1,Baghdad
+1,Mosul
+1,Basra
+1,Erbil
+1,Najaf
+2,London
+2,Manchester
+2,Birmingham
+2,Glasgow
+2,Liverpool
+3,New York City
+3,Los Angeles
+3,Chicago
+3,Houston
+3,Phoenix
+4,Berlin
+4,Munich
+4,Hamburg
+4,Frankfurt
+4,Cologne
+5,Beijing
+5,Shanghai
+5,Guangzhou
+5,Shenzhen
+5,Chengdu
+6,São Paulo
+6,Rio de Janeiro
+6,Brasília
+6,Salvador
+6,Belo Horizonte
+7,Mumbai
+7,Delhi
+7,Bangalore
+7,Kolkata
+7,Chennai
+8,Sydney
+8,Melbourne
+8,Brisbane
+8,Perth
+8,Adelaide
+9,Tokyo
+9,Osaka
+9,Kyoto
+9,Yokohama
+9,Nagoya

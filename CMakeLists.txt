@@ -20,7 +20,7 @@ file(GLOB DATABASE_FILES ${DATABASE_DIR}/*.h ${DATABASE_DIR}/*.cpp)
 file(GLOB COMPONENTS_FILES ${COMPONENTS_DIR}/*.h ${COMPONENTS_DIR}/*.cpp ${COMPONENTS_DIR}/*.ui)
 file(GLOB PAGES_FILES ${PAGES_DIR}/*.h ${PAGES_DIR}/*.cpp ${PAGES_DIR}/*.ui)
 file(GLOB QSS_FILES qss/*.qss)
-file(GLOB UTILS_FILES utils/*.h utils/*.cpp)
+file(GLOB UTILS_FILES utils/*.h utils/*.cpp utils/*.ui)
 # setting test files
 set(TEST_FILES
     test/test_captcha.cpp test/test_captcha.h test/test_captcha.ui # test files for Captcha
@@ -44,7 +44,6 @@ qt6_add_executable(InLink
     ${PAGES_FILES}
     Components/Textboxes/codeverifyedit.h Components/Textboxes/codeverifyedit.cpp
     Components/Textboxes/codeverifierlayout.h Components/Textboxes/codeverifierlayout.cpp
-    utils/waitformorefeature.h utils/waitformorefeature.cpp utils/waitformorefeature.ui
 )
 # set translations and then install the .qm file into CURRENT_BIN_DIR
 qt6_add_translations(InLink
@@ -78,6 +77,11 @@ if(WIN32)
         COMMAND "${WINDEPLOYQT_EXECUTABLE}" . --no-translations --pdb
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
         COMMENT "The windeploqt is running now!")
+endif()
+# configure files for initial data values
+if(NOT EXISTS "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.db")
+    configure_file(database/Initial.db InLink.db
+        COPYONLY)
 endif()
 # finalize the project
 qt_finalize_executable(InLink)

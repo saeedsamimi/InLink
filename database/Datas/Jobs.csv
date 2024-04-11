@@ -1,0 +1,61 @@
+job_group_id,job_name
+0,Software Developer
+0,Data Scientist
+0,Computer Programmer
+0,Computer Hardware Engineer
+0,Computer and Information Systems Manager
+0,Computer Support Specialist
+0,Machine Learning Engineer
+0,UI/UX Designer
+0,Web Developer
+0,Database Administrator
+0,Game Developer
+0,IT Project Manager
+0,Computer Architect
+0,Cyber Security Specialist
+0,Mobile Developer
+0,Information Security Analysts
+0,Systems Analysts
+0,Computer Network Architects
+0,Application Developer
+0,Software Quality Engineer
+0,Data Analyst
+0,Network Engineer
+0,Computer Information Systems
+0,Artifical Inteligence Engineer
+1,Civil Engineer
+1,Technician
+1,Estimator
+1,Structural Engineer
+1,Quantity Surveyor
+1,Architect
+1,Construction Management
+1,Facilities Engineer
+1,Building Maintenance
+2,Automotive Engineer
+2,Manufactoring Engineer
+2,Aerospace Engineer
+2,Quality Engineer
+2,Biomedical Engineer
+2,Heat Transfer Engineer
+3,Electrical Assistant
+3,Renewables Electrical Engineer
+3,Electrical Design Engineer
+3,Controls Engineer
+3,Circuits Engineer
+3,Biomechanical Engineer
+4,Attorny
+4,Judge
+4,Law Professor
+4,Paralegal
+4,Complience Specialist
+4,Mediation
+4,Legal Secretary
+4,Contracts lawyer
+4,Court Clerk
+5,Medical assistant
+5,Nurse Practitioner
+5,Occupational Therapist
+5,Dentist
+5,Pharmacist
+5,Physician
