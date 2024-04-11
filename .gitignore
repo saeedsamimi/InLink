@@ -4,3 +4,6 @@ vcpkg_installed
 .idea
 # IDE files
 CMakeLists.txt.user
+# Excel Binary files
+database/Datas/Excel.xlsx
+repository.txt
