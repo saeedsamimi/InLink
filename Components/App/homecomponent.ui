@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HomeComponent</class>
+ <widget class="QWidget" name="HomeComponent">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="2">
+    <widget class="QPushButton" name="ArticleBtn">
+     <property name="text">
+      <string>Article</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="3">
+    <widget class="QLineEdit" name="StartPost_textBox">
+     <property name="placeholderText">
+      <string>Start a Post</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="EventBtn">
+     <property name="text">
+      <string>Event</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QComboBox" name="sortCombo">
+     <property name="placeholderText">
+      <string>Sort By:</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>Newest First</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Most Relative First</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Most Favorite</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="MediaBtn">
+     <property name="text">
+      <string>Media</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="3">
+    <widget class="QScrollArea" name="FeedArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>376</width>
+        <height>170</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="FeedLabel">
+     <property name="text">
+      <string>Feed:</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

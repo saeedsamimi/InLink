@@ -1,5 +1,6 @@
 #include <Pages/codeverifier.h>
 #include <Pages/completeprofile.h>
+#include <Pages/mainwindow.h>
 #include <database/dbinit.h>
 #include <database/user.h>
 #include <utils/Util.h>
@@ -33,8 +34,8 @@ int main(int argc, char *argv[]) {
       CompleteProfile *complete = new CompleteProfile(account->second);
       complete->show();
     } else {
-      WaitForMoreFeature *dialog = new WaitForMoreFeature(account->first);
-      dialog->show();
+      MainWindow *win = new MainWindow(account->first);
+      win->show();
     }
   }
   int exec = a.exec();

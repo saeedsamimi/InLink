@@ -44,7 +44,12 @@ qt6_add_executable(InLink
     ${PAGES_FILES}
     Components/Textboxes/codeverifyedit.h Components/Textboxes/codeverifyedit.cpp
     Components/Textboxes/codeverifierlayout.h Components/Textboxes/codeverifierlayout.cpp
-)
+    database/models/usermodel.h database/models/usermodel.cpp
+    Components/App/mecomponent.h Components/App/mecomponent.cpp Components/App/mecomponent.ui
+    Components/App/homecomponent.h Components/App/homecomponent.cpp Components/App/homecomponent.ui
+    Components/App/usernetworkcomponent.h Components/App/usernetworkcomponent.cpp Components/App/usernetworkcomponent.ui
+    Components/App/chatcomponent.h Components/App/chatcomponent.cpp Components/App/chatcomponent.ui
+    Components/App/jobscomponent.h Components/App/jobscomponent.cpp Components/App/jobscomponent.ui)
 # set translations and then install the .qm file into CURRENT_BIN_DIR
 qt6_add_translations(InLink
     TS_FILES ${TS_FILES}
@@ -77,11 +82,6 @@ if(WIN32)
         COMMAND "${WINDEPLOYQT_EXECUTABLE}" . --no-translations --pdb
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
         COMMENT "The windeploqt is running now!")
-endif()
-# configure files for initial data values
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.db")
-    configure_file(database/Initial.db InLink.db
-        COPYONLY)
 endif()
 # finalize the project
 qt_finalize_executable(InLink)

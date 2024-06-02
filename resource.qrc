@@ -23,6 +23,9 @@
         <file alias="uarrow.png">icons/mini-icons/up-arrow.png</file>
         <file alias="e_darrow.png">icons/mini-icons/down-arrow-empty.png</file>
         <file alias="e_uarrow.png">icons/mini-icons/up-arrow-empty.png</file>
+        <file alias="search.svg">icons/mini-icons/search.svg</file>
+        <file alias="edit.svg">icons/mini-icons/edit.svg</file>
+        <file alias="trash.png">icons/mini-icons/trash.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file alias="FETW.qss">qss/FullExpandedTabbedWidget.qss</file>
@@ -32,5 +35,6 @@
         <file alias="CVTBS.qss">qss/CaptchaVerifierTextBoxStyle.qss</file>
         <file alias="CVS.qss">qss/CodeVerifyStyle.qss</file>
         <file alias="CPS.qss">qss/CompleteProfileStyle.qss</file>
+        <file alias="MW.qss">qss/MainWindow.qss</file>
     </qresource>
 </RCC>
