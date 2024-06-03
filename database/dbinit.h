@@ -18,7 +18,19 @@ CREATE TABLE IF NOT EXISTS accounts(
     account_ID INTEGER PRIMARY KEY AUTOINCREMENT,
     user_ID INTEGER NOT NULL UNIQUE,
     last_view TEXT NOT NULL,
-    state INTEGER DEFAULT 0
+    state INTEGER DEFAULT 0,
+    profile BOLB DEFAULT NULL,
+    bio TEXT DEFAULT "Unknown",
+    abilities TEXT
+);)");
+
+const auto POSTS_SQL = QLatin1String(R"(
+CREATE TABLE posts(
+    post_id INTEGER not null primary key autoincrement,
+    user_id INTEGER not null,
+    picture BLOB null,
+    content TEXT not null,
+    created_at DATETIME not null default CURRENT_TIMESTAMP
 );)");
 
 const auto UPDATE_USER_IDENTITIES_SQL = QLatin1String(R"(

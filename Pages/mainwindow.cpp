@@ -10,7 +10,7 @@ MainWindow::MainWindow(const UserModel &model, QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
       m_user(model),
-      me_component(new MeComponent(model)),
+      me_component(new MeComponent(&m_user)),
       home_component(new HomeComponent()),
       user_net_component(new UserNetworkComponent()),
       chat_component(new ChatComponent()),

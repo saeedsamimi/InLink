@@ -1,6 +1,7 @@
 #ifndef MECOMPONENT_H
 #define MECOMPONENT_H
 
+#include <Components/Dialogs/selectabilitiesdialog.h>
 #include <database/models/usermodel.h>
 
 #include <QWidget>
@@ -13,7 +14,7 @@ class MeComponent : public QWidget {
   Q_OBJECT
 
  public:
-  explicit MeComponent(const UserModel &model, QWidget *parent = nullptr);
+  explicit MeComponent(UserModel *model, QWidget *parent = nullptr);
   ~MeComponent();
 
  private slots:
@@ -21,9 +22,21 @@ class MeComponent : public QWidget {
 
   void on_delPicBtn_clicked();
 
+  void on_editBiographyBtn_clicked();
+
+  void on_editAbilityBtn_clicked();
+
+  void handleRejectAbilitiesDialog();
+
  private:
   Ui::MeComponent *ui;
-  int id;
+  UserModel *model = nullptr;
+  SelectAbilitiesDialog *dial = nullptr;
+  QStringListModel list_model;
+
+  void resetProfilePictureText();
+
+  const static QString label;
 };
 
 #endif  // MECOMPONENT_H

@@ -1,29 +1,51 @@
 #include "mecomponent.h"
 
+#include <Components/Dialogs/selectabilitiesdialog.h>
+
 #include <QFileDialog>
+#include <QInputDialog>
 #include <QMessageBox>
 
 #include "ui_mecomponent.h"
 
-MeComponent::MeComponent(const UserModel& model, QWidget* parent)
-    : QWidget(parent), ui(new Ui::MeComponent), id(model.getId()) {
+const QString MeComponent::label(
+    R"(<p><span style=" color:#00557f;">%1:</span> %2</p>)");
+
+MeComponent::MeComponent(UserModel* model, QWidget* parent)
+    : QWidget(parent),
+      ui(new Ui::MeComponent),
+      model(model),
+      list_model(model->getAbilities(), this) {
   ui->setupUi(this);
-  ui->firstName_lbl->setText(
-      QString("First Name: %").arg(model.getFirstName()));
-  ui->lastName_lbl->setText(QString("First Name: %").arg(model.getLastName()));
+  ui->firstName_lbl->setText(label.arg("First Name", model->getFirstName()));
+  ui->lastName_lbl->setText(label.arg("Last Name", model->getLastName()));
+  ui->Bio_lbl->setText(label.arg("Biography", model->getBioGraphy()));
+  if (model->isHaveProfile()) {
+    ui->profilePicture->setPixmap(model->getUserProfile());
+  } else {
+    qDebug() << "Do not have any profile!";
+    resetProfilePictureText();
+  }
+  ui->listView->setModel(&list_model);
 }
 
-MeComponent::~MeComponent() { delete ui; }
+MeComponent::~MeComponent() {
+  delete ui;
+  delete dial;
+}
 
 void MeComponent::on_editPicBtn_clicked() {
   qDebug() << "edit Icon Btn clicked!";
-  QString filename = QFileDialog::getOpenFileName(
-      this, tr("Open Image"), "/", tr("Image Files (*.png *.jpg *.bmp)"));
+  QString filename = QFileDialog::getOpenFileName(this, "Open Image", "/",
+                                                  "Image Files (*.png)");
   QPixmap targetPixmap(filename);
-  targetPixmap = targetPixmap.scaled(
-      ui->profilePicture->width(), ui->profilePicture->height(),
-      Qt::KeepAspectRatio, Qt::SmoothTransformation);
-  ui->profilePicture->setPixmap(targetPixmap);
+  if (!targetPixmap.isNull()) {
+    targetPixmap = targetPixmap.scaled(
+        ui->profilePicture->width(), ui->profilePicture->height(),
+        Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    model->setUserProfile(targetPixmap.toImage());
+    ui->profilePicture->setPixmap(targetPixmap);
+  }
 }
 
 void MeComponent::on_delPicBtn_clicked() {
@@ -31,6 +53,36 @@ void MeComponent::on_delPicBtn_clicked() {
       this, "Are you sure?", "Are you sure to clear the profile picture?",
       QMessageBox::Yes, QMessageBox::No);
   if (ans == QMessageBox::Yes) {
-    ui->profilePicture->clear();
+    model->deleteProfile();
+    resetProfilePictureText();
   }
+}
+
+void MeComponent::resetProfilePictureText() {
+  ui->profilePicture->clear();
+  ui->profilePicture->setText("You don't have profile!");
+}
+
+void MeComponent::on_editBiographyBtn_clicked() {
+  bool ok;
+  QString text = QInputDialog::getMultiLineText(
+      this, "Edit biography", "Write a summary about yourself",
+      model->getBioGraphy(), &ok);
+  if (ok) {
+    if (text.isEmpty()) text = "Unknown";
+    model->setBiography(text);
+    ui->Bio_lbl->setText(label.arg("Biography", text));
+  }
+}
+
+void MeComponent::on_editAbilityBtn_clicked() {
+  dial = new SelectAbilitiesDialog(&list_model, model, this);
+  connect(dial, &QDialog::rejected, this,
+          &MeComponent::handleRejectAbilitiesDialog);
+  dial->exec();
+}
+
+void MeComponent::handleRejectAbilitiesDialog() {
+  qDebug() << "Handle Rejected Abilities Dialog is triggered!";
+  list_model.setStringList(model->getAbilities());
 }

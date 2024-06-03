@@ -27,6 +27,14 @@ class UserModel {
   const QString& getFirstName() const;
   const QString& getLastName() const;
   const QString& getEmploymentType() const;
+  QPixmap getUserProfile() const;
+  QString getBioGraphy() const;
+  void setBiography(const QString& bio);
+  void setUserProfile(const QImage& data);
+  QList<QString> getAbilities() const;
+  void setAbilities(const QList<QString>& newAbilities);
+  bool isHaveProfile() const;
+  void deleteProfile();
 };
 
 #endif  // USERMODEL_H
