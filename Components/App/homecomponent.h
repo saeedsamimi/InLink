@@ -5,6 +5,7 @@
 
 #include <QSqlQueryModel>
 #include <QWidget>
+#include <database/models/usermodel.h>
 
 namespace Ui {
 class HomeComponent;
@@ -13,16 +14,21 @@ class HomeComponent;
 class HomeComponent : public QWidget {
   Q_OBJECT
 
- public:
-  explicit HomeComponent(QWidget *parent = nullptr);
+public:
+  explicit HomeComponent(UserModel *model, QWidget *parent = nullptr);
   ~HomeComponent();
 
- private slots:
+private slots:
+  void handleActionCreatePost();
+  void handlePostCreation(PostModel model);
 
- private:
+private:
   Ui::HomeComponent *ui;
   QAction *startPost_action;
+  UserModel *model;
   QList<PostModel> posts;
+
+  void addPost(PostModel &model);
 };
 
-#endif  // HOMECOMPONENT_H
+#endif // HOMECOMPONENT_H

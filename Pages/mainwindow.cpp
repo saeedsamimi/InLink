@@ -7,14 +7,11 @@
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(const UserModel &model, QWidget *parent)
-    : QMainWindow(parent),
-      ui(new Ui::MainWindow),
-      m_user(model),
+    : QMainWindow(parent), ui(new Ui::MainWindow), m_user(model),
       me_component(new MeComponent(&m_user)),
-      home_component(new HomeComponent()),
+      home_component(new HomeComponent(&m_user)),
       user_net_component(new UserNetworkComponent()),
-      chat_component(new ChatComponent()),
-      jobs_component(new JobsComponent()) {
+      chat_component(new ChatComponent()), jobs_component(new JobsComponent()) {
   ui->setupUi(this);
   stackedLayout = new QStackedLayout();
   ui->scrollAreaWidgetContents->setLayout(stackedLayout);

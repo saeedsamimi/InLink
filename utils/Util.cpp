@@ -18,3 +18,11 @@ QTranslator *installTranslator(QApplication *app) {
   app->installTranslator(translator);
   return translator;
 }
+
+const QString util::COLORED_TEXT_TEMPLATE(
+    R"(<p><span style="color: #%1">%2:</span> %3</p>)");
+
+QString util::buildColoredLabeled(QString label, QString color,
+                                  QString content) {
+  return COLORED_TEXT_TEMPLATE.arg(color, label, content);
+}

@@ -7,34 +7,35 @@
 #include <exception>
 
 class UserNotFoundException : public std::exception {
- public:
+public:
   ~UserNotFoundException() _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
-  const char* what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
+  const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
 };
 
 class UserModel {
- private:
+private:
   const int id;
   QString m_username;
   QString m_firstname;
   QString m_lastname;
   QString m_employment_type;
 
- public:
+public:
   UserModel(int id);
   int getId() const;
-  const QString& getUsername() const;
-  const QString& getFirstName() const;
-  const QString& getLastName() const;
-  const QString& getEmploymentType() const;
+  const QString &getUsername() const;
+  const QString &getFirstName() const;
+  const QString &getLastName() const;
+  const QString &getEmploymentType() const;
+  QString getJob() const;
   QPixmap getUserProfile() const;
   QString getBioGraphy() const;
-  void setBiography(const QString& bio);
-  void setUserProfile(const QImage& data);
+  void setBiography(const QString &bio);
+  void setUserProfile(const QImage &data);
   QList<QString> getAbilities() const;
-  void setAbilities(const QList<QString>& newAbilities);
+  void setAbilities(const QList<QString> &newAbilities);
   bool isHaveProfile() const;
   void deleteProfile();
 };
 
-#endif  // USERMODEL_H
+#endif // USERMODEL_H

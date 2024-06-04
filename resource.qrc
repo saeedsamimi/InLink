@@ -28,6 +28,11 @@
         <file alias="trash.png">icons/mini-icons/trash.png</file>
         <file alias="plus.svg">icons/mini-icons/plus.svg</file>
         <file alias="minus.png">icons/mini-icons/minus.png</file>
+        <file alias="close.svg">icons/mini-icons/close.svg</file>
+        <file alias="like.png">icons/mini-icons/like.png</file>
+        <file alias="comment.png">icons/mini-icons/comment.png</file>
+        <file alias="retweet.png">icons/mini-icons/retweet.png</file>
+        <file alias="send.png">icons/mini-icons/send.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file alias="FETW.qss">qss/FullExpandedTabbedWidget.qss</file>
