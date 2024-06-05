@@ -6,7 +6,7 @@
 
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(const UserModel &model, QWidget *parent)
+MainWindow::MainWindow(UserModel model, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), m_user(model),
       me_component(new MeComponent(&m_user)),
       home_component(new HomeComponent(&m_user)),
@@ -33,6 +33,7 @@ MainWindow::MainWindow(const UserModel &model, QWidget *parent)
   stackedLayout->addWidget(jobs_component);
   stackedLayout->addWidget(chat_component);
   stackedLayout->addWidget(me_component);
+  connect(me_component, &MeComponent::logout, this, &MainWindow::handleLogOut);
 }
 
 MainWindow::~MainWindow() {
@@ -47,3 +48,8 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::handleSearchBox() { qDebug() << "Unhandled search box"; }
+
+void MainWindow::handleLogOut() {
+  qDebug() << "handle logout in mainwindow called";
+  this->close();
+}

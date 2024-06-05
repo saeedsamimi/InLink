@@ -36,6 +36,10 @@ public:
   void setAbilities(const QList<QString> &newAbilities);
   bool isHaveProfile() const;
   void deleteProfile();
+  void logout() const;
+  void follow(const UserModel &model);
+  bool isFollowing(const UserModel &model);
+  bool operator==(const UserModel &model) const;
 };
 
 #endif // USERMODEL_H

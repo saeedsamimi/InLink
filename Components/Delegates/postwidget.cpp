@@ -4,10 +4,11 @@
 
 #include "ui_postwidget.h"
 
-PostWidget::PostWidget(const PostModel &post, QWidget *parent)
-    : QWidget(parent), ui(new Ui::PostWidget), model(post),
+PostWidget::PostWidget(UserModel *user, const PostModel &post, QWidget *parent)
+    : QWidget(parent), ui(new Ui::PostWidget), model(post), user(user),
       owner(model.getUser()) {
   ui->setupUi(this);
+  updateUserFollowingState();
   ui->content_lbl->setText(
       util::buildColoredLabeled("Content", "3434FF", model.getContent()));
   ui->username_lbl->setText(
@@ -18,11 +19,26 @@ PostWidget::PostWidget(const PostModel &post, QWidget *parent)
                                             std::move(owner.getJob()))));
 
   ui->icon_lbl->setPixmap(owner.getUserProfile());
-  if (!post.isHavePicture()) {
+  if (!post.isHavePicture())
     ui->post_pic_lbl->hide();
-  } else {
+  else
     ui->post_pic_lbl->setPixmap(post.getPostPixture());
-  }
 }
 
 PostWidget::~PostWidget() { delete ui; }
+
+void PostWidget::on_follow_btn_clicked() {
+  if (!isFollowing)
+    user->follow(owner);
+  updateUserFollowingState();
+}
+
+void PostWidget::updateUserFollowingState() {
+  if (*user == owner)
+    ui->follow_btn->hide();
+  else if (user->isFollowing(owner)) {
+    ui->follow_btn->setText("Following");
+    isFollowing = true;
+  } else
+    ui->follow_btn->setText("Follow");
+}

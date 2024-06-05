@@ -1,24 +1,17 @@
 #include "completeprofile.h"
 
-#include <database/user.h>
-#include <utils/Util.h>
-
+#include <Pages/mainwindow.h>
 #include <QMessageBox>
 #include <QSqlQuery>
+#include <database/user.h>
+#include <utils/Util.h>
 
 #include "ui_completeprofile.h"
 
 CompleteProfile::CompleteProfile(int ID, QWidget *parent)
-    : QWidget(parent),
-      ID(ID),
-      closeFilter(parent),
-      jobModel(this),
-      countryModel(this),
-      cityModel(this),
-      universityModel(this),
-      companyModel(this),
-      companyCompleter(this),
-      ui(new Ui::CompleteProfile) {
+    : QWidget(parent), ID(ID), closeFilter(parent), jobModel(this),
+      countryModel(this), cityModel(this), universityModel(this),
+      companyModel(this), companyCompleter(this), ui(new Ui::CompleteProfile) {
   installEventFilter(&closeFilter);
   jobModel.setQuery("SELECT job_name FROM jobs;");
   countryModel.setQuery("SELECT name FROM countries;");
@@ -51,10 +44,10 @@ void CompleteProfile::closeEvent(QCloseEvent *event) {
     if (!QSqlDatabase::database().commit())
       QMessageBox::critical(nullptr, "Error",
                             "The information not saved. an error occured");
-    else
-      QMessageBox::information(nullptr, "Successfull!",
-                               "Your profile successfully completed! please "
-                               "wait for more features!");
+    else {
+      MainWindow *window = new MainWindow(UserModel(ID));
+      window->show();
+    }
   }
   QWidget::closeEvent(event);
 }
@@ -105,7 +98,8 @@ void CompleteProfile::on_continueBtn_clicked() {
 }
 
 void CompleteProfile::on_firstNameInput_editingFinished() {
-  if (ui->firstNameInput->text().isEmpty()) return;
+  if (ui->firstNameInput->text().isEmpty())
+    return;
   try {
     updateUserIdentity(this->ID, FirstName, this->ui->firstNameInput->text());
   } catch (QSqlError &e) {
@@ -114,7 +108,8 @@ void CompleteProfile::on_firstNameInput_editingFinished() {
 }
 
 void CompleteProfile::on_lastNameInput_editingFinished() {
-  if (ui->lastNameInput->text().isEmpty()) return;
+  if (ui->lastNameInput->text().isEmpty())
+    return;
   try {
     updateUserIdentity(this->ID, LastName, this->ui->lastNameInput->text());
   } catch (QSqlError &e) {
@@ -147,7 +142,8 @@ void CompleteProfile::on_notStudentCheckBox_clicked(bool checked) {
 }
 
 void CompleteProfile::on_countryCombobox_activated(int index) {
-  if (index == ui->countryCombobox->currentIndex()) changeCityModel(index);
+  if (index == ui->countryCombobox->currentIndex())
+    changeCityModel(index);
   updateUserIdentity(ID, Country, ui->countryCombobox->currentText());
 }
 

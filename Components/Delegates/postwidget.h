@@ -12,14 +12,22 @@ class PostWidget;
 class PostWidget : public QWidget {
   Q_OBJECT
 
- public:
-  explicit PostWidget(const PostModel &text, QWidget *parent = nullptr);
+public:
+  explicit PostWidget(UserModel *user, const PostModel &text,
+                      QWidget *parent = nullptr);
   ~PostWidget();
 
- private:
+private slots:
+  void on_follow_btn_clicked();
+
+private:
   Ui::PostWidget *ui;
   PostModel model;
   UserModel owner;
+  UserModel *user;
+  bool isFollowing = false;
+
+  void updateUserFollowingState();
 };
 
-#endif  // POSTWIDGET_H
+#endif // POSTWIDGET_H

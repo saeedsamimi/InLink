@@ -10,7 +10,10 @@ CREATE TABLE IF NOT EXISTS users(
     first_name TEXT,last_name TEXT,birth_date VARCHAR(8),
     country TEXT, city TEXT,
     school TEXT,start_year INTEGER,end_year INTEGER,is_student INTEGER,
-    recent_job TEXT,emp_type TEXT,recent_company TEXT
+    recent_job TEXT,emp_type TEXT,recent_company TEXT,
+    profile BOLB DEFAULT NULL,
+    bio TEXT DEFAULT "Unknown",
+    abilities TEXT NULL
 );)");
 
 const auto ACCOUNTS_SQL = QLatin1String(R"(
@@ -18,10 +21,7 @@ CREATE TABLE IF NOT EXISTS accounts(
     account_ID INTEGER PRIMARY KEY AUTOINCREMENT,
     user_ID INTEGER NOT NULL UNIQUE,
     last_view TEXT NOT NULL,
-    state INTEGER DEFAULT 0,
-    profile BOLB DEFAULT NULL,
-    bio TEXT DEFAULT "Unknown",
-    abilities TEXT
+    state INTEGER DEFAULT 0
 );)");
 
 const auto POSTS_SQL = QLatin1String(R"(
@@ -31,6 +31,12 @@ CREATE TABLE posts(
     picture BLOB null,
     content TEXT not null,
     created_at DATETIME not null default CURRENT_TIMESTAMP
+);)");
+
+const auto FOLLOW_TABLE_SQL = QLatin1String(R"(
+CREATE TABLE follow(
+    follower INTEGER NOT NULL,
+    following INTEGER NOT NULL
 );)");
 
 const auto UPDATE_USER_IDENTITIES_SQL = QLatin1String(R"(
@@ -67,4 +73,4 @@ const auto GET_USERNAME_SQL = QLatin1String(R"(
 
 QSqlError initDB();
 
-#endif  // DBINIT_H
+#endif // DBINIT_H

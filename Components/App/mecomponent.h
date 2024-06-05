@@ -13,11 +13,14 @@ class MeComponent;
 class MeComponent : public QWidget {
   Q_OBJECT
 
- public:
+public:
   explicit MeComponent(UserModel *model, QWidget *parent = nullptr);
   ~MeComponent();
 
- private slots:
+signals:
+  void logout();
+
+private slots:
   void on_editPicBtn_clicked();
 
   void on_delPicBtn_clicked();
@@ -28,7 +31,9 @@ class MeComponent : public QWidget {
 
   void handleRejectAbilitiesDialog();
 
- private:
+  void on_log_out_btn_clicked();
+
+private:
   Ui::MeComponent *ui;
   UserModel *model = nullptr;
   SelectAbilitiesDialog *dial = nullptr;
@@ -39,4 +44,4 @@ class MeComponent : public QWidget {
   const static QString label;
 };
 
-#endif  // MECOMPONENT_H
+#endif // MECOMPONENT_H

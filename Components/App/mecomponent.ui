@@ -17,19 +17,6 @@
    <property name="horizontalSpacing">
     <number>20</number>
    </property>
-   <item row="3" column="0">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
    <item row="3" column="3">
     <spacer name="horizontalSpacer_2">
      <property name="orientation">
@@ -43,6 +30,27 @@
      </property>
     </spacer>
    </item>
+   <item row="2" column="2">
+    <widget class="QToolButton" name="delPicBtn">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="icon">
+      <iconset resource="../../resource.qrc">
+       <normaloff>:/trash.png</normaloff>:/trash.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1" colspan="2">
+    <widget class="QPushButton" name="sign_as_company_btn">
+     <property name="text">
+      <string>Sign up as a company</string>
+     </property>
+    </widget>
+   </item>
    <item row="2" column="1">
     <widget class="QToolButton" name="editPicBtn">
      <property name="sizePolicy">
@@ -54,69 +62,6 @@
      <property name="icon">
       <iconset resource="../../resource.qrc">
        <normaloff>:/edit.svg</normaloff>:/edit.svg</iconset>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="2">
-    <widget class="QLabel" name="lastName_lbl">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>&lt;p&gt;&lt;span style=&quot; color:#00557f;&quot;&gt;Last Name:&lt;/span&gt;&lt;/p&gt;</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="1" colspan="2">
-    <widget class="QLabel" name="Bio_lbl">
-     <property name="maximumSize">
-      <size>
-       <width>300</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>Biography:</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QLabel" name="firstName_lbl">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>First Name:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="3">
-    <widget class="QToolButton" name="editBiographyBtn">
-     <property name="icon">
-      <iconset resource="../../resource.qrc">
-       <normaloff>:/edit.svg</normaloff>:/edit.svg</iconset>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1" colspan="2">
-    <widget class="QLabel" name="ability_lbl">
-     <property name="maximumSize">
-      <size>
-       <width>300</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>&lt;p&gt;&lt;span style=&quot; color:#00557f;&quot;&gt;Abilities:&lt;/span&gt;&lt;/p&gt;</string>
      </property>
     </widget>
    </item>
@@ -141,10 +86,89 @@
      </property>
     </widget>
    </item>
-   <item row="7" column="1" colspan="2">
-    <widget class="QPushButton" name="pushButton">
+   <item row="3" column="1">
+    <widget class="QLabel" name="firstName_lbl">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="text">
-      <string>Sign up as a company</string>
+      <string>First Name:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1" colspan="2">
+    <widget class="QLabel" name="ability_lbl">
+     <property name="maximumSize">
+      <size>
+       <width>300</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>&lt;p&gt;&lt;span style=&quot; color:#00557f;&quot;&gt;Abilities:&lt;/span&gt;&lt;/p&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="3">
+    <widget class="QToolButton" name="editBiographyBtn">
+     <property name="icon">
+      <iconset resource="../../resource.qrc">
+       <normaloff>:/edit.svg</normaloff>:/edit.svg</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QLabel" name="lastName_lbl">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>&lt;p&gt;&lt;span style=&quot; color:#00557f;&quot;&gt;Last Name:&lt;/span&gt;&lt;/p&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="5" column="1" colspan="2">
+    <widget class="QListView" name="listView">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>1677770</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1" colspan="2">
+    <widget class="QLabel" name="Bio_lbl">
+     <property name="maximumSize">
+      <size>
+       <width>300</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Biography:</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -159,27 +183,25 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="2">
-    <widget class="QToolButton" name="delPicBtn">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+   <item row="8" column="1" colspan="2">
+    <widget class="QPushButton" name="log_out_btn">
+     <property name="styleSheet">
+      <string notr="true">#log_out_btn{
+background-color: rgb(255, 85, 70);
+}
+#log_out_btn:hover{
+border-radius: 5px;
+}
+#log_out_btn:pressed{
+background-color: rgb(170, 0, 0);
+}</string>
+     </property>
+     <property name="text">
+      <string>Log Out</string>
      </property>
      <property name="icon">
       <iconset resource="../../resource.qrc">
-       <normaloff>:/trash.png</normaloff>:/trash.png</iconset>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="1" colspan="2">
-    <widget class="QListView" name="listView">
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>1677770</height>
-      </size>
+       <normaloff>:/logout.png</normaloff>:/logout.png</iconset>
      </property>
     </widget>
    </item>

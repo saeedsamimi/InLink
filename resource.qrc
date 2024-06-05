@@ -33,6 +33,7 @@
         <file alias="comment.png">icons/mini-icons/comment.png</file>
         <file alias="retweet.png">icons/mini-icons/retweet.png</file>
         <file alias="send.png">icons/mini-icons/send.png</file>
+        <file alias="logout.png">icons/mini-icons/logout.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file alias="FETW.qss">qss/FullExpandedTabbedWidget.qss</file>

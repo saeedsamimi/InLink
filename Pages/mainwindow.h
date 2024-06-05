@@ -17,18 +17,19 @@ class MainWindow;
 }
 
 class MainWindow : public QMainWindow {
- private:
+private:
   UserModel m_user;
   Q_OBJECT
 
- public:
-  explicit MainWindow(const UserModel &model, QWidget *parent = nullptr);
+public:
+  explicit MainWindow(UserModel model, QWidget *parent = nullptr);
   ~MainWindow();
 
- private slots:
+private slots:
   void handleSearchBox();
+  void handleLogOut();
 
- private:
+private:
   Ui::MainWindow *ui;
   QButtonGroup *buttons;
   QStackedLayout *stackedLayout;
@@ -39,4 +40,4 @@ class MainWindow : public QMainWindow {
   JobsComponent *jobs_component;
 };
 
-#endif  // MAINWINDOW_H
+#endif // MAINWINDOW_H

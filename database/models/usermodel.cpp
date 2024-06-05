@@ -5,23 +5,29 @@
 // clang-format off
 const QLatin1String LOAD_USER_SQL(R"(SELECT username,first_name,last_name,emp_type FROM users WHERE ID = ?;)");
 
-const QLatin1String GET_USER_PROFILE_PICTURE_EXISTENCE(R"(SELECT profile IS NOT NULL FROM accounts WHERE user_ID = ?;)");
+const QLatin1String GET_USER_PROFILE_PICTURE_EXISTENCE(R"(SELECT profile IS NOT NULL FROM users WHERE ID = ?;)");
 
-const QLatin1String GET_USER_PROFILE_PICTURE(R"(SELECT profile FROM accounts WHERE user_ID = ?;)");
+const QLatin1String GET_USER_PROFILE_PICTURE(R"(SELECT profile FROM users WHERE ID = ?;)");
 
-const QLatin1String UPDATE_USER_PROFILE_PICTURE(R"(UPDATE accounts SET profile = ? WHERE user_ID = ?;)");
+const QLatin1String UPDATE_USER_PROFILE_PICTURE(R"(UPDATE users SET profile = ? WHERE ID = ?;)");
 
-const QLatin1String DELETE_USER_PROFILE_PICTURE(R"(UPDATE accounts SET profile = null WHERE user_ID = ?;)");
+const QLatin1String DELETE_USER_PROFILE_PICTURE(R"(UPDATE users SET profile = null WHERE ID = ?;)");
 
-const QLatin1String GET_USER_BIOGRAPHY(R"(SELECT bio FROM accounts WHERE user_ID = ?;)");
+const QLatin1String GET_USER_BIOGRAPHY(R"(SELECT bio FROM users WHERE ID = ?;)");
 
-const QLatin1String UPDATE_USER_BIOGRAPHY(R"(UPDATE accounts SET bio = ? WHERE user_ID = ?;)");
+const QLatin1String UPDATE_USER_BIOGRAPHY(R"(UPDATE users SET bio = ? WHERE ID = ?;)");
 
-const QLatin1String GET_USER_ABILITIES(R"(SELECT abilities FROM accounts WHERE user_ID = ?;)");
+const QLatin1String GET_USER_ABILITIES(R"(SELECT abilities FROM users WHERE ID = ?;)");
 
-const QLatin1String UPDATE_USER_ABILITIES(R"(UPDATE accounts SET abilities = ? WHERE user_ID = ?;)");
+const QLatin1String UPDATE_USER_ABILITIES(R"(UPDATE users SET abilities = ? WHERE ID = ?;)");
 
 const QLatin1String GET_USER_JOB(R"(SELECT recent_job FROM users WHERE id = ?;)");
+
+const QLatin1String LOGOUT_USER(R"(DELETE FROM accounts WHERE user_ID = ?;)");
+
+const QLatin1String FOLLOW_USER(R"(INSERT INTO follow VALUES (:follower,:following))");
+
+const QLatin1String IS_FOLLOWING_USER(R"(SELECT count() FROM follow WHERE follower = :follower AND following = :following;)");
 // clang-format on
 
 UserModel::UserModel(int id) : id(id) {
@@ -160,6 +166,40 @@ void UserModel::deleteProfile() {
   query.addBindValue(id);
   if (!query.exec())
     throw query.lastError();
+}
+
+void UserModel::logout() const {
+  QSqlQuery query;
+  if (!query.prepare(LOGOUT_USER))
+    throw query.lastError();
+  query.addBindValue(id);
+  query.exec();
+}
+
+void UserModel::follow(const UserModel &model) {
+  QSqlQuery query;
+  if (!query.prepare(FOLLOW_USER))
+    throw query.lastError();
+  query.bindValue(":follower", id);
+  query.bindValue(":following", model.getId());
+  if (!query.exec())
+    throw query.lastError();
+}
+
+bool UserModel::isFollowing(const UserModel &model) {
+  QSqlQuery query;
+  if (!query.prepare(IS_FOLLOWING_USER))
+    throw query.lastError();
+  query.bindValue(":follower", id);
+  query.bindValue(":following", model.getId());
+  if (!query.exec())
+    throw query.lastError();
+  query.next();
+  return query.value(0).toInt() == 1;
+}
+
+bool UserModel::operator==(const UserModel &model) const {
+  return model.id == id;
 }
 
 UserNotFoundException::~UserNotFoundException() noexcept {}

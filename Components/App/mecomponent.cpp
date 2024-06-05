@@ -5,16 +5,15 @@
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <splashscreen.h>
 
 #include "ui_mecomponent.h"
 
-const QString MeComponent::label(
-    R"(<p><span style=" color:#00557f;">%1:</span> %2</p>)");
+const QString
+    MeComponent::label(R"(<p><span style=" color:#00557f;">%1:</span> %2</p>)");
 
-MeComponent::MeComponent(UserModel* model, QWidget* parent)
-    : QWidget(parent),
-      ui(new Ui::MeComponent),
-      model(model),
+MeComponent::MeComponent(UserModel *model, QWidget *parent)
+    : QWidget(parent), ui(new Ui::MeComponent), model(model),
       list_model(model->getAbilities(), this) {
   ui->setupUi(this);
   ui->firstName_lbl->setText(label.arg("First Name", model->getFirstName()));
@@ -69,7 +68,8 @@ void MeComponent::on_editBiographyBtn_clicked() {
       this, "Edit biography", "Write a summary about yourself",
       model->getBioGraphy(), &ok);
   if (ok) {
-    if (text.isEmpty()) text = "Unknown";
+    if (text.isEmpty())
+      text = "Unknown";
     model->setBiography(text);
     ui->Bio_lbl->setText(label.arg("Biography", text));
   }
@@ -85,4 +85,9 @@ void MeComponent::on_editAbilityBtn_clicked() {
 void MeComponent::handleRejectAbilitiesDialog() {
   qDebug() << "Handle Rejected Abilities Dialog is triggered!";
   list_model.setStringList(model->getAbilities());
+}
+
+void MeComponent::on_log_out_btn_clicked() {
+  model->logout();
+  emit logout();
 }
