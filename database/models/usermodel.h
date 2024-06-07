@@ -3,6 +3,7 @@
 #include <database/user.h>
 
 #include <QDate>
+#include <QObject>
 #include <QString>
 #include <exception>
 
@@ -12,7 +13,8 @@ public:
   const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
 };
 
-class UserModel {
+class UserModel : public QObject {
+  Q_OBJECT
 private:
   const int id;
   QString m_username;
@@ -22,6 +24,7 @@ private:
 
 public:
   UserModel(int id);
+  UserModel(const UserModel &other);
   int getId() const;
   const QString &getUsername() const;
   const QString &getFirstName() const;
@@ -38,8 +41,12 @@ public:
   void deleteProfile();
   void logout() const;
   void follow(const UserModel &model);
+  void unfollow(const UserModel &model);
   bool isFollowing(const UserModel &model);
   bool operator==(const UserModel &model) const;
+
+signals:
+  void followingChanged(bool newState, int id);
 };
 
 #endif // USERMODEL_H

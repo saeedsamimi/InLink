@@ -1,5 +1,6 @@
 #include "loginsignin.h"
 
+#include <Pages/mainwindow.h>
 #include <database/user.h>
 #include <utils/Util.h>
 
@@ -37,9 +38,20 @@ void LoginSignIn::changeMethod() {
 }
 
 void LoginSignIn::doExit(const QString &username, const QString &password) {
-  int ID = addAccount(username);
-  verifier = new CodeVerifier(ID);
-  verifier->show();
+  int activationLevel = getUserActivationLevel(username);
+  if (activationLevel == -1 || activationLevel == UserLevel::Added) {
+    int ID = addAccount(username);
+    verifier = new CodeVerifier(ID);
+    verifier->show();
+  } else if (activationLevel == UserLevel::Activated) {
+    int ID = getUserID(username);
+    CompleteProfile *complete = new CompleteProfile(ID);
+    complete->show();
+  } else {
+    int ID = getUserID(username);
+    MainWindow *win = new MainWindow(UserModel(ID));
+    win->show();
+  }
   close();
 }
 
@@ -56,7 +68,8 @@ void LoginSignIn::on_SignInBtn_clicked() {
     QMessageBox::critical(this, "Error", e, QMessageBox::Ok);
     return;
   }
-  if (!ui->captchaCode->isValidated() && !ui->captchaCode->Hint()) return;
+  if (!ui->captchaCode->isValidated() && !ui->captchaCode->Hint())
+    return;
   if (isLogin) {
     try {
       validateUser(res.first, res.second);
@@ -68,7 +81,8 @@ void LoginSignIn::on_SignInBtn_clicked() {
       if (err.second) {
         int res = QMessageBox::critical(this, "Error", err.first,
                                         QMessageBox::Ok, QMessageBox::Cancel);
-        if (res == QMessageBox::Ok) changeMethod(!isLogin);
+        if (res == QMessageBox::Ok)
+          changeMethod(!isLogin);
       } else
         QMessageBox::critical(this, "Error", err.first, QMessageBox::Ok);
     } catch (QSqlError &err) {
@@ -86,7 +100,8 @@ void LoginSignIn::on_SignInBtn_clicked() {
     } catch (QString &err) {
       int res = QMessageBox::critical(this, "Error", err, QMessageBox::Ok,
                                       QMessageBox::Cancel);
-      if (res == QMessageBox::Ok) changeMethod(!isLogin);
+      if (res == QMessageBox::Ok)
+        changeMethod(!isLogin);
     } catch (QSqlError &err) {
       QMessageBox::critical(this, "Unexpected Error",
                             err.databaseText().append("Please try again!"),

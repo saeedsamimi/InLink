@@ -13,15 +13,15 @@ CREATE TABLE IF NOT EXISTS users(
     recent_job TEXT,emp_type TEXT,recent_company TEXT,
     profile BOLB DEFAULT NULL,
     bio TEXT DEFAULT "Unknown",
-    abilities TEXT NULL
+    abilities TEXT NULL,
+    state INTEGER DEFAULT 0
 );)");
 
 const auto ACCOUNTS_SQL = QLatin1String(R"(
 CREATE TABLE IF NOT EXISTS accounts(
     account_ID INTEGER PRIMARY KEY AUTOINCREMENT,
     user_ID INTEGER NOT NULL UNIQUE,
-    last_view TEXT NOT NULL,
-    state INTEGER DEFAULT 0
+    last_view TEXT NOT NULL
 );)");
 
 const auto POSTS_SQL = QLatin1String(R"(
@@ -60,15 +60,19 @@ const auto ADD_ACCOUNT_SQL = QLatin1String(R"(
 )");
 
 const auto UPDATE_ACCOUNT_LEVEL_SQL = QLatin1String(R"(
-    UPDATE accounts SET state = ? WHERE user_ID = ?;
+    UPDATE users SET state = ? WHERE ID = ?;
 )");
 
 const auto SELECT_ACCOUNTS_ID_AND_STATES = QLatin1String(R"(
-    SELECT user_ID,state FROM accounts WHERE strftime('%s', last_view) > strftime('%s', datetime('now','localtime','-1 month')) LIMIT 1;
+    SELECT user_ID,users.state FROM accounts INNER JOIN users ON user_id = users.ID WHERE strftime('%s', last_view) > strftime('%s', datetime('now','localtime','-1 month')) LIMIT 1;
 )");
 
 const auto GET_USERNAME_SQL = QLatin1String(R"(
     SELECT username FROM users WHERE ID = ?;
+)");
+
+const auto GET_USER_ACTIVATION_LEVEL = QLatin1String(R"(
+    SELECT state FROM users WHERE username = ?;
 )");
 
 QSqlError initDB();

@@ -17,8 +17,12 @@ public:
                       QWidget *parent = nullptr);
   ~PostWidget();
 
+signals:
+  void closed();
+
 private slots:
   void on_follow_btn_clicked();
+  void handleFollowingChanged(bool newState, int id);
 
 private:
   Ui::PostWidget *ui;

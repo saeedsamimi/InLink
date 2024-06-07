@@ -28,6 +28,8 @@ const QLatin1String LOGOUT_USER(R"(DELETE FROM accounts WHERE user_ID = ?;)");
 const QLatin1String FOLLOW_USER(R"(INSERT INTO follow VALUES (:follower,:following))");
 
 const QLatin1String IS_FOLLOWING_USER(R"(SELECT count() FROM follow WHERE follower = :follower AND following = :following;)");
+
+const QLatin1String UNFOLLOW_USER(R"(DELETE FROM follow WHERE follower = :follower AND following = :following;)");
 // clang-format on
 
 UserModel::UserModel(int id) : id(id) {
@@ -47,6 +49,11 @@ UserModel::UserModel(int id) : id(id) {
   } else
     throw query.lastError();
 }
+
+UserModel::UserModel(const UserModel &other)
+    : id(other.id), m_firstname(other.m_firstname),
+      m_username(other.m_username), m_lastname(other.m_lastname),
+      m_employment_type(other.m_employment_type) {}
 
 int UserModel::getId() const { return id; }
 
@@ -181,9 +188,21 @@ void UserModel::follow(const UserModel &model) {
   if (!query.prepare(FOLLOW_USER))
     throw query.lastError();
   query.bindValue(":follower", id);
-  query.bindValue(":following", model.getId());
+  query.bindValue(":following", model.id);
   if (!query.exec())
     throw query.lastError();
+  emit followingChanged(true, model.id);
+}
+
+void UserModel::unfollow(const UserModel &model) {
+  QSqlQuery query;
+  if (!query.prepare(UNFOLLOW_USER))
+    throw query.lastError();
+  query.bindValue(":follower", id);
+  query.bindValue(":following", model.id);
+  if (!query.exec())
+    throw query.lastError();
+  emit followingChanged(false, model.id);
 }
 
 bool UserModel::isFollowing(const UserModel &model) {
@@ -191,7 +210,7 @@ bool UserModel::isFollowing(const UserModel &model) {
   if (!query.prepare(IS_FOLLOWING_USER))
     throw query.lastError();
   query.bindValue(":follower", id);
-  query.bindValue(":following", model.getId());
+  query.bindValue(":following", model.id);
   if (!query.exec())
     throw query.lastError();
   query.next();

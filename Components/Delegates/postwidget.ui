@@ -81,14 +81,6 @@ border-radius: 10px;
           </property>
          </spacer>
         </item>
-        <item>
-         <widget class="QToolButton" name="close_btn">
-          <property name="icon">
-           <iconset resource="../../resource.qrc">
-            <normaloff>:/close.svg</normaloff>:/close.svg</iconset>
-          </property>
-         </widget>
-        </item>
        </layout>
       </item>
       <item>

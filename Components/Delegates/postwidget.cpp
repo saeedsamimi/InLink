@@ -8,6 +8,10 @@ PostWidget::PostWidget(UserModel *user, const PostModel &post, QWidget *parent)
     : QWidget(parent), ui(new Ui::PostWidget), model(post), user(user),
       owner(model.getUser()) {
   ui->setupUi(this);
+  if (*user == owner)
+    ui->follow_btn->hide();
+  connect(user, &UserModel::followingChanged, this,
+          &PostWidget::handleFollowingChanged);
   updateUserFollowingState();
   ui->content_lbl->setText(
       util::buildColoredLabeled("Content", "3434FF", model.getContent()));
@@ -30,13 +34,23 @@ PostWidget::~PostWidget() { delete ui; }
 void PostWidget::on_follow_btn_clicked() {
   if (!isFollowing)
     user->follow(owner);
+  else
+    user->unfollow(owner);
   updateUserFollowingState();
 }
 
+void PostWidget::handleFollowingChanged(bool newState, int id) {
+  if (id == owner.getId()) {
+    if (newState)
+      ui->follow_btn->setText("Following");
+    else
+      ui->follow_btn->setText("Follow");
+    isFollowing = newState;
+  }
+}
+
 void PostWidget::updateUserFollowingState() {
-  if (*user == owner)
-    ui->follow_btn->hide();
-  else if (user->isFollowing(owner)) {
+  if (user->isFollowing(owner)) {
     ui->follow_btn->setText("Following");
     isFollowing = true;
   } else
