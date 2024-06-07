@@ -14,7 +14,7 @@ CompleteProfile::CompleteProfile(int ID, QWidget *parent)
       companyModel(this), companyCompleter(this), ui(new Ui::CompleteProfile) {
   installEventFilter(&closeFilter);
   jobModel.setQuery("SELECT job_name FROM jobs;");
-  countryModel.setQuery("SELECT name FROM countries;");
+  countryModel.setQuery("SELECT name FROM countries order by id;");
   changeCityModel(0);
   ui->setupUi(this);
   // enable styles and add connections

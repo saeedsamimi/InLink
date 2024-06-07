@@ -29,9 +29,13 @@ void HomeComponent::handleActionCreatePost() {
 void HomeComponent::handlePostCreation(PostModel model) { addPost(model); }
 
 void HomeComponent::addPost(PostModel &post_model) {
-  auto widget_item = new QListWidgetItem();
-  auto custom_widget = new PostWidget(model, post_model);
-  widget_item->setSizeHint(custom_widget->sizeHint());
-  ui->Feed->addItem(widget_item);
-  ui->Feed->setItemWidget(widget_item, custom_widget);
+  try {
+    auto widget_item = new QListWidgetItem();
+    auto custom_widget = new PostWidget(model, post_model);
+    widget_item->setSizeHint(custom_widget->sizeHint());
+    ui->Feed->addItem(widget_item);
+    ui->Feed->setItemWidget(widget_item, custom_widget);
+  } catch (QSqlError &err) {
+    qDebug() << err;
+  }
 }

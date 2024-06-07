@@ -7,7 +7,7 @@ QLatin1String GET_POST_PICTURE(R"(SELECT picture FROM posts WHERE post_id = ?)")
 
 QLatin1String GET_POST_USER(R"(SELECT user_ID from posts WHERE post_id = ?;)");
 
-QLatin1String GET_POST_PICTURE_EXISTENCE(R"(SELECT picture is not null FROM posts WHERE post_id = ?;)");
+QLatin1String GET_POST_PICTURE_EXISTENCE(R"(SELECT length(picture) != 0 FROM posts WHERE post_id = ?;)");
 
 QLatin1String CREATE_POST(R"(INSERT INTO posts(user_ID,picture,content) VALUES (?,?,?);)");
 // clang-format on
@@ -34,14 +34,15 @@ PostModel PostModel::registerNewPost(int user_id, const QString *content,
   query.addBindValue(user_id);
   QByteArray buff;
   if (picture != nullptr) {
-    QDataStream stream(&buff, QIODevice::WriteOnly);
-    stream << *picture;
-    query.addBindValue(buff);
+    QBuffer buffer(&buff);
+    picture->save(&buffer, "PNG");
+    query.addBindValue(buff.toBase64());
   } else /*bind null value in the database*/
-    query.addBindValue(buff);
+    query.addBindValue(buff.toBase64());
   query.addBindValue(*content);
   if (query.exec())
     return PostModel(query.lastInsertId().toInt());
+  qDebug() << query.lastError();
   throw query.lastError();
 }
 
@@ -64,10 +65,10 @@ QPixmap PostModel::getPostPixture() const {
   query.addBindValue(post_id);
   if (query.exec()) {
     query.next();
-    QByteArray array = query.value(0).toByteArray();
-    QDataStream imageStream(&array, QIODevice::ReadOnly);
+    QByteArray array = QByteArray::fromBase64(query.value(0).toByteArray());
+    QBuffer buff(&array);
     QImage img;
-    imageStream >> img;
+    img.load(&buff, "PNG");
     return QPixmap::fromImage(img);
   } else
     throw query.lastError();

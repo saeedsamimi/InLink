@@ -9,7 +9,7 @@ const QLatin1String GET_USER_PROFILE_PICTURE_EXISTENCE(R"(SELECT profile IS NOT 
 
 const QLatin1String GET_USER_PROFILE_PICTURE(R"(SELECT profile FROM users WHERE ID = ?;)");
 
-const QLatin1String UPDATE_USER_PROFILE_PICTURE(R"(UPDATE users SET profile = :data WHERE ID = :id;)");
+const QLatin1String UPDATE_USER_PROFILE_PICTURE(R"(UPDATE users SET profile = ? WHERE ID = ?;)");
 
 const QLatin1String DELETE_USER_PROFILE_PICTURE(R"(UPDATE users SET profile = null WHERE ID = ?;)");
 
@@ -27,7 +27,7 @@ const QLatin1String LOGOUT_USER(R"(DELETE FROM accounts WHERE user_ID = ?;)");
 
 const QLatin1String FOLLOW_USER(R"(INSERT INTO follow VALUES (:follower,:following))");
 
-const QLatin1String IS_FOLLOWING_USER(R"(SELECT count() FROM follow WHERE follower = :follower AND following = :following;)");
+const QLatin1String IS_FOLLOWING_USER(R"(SELECT count(*) FROM follow WHERE follower = :follower AND following = :following;)");
 
 const QLatin1String UNFOLLOW_USER(R"(DELETE FROM follow WHERE follower = :follower AND following = :following;)");
 // clang-format on
@@ -88,9 +88,9 @@ QPixmap UserModel::getUserProfile() const {
   if (query.exec()) {
     query.next();
     QByteArray array = QByteArray::fromBase64(query.value(0).toByteArray());
-    QDataStream imageStream(&array, QIODevice::ReadOnly);
+    QBuffer buff(&array);
     QImage img;
-    imageStream >> img;
+    img.load(&buff, "PNG");
     return QPixmap::fromImage(img);
   } else
     throw query.lastError();
@@ -122,14 +122,12 @@ void UserModel::setUserProfile(const QImage &data) {
   if (!query.prepare(UPDATE_USER_PROFILE_PICTURE))
     throw query.lastError();
   QByteArray imageData;
-  QDataStream imageStream(&imageData, QIODevice::WriteOnly);
-  imageStream << data;
-  query.bindValue(":data", imageData.toBase64());
-  query.bindValue(":id", id);
-  if (!query.exec()) {
-    qDebug() << query.lastError();
+  QBuffer buffer(&imageData);
+  data.save(&buffer, "PNG");
+  query.addBindValue(imageData.toBase64());
+  query.addBindValue(id);
+  if (!query.exec())
     throw query.lastError();
-  }
 }
 
 QList<QString> UserModel::getAbilities() const {

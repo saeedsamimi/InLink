@@ -94,7 +94,13 @@
          </size>
         </property>
         <property name="text">
-         <string>TextLabel</string>
+         <string>Click the ... button to add  picture for post</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
