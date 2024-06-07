@@ -53,7 +53,8 @@ void CompleteProfile::closeEvent(QCloseEvent *event) {
 }
 
 void CompleteProfile::onCloseRequested() {
-  QSqlDatabase::database().rollback();
+  if (QSqlDatabase::database().rollback())
+    qDebug() << "data saved successfully!";
 }
 
 void CompleteProfile::on_continueBtn_clicked() {

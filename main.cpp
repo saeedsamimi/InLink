@@ -20,24 +20,33 @@ int main(int argc, char *argv[]) {
   pal.setColor(QPalette::Window, Qt::white);
   a.setPalette(pal);
   auto translatorTemporary = installTranslator(&a);
-  initDB();
-  auto account = getActiveAccountUser();
-  if (account == nullptr) {
-    SplashScreen *splash = new SplashScreen();
-    splash->show();
-  } else {
-    // make decision
-    if (account->second == Added) {
-      CodeVerifier *verifier = new CodeVerifier(account->first);
-      verifier->show();
-    } else if (account->second == Activated) {
-      CompleteProfile *complete = new CompleteProfile(account->second);
-      complete->show();
-    } else {
-      MainWindow *win = new MainWindow(account->first);
-      win->show();
-    }
+  try {
+    initDB();
+  } catch (QSqlError &err) {
+    qDebug() << "Could not connect to database: " << err.text();
   }
+  auto account = getActiveAccountUser();
+  try {
+    if (account == nullptr) {
+      SplashScreen *splash = new SplashScreen();
+      splash->show();
+    } else {
+      // make decision
+      if (account->second == Added) {
+        CodeVerifier *verifier = new CodeVerifier(account->first);
+        verifier->show();
+      } else if (account->second == Activated) {
+        CompleteProfile *complete = new CompleteProfile(account->first);
+        complete->show();
+      } else {
+        MainWindow *win = new MainWindow(account->first);
+        win->show();
+      }
+    }
+  } catch (QSqlError &err) {
+    qDebug() << err.text();
+  }
+
   int exec = a.exec();
   delete translatorTemporary;
   return exec;

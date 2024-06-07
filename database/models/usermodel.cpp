@@ -9,7 +9,7 @@ const QLatin1String GET_USER_PROFILE_PICTURE_EXISTENCE(R"(SELECT profile IS NOT 
 
 const QLatin1String GET_USER_PROFILE_PICTURE(R"(SELECT profile FROM users WHERE ID = ?;)");
 
-const QLatin1String UPDATE_USER_PROFILE_PICTURE(R"(UPDATE users SET profile = ? WHERE ID = ?;)");
+const QLatin1String UPDATE_USER_PROFILE_PICTURE(R"(UPDATE users SET profile = :data WHERE ID = :id;)");
 
 const QLatin1String DELETE_USER_PROFILE_PICTURE(R"(UPDATE users SET profile = null WHERE ID = ?;)");
 
@@ -44,8 +44,9 @@ UserModel::UserModel(int id) : id(id) {
       m_firstname = query.value(1).toString();
       m_lastname = query.value(2).toString();
       m_employment_type = query.value(3).toString();
-    } else
+    } else {
       throw UserNotFoundException();
+    }
   } else
     throw query.lastError();
 }
@@ -86,7 +87,7 @@ QPixmap UserModel::getUserProfile() const {
   query.addBindValue(id);
   if (query.exec()) {
     query.next();
-    QByteArray array = query.value(0).toByteArray();
+    QByteArray array = QByteArray::fromBase64(query.value(0).toByteArray());
     QDataStream imageStream(&array, QIODevice::ReadOnly);
     QImage img;
     imageStream >> img;
@@ -123,10 +124,12 @@ void UserModel::setUserProfile(const QImage &data) {
   QByteArray imageData;
   QDataStream imageStream(&imageData, QIODevice::WriteOnly);
   imageStream << data;
-  query.addBindValue(imageData);
-  query.addBindValue(id);
-  if (!query.exec())
+  query.bindValue(":data", imageData.toBase64());
+  query.bindValue(":id", id);
+  if (!query.exec()) {
+    qDebug() << query.lastError();
     throw query.lastError();
+  }
 }
 
 QList<QString> UserModel::getAbilities() const {

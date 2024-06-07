@@ -109,8 +109,11 @@ void updateUserIdentity(int ID, const char *identity, const QVariant &value) {
   query.addBindValue(value);
   query.addBindValue(ID);
   // execute the query
-  if (!query.exec())
-    throw query.lastError();
+  if (!query.exec()) {
+    QSqlError lasterr = query.lastError();
+    qDebug() << "Line 114 of user.cpp throws an error : " << lasterr;
+    throw lasterr;
+  }
 }
 
 void updateUserIdentity(int ID, UserIdentity identity, const QVariant &value) {
