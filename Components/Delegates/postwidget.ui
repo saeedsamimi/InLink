@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>747</width>
-    <height>418</height>
+    <height>431</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -211,76 +211,93 @@ border-radius: 10px;
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="bottom_layout">
-        <item>
-         <widget class="QCommandLinkButton" name="like_link_btn">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Like</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../../resource.qrc">
-            <normaloff>:/like.png</normaloff>:/like.png</iconset>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCommandLinkButton" name="comment_link_btn">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Comment</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../../resource.qrc">
-            <normaloff>:/comment.png</normaloff>:/comment.png</iconset>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCommandLinkButton" name="repost_link_btn">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Repost</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../../resource.qrc">
-            <normaloff>:/retweet.png</normaloff>:/retweet.png</iconset>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCommandLinkButton" name="send_link_btn">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Send</string>
-          </property>
-          <property name="icon">
-           <iconset resource="../../resource.qrc">
-            <normaloff>:/send.png</normaloff>:/send.png</iconset>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="QWidget" name="bottom_widget" native="true">
+        <layout class="QHBoxLayout" name="bottom_layout">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QCommandLinkButton" name="like_link_btn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Like</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../resource.qrc">
+             <normaloff>:/like.png</normaloff>:/like.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCommandLinkButton" name="comment_link_btn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Comment</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../resource.qrc">
+             <normaloff>:/comment.png</normaloff>:/comment.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCommandLinkButton" name="repost_link_btn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Repost</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../resource.qrc">
+             <normaloff>:/retweet.png</normaloff>:/retweet.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCommandLinkButton" name="send_link_btn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Send</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../resource.qrc">
+             <normaloff>:/send.png</normaloff>:/send.png</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </item>
      </layout>
     </widget>

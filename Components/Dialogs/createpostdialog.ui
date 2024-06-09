@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Create Post</string>
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0" colspan="2">
@@ -50,6 +50,9 @@
        <width>16777215</width>
        <height>100</height>
       </size>
+     </property>
+     <property name="placeholderText">
+      <string>Write your post's content here:</string>
      </property>
     </widget>
    </item>

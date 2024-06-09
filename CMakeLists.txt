@@ -53,7 +53,10 @@ qt6_add_executable(InLink
     Components/Dialogs/selectabilitiesdialog.cpp Components/Dialogs/selectabilitiesdialog.h Components/Dialogs/selectabilitiesdialog.ui
     Components/Delegates/postwidget.h Components/Delegates/postwidget.cpp Components/Delegates/postwidget.ui
     database/models/postmodel.h database/models/postmodel.cpp
-    Components/Dialogs/createpostdialog.h Components/Dialogs/createpostdialog.cpp Components/Dialogs/createpostdialog.ui)
+    Components/Dialogs/createpostdialog.h Components/Dialogs/createpostdialog.cpp Components/Dialogs/createpostdialog.ui
+    Components/Delegates/commentwidget.h Components/Delegates/commentwidget.cpp Components/Delegates/commentwidget.ui
+    Components/Dialogs/commentsdialog.h Components/Dialogs/commentsdialog.cpp Components/Dialogs/commentsdialog.ui
+)
 # set translations and then install the .qm file into CURRENT_BIN_DIR
 qt6_add_translations(InLink
     TS_FILES ${TS_FILES}

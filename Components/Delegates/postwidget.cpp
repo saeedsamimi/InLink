@@ -3,13 +3,21 @@
 #include <utils/Util.h>
 
 #include "ui_postwidget.h"
+#include <Components/Dialogs/commentsdialog.h>
 
-PostWidget::PostWidget(UserModel *user, const PostModel &post, QWidget *parent)
+PostWidget::PostWidget(UserModel *user, const PostModel &post, QWidget *parent,
+                       bool showButtons)
     : QWidget(parent), ui(new Ui::PostWidget), model(post), user(user),
-      owner(model.getUser()) {
+      owner(model.getUser()), isLiked(model.isLiked(user->getId())) {
   ui->setupUi(this);
   if (*user == owner)
     ui->follow_btn->hide();
+  if (!showButtons) {
+    ui->bottom_widget->hide();
+    ui->bottom_h_line->hide();
+  }
+  if (isLiked)
+    ui->like_link_btn->setText("Liked");
   connect(user, &UserModel::followingChanged, this,
           &PostWidget::handleFollowingChanged);
   updateUserFollowingState();
@@ -55,4 +63,24 @@ void PostWidget::updateUserFollowingState() {
     isFollowing = true;
   } else
     ui->follow_btn->setText("Follow");
+}
+
+void PostWidget::on_comment_link_btn_clicked() {
+  qDebug() << "the comment link btn click triggered for id: "
+           << model.getPostId();
+  CommentsDialog dialog(user, model, this);
+  dialog.exec();
+}
+
+void PostWidget::on_repost_link_btn_clicked() { model.repost(user->getId()); }
+
+void PostWidget::on_like_link_btn_clicked() {
+  if (isLiked) {
+    model.removeLike(user->getId());
+    ui->like_link_btn->setText("Like");
+  } else {
+    model.addLike(user->getId());
+    ui->like_link_btn->setText("Liked");
+  }
+  isLiked = !isLiked;
 }

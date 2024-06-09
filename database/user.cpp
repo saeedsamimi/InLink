@@ -17,10 +17,10 @@ void insertUser(const QString &username, const QString &password) {
   query.addBindValue(username);
   query.addBindValue(hashUsingSHA256(password));
   // error codes:
-  //        2067:
+  //        23505:
   //            the user is already exists!
   if (!query.exec())
-    if (query.lastError().nativeErrorCode().toInt() == 2067)
+    if (query.lastError().nativeErrorCode().toInt() == 23505)
       throw QObject::tr("This username already exists!");
     else
       throw query.lastError();
