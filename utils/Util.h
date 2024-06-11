@@ -7,15 +7,16 @@
 #include <QWidget>
 
 class util {
- private:
+private:
   const static QString COLORED_TEXT_TEMPLATE;
 
- public:
+public:
   static QString buildColoredLabeled(QString label, QString color,
                                      QString content);
+  static QString formatArray(const QStringList &list);
 };
 
-void enableStyle(QWidget* widget, const QString&& filename);
+void enableStyle(QWidget *widget, const QString &&filename);
 
-QTranslator* installTranslator(QApplication* app);
-#endif  // UTIL_H
+QTranslator *installTranslator(QApplication *app);
+#endif // UTIL_H
