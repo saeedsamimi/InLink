@@ -28,6 +28,7 @@ public:
 private slots:
   void handleSearchBox();
   void handleLogOut();
+  void handleChangeTab(int);
 
 private:
   Ui::MainWindow *ui;
@@ -38,6 +39,7 @@ private:
   UserNetworkComponent *user_net_component;
   ChatComponent *chat_component;
   JobsComponent *jobs_component;
+  int current_index = 0;
 };
 
 #endif // MAINWINDOW_H

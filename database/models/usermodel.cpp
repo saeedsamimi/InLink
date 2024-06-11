@@ -1,35 +1,37 @@
 #include "usermodel.h"
 
 #include <QSqlQuery>
+#include <QVariant>
+#include <utils/Util.h>
 
 // clang-format off
-const QLatin1String LOAD_USER_SQL(R"(SELECT username,first_name,last_name,emp_type FROM users WHERE ID = ?;)");
+const QLatin1String LOAD_USER_SQL(R"(SELECT username,first_name,last_name,emp_type FROM users WHERE ID = ?)");
 
-const QLatin1String GET_USER_PROFILE_PICTURE_EXISTENCE(R"(SELECT profile IS NOT NULL FROM users WHERE ID = ?;)");
+const QLatin1String GET_USER_PROFILE_PICTURE_EXISTENCE(R"(SELECT profile IS NOT NULL FROM users WHERE ID = ?)");
 
-const QLatin1String GET_USER_PROFILE_PICTURE(R"(SELECT profile FROM users WHERE ID = ?;)");
+const QLatin1String GET_USER_PROFILE_PICTURE(R"(SELECT profile FROM users WHERE ID = ?)");
 
-const QLatin1String UPDATE_USER_PROFILE_PICTURE(R"(UPDATE users SET profile = ? WHERE ID = ?;)");
+const QLatin1String UPDATE_USER_PROFILE_PICTURE(R"(UPDATE users SET profile = ? WHERE ID = ?)");
 
-const QLatin1String DELETE_USER_PROFILE_PICTURE(R"(UPDATE users SET profile = null WHERE ID = ?;)");
+const QLatin1String DELETE_USER_PROFILE_PICTURE(R"(UPDATE users SET profile = null WHERE ID = ?)");
 
-const QLatin1String GET_USER_BIOGRAPHY(R"(SELECT bio FROM users WHERE ID = ?;)");
+const QLatin1String GET_USER_BIOGRAPHY(R"(SELECT bio FROM users WHERE ID = ?)");
 
-const QLatin1String UPDATE_USER_BIOGRAPHY(R"(UPDATE users SET bio = ? WHERE ID = ?;)");
+const QLatin1String UPDATE_USER_BIOGRAPHY(R"(UPDATE users SET bio = ? WHERE ID = ?)");
 
-const QLatin1String GET_USER_ABILITIES(R"(SELECT abilities FROM users WHERE ID = ?;)");
+const QLatin1String GET_USER_ABILITIES(R"(SELECT abilities FROM users WHERE ID = ?)");
 
-const QLatin1String UPDATE_USER_ABILITIES(R"(UPDATE users SET abilities = ? WHERE ID = ?;)");
+const QLatin1String UPDATE_USER_ABILITIES(R"(UPDATE users SET abilities = ? WHERE ID = ?)");
 
-const QLatin1String GET_USER_JOB(R"(SELECT recent_job FROM users WHERE id = ?;)");
+const QLatin1String GET_USER_JOB(R"(SELECT recent_job FROM users WHERE id = ?)");
 
-const QLatin1String LOGOUT_USER(R"(DELETE FROM accounts WHERE user_ID = ?;)");
+const QLatin1String LOGOUT_USER(R"(DELETE FROM accounts WHERE user_ID = ?)");
 
 const QLatin1String FOLLOW_USER(R"(INSERT INTO follow VALUES (:follower,:following))");
 
-const QLatin1String IS_FOLLOWING_USER(R"(SELECT count(*) FROM follow WHERE follower = :follower AND following = :following;)");
+const QLatin1String IS_FOLLOWING_USER(R"(SELECT count(*) FROM follow WHERE follower = :follower AND following = :following)");
 
-const QLatin1String UNFOLLOW_USER(R"(DELETE FROM follow WHERE follower = :follower AND following = :following;)");
+const QLatin1String UNFOLLOW_USER(R"(DELETE FROM follow WHERE follower = :follower AND following = :following)");
 // clang-format on
 
 UserModel::UserModel(int id) : id(id) {
@@ -137,22 +139,27 @@ QList<QString> UserModel::getAbilities() const {
   query.addBindValue(id);
   if (query.exec()) {
     query.next();
-    QStringList items = query.value(0).toStringList();
+    QStringList items = query.value(0).toString().split(",");
     if (items.begin()->isEmpty())
       items.erase(items.begin());
+    for (QString &item : items) {
+      item.removeLast();
+      item.removeFirst();
+    }
     return items;
   }
   throw query.lastError();
 }
 
-void UserModel::setAbilities(const QList<QString> &newAbilities) {
+void UserModel::setAbilities(const QStringList &newAbilities) {
   QSqlQuery query;
   if (!query.prepare(UPDATE_USER_ABILITIES))
     throw query.lastError();
-  query.addBindValue(newAbilities);
+  query.addBindValue(util::formatArray(newAbilities));
   query.addBindValue(id);
-  if (!query.exec())
+  if (!query.exec()) {
     throw query.lastError();
+  }
 }
 
 bool UserModel::isHaveProfile() const {

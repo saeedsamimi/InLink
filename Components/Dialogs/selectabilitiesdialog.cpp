@@ -2,14 +2,11 @@
 
 #include "ui_selectabilitiesdialog.h"
 
-SelectAbilitiesDialog::SelectAbilitiesDialog(QStringListModel* list_model,
-                                             UserModel* user_model,
-                                             QWidget* parent)
-    : QDialog(parent),
-      ui(new Ui::SelectAbilitiesDialog),
-      model(this),
-      user_model(user_model),
-      list_model(list_model) {
+SelectAbilitiesDialog::SelectAbilitiesDialog(QStringListModel *list_model,
+                                             UserModel *user_model,
+                                             QWidget *parent)
+    : QDialog(parent), ui(new Ui::SelectAbilitiesDialog), model(this),
+      user_model(user_model), list_model(list_model) {
   ui->setupUi(this);
   model.setQuery("SELECT skill FROM Abilities;");
   ui->selectionBox->setModel(&model);
@@ -42,17 +39,16 @@ void SelectAbilitiesDialog::on_selectionBox_currentIndexChanged(int index) {
 }
 
 void SelectAbilitiesDialog::on_btnBox_accepted() {
-  qDebug() << "Accepted(Saving)!";
   user_model->setAbilities(list_model->stringList());
 }
 
-void SelectAbilitiesDialog::on_btnBox_clicked(QAbstractButton* button) {
+void SelectAbilitiesDialog::on_btnBox_clicked(QAbstractButton *button) {
   if (ui->btnBox->buttonRole(button) == QDialogButtonBox::ResetRole)
     list_model->removeRows(0, list_model->rowCount());
 }
 
 void SelectAbilitiesDialog::handleCurrentItemChanged(
-    const QModelIndex& selection, const QModelIndex& before) {
+    const QModelIndex &selection, const QModelIndex &before) {
   ui->remBtn->setEnabled(selection.isValid());
 }
 

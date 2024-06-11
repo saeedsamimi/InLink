@@ -26,3 +26,13 @@ QString util::buildColoredLabeled(QString label, QString color,
                                   QString content) {
   return COLORED_TEXT_TEMPLATE.arg(color, label, content);
 }
+
+QString util::formatArray(const QStringList &list) {
+  QString result;
+  for (int i = 0; i < list.size(); ++i) {
+    result += "\'" + list[i] + "\'";
+    if (i + 1 < list.size())
+      result += ",";
+  }
+  return result;
+}

@@ -5,7 +5,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 # cmake C++ standard using
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # find Qt6 neccessary packages and Liguisttools for translations
 find_package(Qt6 REQUIRED COMPONENTS Gui Core Widgets Sql LinguistTools)
@@ -16,11 +16,11 @@ set(PAGES_DIR Pages)
 set(TS_FILES InLink_en_US.ts)
 set(RESOURCE_FILES resource.qrc icon.rc)
 # fetch files specified by each dir by using GLOB
-file(GLOB DATABASE_FILES ${DATABASE_DIR}/*.h ${DATABASE_DIR}/*.cpp)
-file(GLOB COMPONENTS_FILES ${COMPONENTS_DIR}/*.h ${COMPONENTS_DIR}/*.cpp ${COMPONENTS_DIR}/*.ui)
-file(GLOB PAGES_FILES ${PAGES_DIR}/*.h ${PAGES_DIR}/*.cpp ${PAGES_DIR}/*.ui)
-file(GLOB QSS_FILES qss/*.qss)
-file(GLOB UTILS_FILES utils/*.h utils/*.cpp utils/*.ui)
+file(GLOB_RECURSE DATABASE_FILES ${DATABASE_DIR}/*.h ${DATABASE_DIR}/*.cpp)
+file(GLOB_RECURSE COMPONENTS_FILES ${COMPONENTS_DIR}/*.h ${COMPONENTS_DIR}/*.cpp ${COMPONENTS_DIR}/*.ui)
+file(GLOB_RECURSE PAGES_FILES ${PAGES_DIR}/*.h ${PAGES_DIR}/*.cpp ${PAGES_DIR}/*.ui)
+file(GLOB_RECURSE QSS_FILES qss/*.qss)
+file(GLOB_RECURSE UTILS_FILES utils/*.h utils/*.cpp utils/*.ui)
 # setting test files
 set(TEST_FILES
     test/test_captcha.cpp test/test_captcha.h test/test_captcha.ui # test files for Captcha
@@ -30,7 +30,8 @@ set(PROJECT_MAIN_FILES
     main.cpp
     splashscreen.cpp splashscreen.h splashscreen.ui
     loginsignin.cpp loginsignin.h loginsignin.ui)
-
+# setup configuring the project using qt6_add_executable macro
+# HINT: this project requires the minimum Qt 6.3
 qt6_standard_project_setup()
 qt6_add_executable(InLink
     MANUAL_FINALIZATION
@@ -42,20 +43,6 @@ qt6_add_executable(InLink
     ${UTILS_FILES}
     ${DATABASE_FILES}
     ${PAGES_FILES}
-    Components/Textboxes/codeverifyedit.h Components/Textboxes/codeverifyedit.cpp
-    Components/Textboxes/codeverifierlayout.h Components/Textboxes/codeverifierlayout.cpp
-    database/models/usermodel.h database/models/usermodel.cpp
-    Components/App/mecomponent.h Components/App/mecomponent.cpp Components/App/mecomponent.ui
-    Components/App/homecomponent.h Components/App/homecomponent.cpp Components/App/homecomponent.ui
-    Components/App/usernetworkcomponent.h Components/App/usernetworkcomponent.cpp Components/App/usernetworkcomponent.ui
-    Components/App/chatcomponent.h Components/App/chatcomponent.cpp Components/App/chatcomponent.ui
-    Components/App/jobscomponent.h Components/App/jobscomponent.cpp Components/App/jobscomponent.ui
-    Components/Dialogs/selectabilitiesdialog.cpp Components/Dialogs/selectabilitiesdialog.h Components/Dialogs/selectabilitiesdialog.ui
-    Components/Delegates/postwidget.h Components/Delegates/postwidget.cpp Components/Delegates/postwidget.ui
-    database/models/postmodel.h database/models/postmodel.cpp
-    Components/Dialogs/createpostdialog.h Components/Dialogs/createpostdialog.cpp Components/Dialogs/createpostdialog.ui
-    Components/Delegates/commentwidget.h Components/Delegates/commentwidget.cpp Components/Delegates/commentwidget.ui
-    Components/Dialogs/commentsdialog.h Components/Dialogs/commentsdialog.cpp Components/Dialogs/commentsdialog.ui
 )
 # set translations and then install the .qm file into CURRENT_BIN_DIR
 qt6_add_translations(InLink
@@ -72,8 +59,13 @@ set_target_properties(InLink PROPERTIES
 )
 set_target_properties(InLink PROPERTIES FOLDER "qtc_runnable")
 # link Qt6 libraries with the project
-target_link_libraries(InLink PRIVATE
-    Qt6::Widgets Qt6::Core Qt6::Gui Qt6::Sql)
+target_link_libraries(InLink
+    PRIVATE
+        Qt6::Widgets
+        Qt6::Core
+        Qt6::Gui
+        Qt6::Sql
+)
 # set master include folder for preventing the relative file path
 target_include_directories(InLink PRIVATE ${CMAKE_SOURCE_DIR})
 # set GNU install dirs for the install time dirs

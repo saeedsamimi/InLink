@@ -36,7 +36,7 @@ public:
   void setBiography(const QString &bio);
   void setUserProfile(const QImage &data);
   QList<QString> getAbilities() const;
-  void setAbilities(const QList<QString> &newAbilities);
+  void setAbilities(const QStringList &newAbilities);
   bool isHaveProfile() const;
   void deleteProfile();
   void logout() const;
