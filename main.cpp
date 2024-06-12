@@ -31,26 +31,25 @@ int main(int argc, char *argv[]) {
     a.exit(0);
     exit(0);
   }
-  auto account = getActiveAccountUser();
-  try {
-    if (account == nullptr) {
-      SplashScreen *splash = new SplashScreen();
-      splash->show();
+  int id;
+  int activationLevel;
+  bool isLoggedIn = getActiveAccountUser(id, activationLevel);
+
+  if (!isLoggedIn) {
+    SplashScreen *splash = new SplashScreen();
+    splash->show();
+  } else {
+    // make decision
+    if (activationLevel == Added) {
+      CodeVerifier *verifier = new CodeVerifier(id);
+      verifier->show();
+    } else if (activationLevel == Activated) {
+      CompleteProfile *complete = new CompleteProfile(id);
+      complete->show();
     } else {
-      // make decision
-      if (account->second == Added) {
-        CodeVerifier *verifier = new CodeVerifier(account->first);
-        verifier->show();
-      } else if (account->second == Activated) {
-        CompleteProfile *complete = new CompleteProfile(account->first);
-        complete->show();
-      } else {
-        MainWindow *win = new MainWindow(account->first);
-        win->show();
-      }
+      MainWindow *win = new MainWindow(id);
+      win->show();
     }
-  } catch (QSqlError &err) {
-    qDebug() << err.text();
   }
 
   int exec = a.exec();

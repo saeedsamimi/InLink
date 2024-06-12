@@ -7,4 +7,6 @@ CMakeLists.txt.user
 # Excel Binary files
 database/Datas/Excel.xlsx
 repository.txt
+# secret files
+.env
 

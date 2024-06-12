@@ -1,7 +1,7 @@
 #include "user.h"
 
 #include "dbinit.h"
-#include "encryption.h"
+#include "encryption.hpp"
 
 const char *identity_list[12] = {"first_name", "last_name", "birth_date",
                                  "country",    "city",      "school",
@@ -26,7 +26,7 @@ void insertUser(const QString &username, const QString &password) {
       throw query.lastError();
 }
 
-void validateUser(const QString &username, const QString &password) {
+int validateUser(const QString &username, const QString &password) {
   QSqlQuery query;
   // handle in-server errors
   if (!query.prepare(FIND_USER_SQL))
@@ -38,13 +38,15 @@ void validateUser(const QString &username, const QString &password) {
     throw query.lastError();
   if (query.next()) {
     // returns if the user password correct otherwise gives an exception
-    if (query.value(0).toString() != hashUsingSHA256(password))
+    if (query.value(1).toString() != hashUsingSHA256(password))
       throw QPair<QString, bool>(QObject::tr("This password is incorrect!"),
                                  false);
+    return query.value(0).toInt();
   } else { // throw error if the user is not exists
     throw QPair<QString, bool>(
         QObject::tr("This user is not exist, do you want to sign in?"), true);
   }
+  return -1;
 }
 
 int getUserID(const QString &username) {
@@ -61,17 +63,9 @@ int getUserID(const QString &username) {
   return query.value(query.record().indexOf("ID")).toInt();
 }
 
-int addAccount(const QString &username) {
-  int ID = getUserID(username);
-  QSqlQuery query;
-  // handle in-server errors
-  if (!query.prepare(ADD_ACCOUNT_SQL))
-    throw query.lastError();
-  query.addBindValue(ID);
-  // the return's always win!!!
-  if (!query.exec())
-    qDebug() << query.lastError();
-  return ID;
+int addAccount(const QString &username, const QString &password) {
+  saveLoginInfo(username, password, "login.dat", generateKey());
+  return getUserID(username);
 }
 
 void changeAccountLevel(int ID, UserLevel level) {
@@ -86,17 +80,26 @@ void changeAccountLevel(int ID, UserLevel level) {
     throw query.lastError();
 }
 
-QPair<int, int> *getActiveAccountUser() {
-  QSqlQuery query;
-  // handle in-server errors
-  if (!query.prepare(SELECT_ACCOUNTS_ID_AND_STATES))
-    throw query.lastError();
-  // beacause no argument is provided we dont have to bind values for it
-  if (!query.exec())
-    throw query.lastError();
-  if (!query.next())
-    return nullptr;
-  return new QPair<int, int>(query.value(0).toInt(), query.value(1).toInt());
+bool getActiveAccountUser(int &user_id, int &active_level) {
+  QStringList data = readLoginInfo("login.dat", generateKey());
+  if (data.length() != 2)
+    return false; // the data is incorrect
+
+  QString username = data[0];
+  QString password(data[1]);
+
+  user_id = active_level = -1;
+
+  try {
+    user_id = validateUser(username, password);
+    active_level = getUserActivationLevel(username);
+  } catch (QPair<QString, bool> &err) {
+    return false;
+  } catch (QSqlError &err) {
+    throw;
+  }
+
+  return true;
 }
 
 void updateUserIdentity(int ID, const char *identity, const QVariant &value) {

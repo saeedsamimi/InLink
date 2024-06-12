@@ -2,6 +2,7 @@
 
 #include <QSqlQuery>
 #include <QVariant>
+#include <database/encryption.hpp>
 #include <utils/Util.h>
 
 // clang-format off
@@ -184,11 +185,7 @@ void UserModel::deleteProfile() {
 }
 
 void UserModel::logout() const {
-  QSqlQuery query;
-  if (!query.prepare(LOGOUT_USER))
-    throw query.lastError();
-  query.addBindValue(id);
-  query.exec();
+  saveLoginInfo("", "", "login.dat", generateKey());
 }
 
 void UserModel::follow(const UserModel &model) {

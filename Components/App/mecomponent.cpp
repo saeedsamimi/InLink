@@ -44,6 +44,7 @@ void MeComponent::on_editPicBtn_clicked() {
         Qt::KeepAspectRatio, Qt::SmoothTransformation);
     model->setUserProfile(targetPixmap.toImage());
     ui->profilePicture->setPixmap(targetPixmap);
+    ui->delPicBtn->setEnabled(true);
   }
 }
 
@@ -58,6 +59,7 @@ void MeComponent::on_delPicBtn_clicked() {
 }
 
 void MeComponent::resetProfilePictureText() {
+  ui->delPicBtn->setEnabled(false);
   ui->profilePicture->clear();
   ui->profilePicture->setText("You don't have profile!");
 }

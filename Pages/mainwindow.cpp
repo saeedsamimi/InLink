@@ -14,6 +14,7 @@ MainWindow::MainWindow(UserModel model, QWidget *parent)
       chat_component(new ChatComponent()), jobs_component(new JobsComponent()),
       current_index(0) {
   ui->setupUi(this);
+
   stackedLayout = new QStackedLayout();
   ui->scrollAreaWidgetContents->setLayout(stackedLayout);
 

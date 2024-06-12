@@ -39,16 +39,14 @@ void LoginSignIn::changeMethod() {
 
 void LoginSignIn::doExit(const QString &username, const QString &password) {
   int activationLevel = getUserActivationLevel(username);
+  int ID = addAccount(username, password);
   if (activationLevel == -1 || activationLevel == UserLevel::Added) {
-    int ID = addAccount(username);
     verifier = new CodeVerifier(ID);
     verifier->show();
   } else if (activationLevel == UserLevel::Activated) {
-    int ID = getUserID(username);
     CompleteProfile *complete = new CompleteProfile(ID);
     complete->show();
   } else {
-    int ID = getUserID(username);
     MainWindow *win = new MainWindow(UserModel(ID));
     win->show();
   }
