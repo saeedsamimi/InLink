@@ -1,11 +1,13 @@
 #ifndef POSTMODEL_H
 #define POSTMODEL_H
 
+#include <QDateTime>
+#include <QImage>
 #include <QList>
-
-#include "usermodel.h"
+#include <QPixmap>
 
 class PostModel;
+class UserModel;
 
 class Comment {
 private:
@@ -37,7 +39,7 @@ private:
 public:
   /* Constructors */
 
-  PostModel(int postId, int reposted_from);
+  PostModel(int postId, int reposted_from = -1);
   PostModel(const PostModel &m);
 
   /* static object creators */
@@ -74,6 +76,10 @@ public:
 
   Comment addComment(int user_id, const QString &comment);
   QList<Comment> getComments() const;
+
+  friend class UserModel;
 };
+
+#include <database/models/usermodel.h>
 
 #endif // POSTMODEL_H

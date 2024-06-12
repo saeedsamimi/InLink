@@ -5,6 +5,7 @@
 
 #include "ui_postwidget.h"
 #include <Components/Dialogs/commentsdialog.h>
+#include <Components/Dialogs/showprofiledialog.h>
 
 PostWidget::PostWidget(UserModel *user, const PostModel &post, QWidget *parent,
                        bool showButtons)
@@ -23,6 +24,7 @@ PostWidget::PostWidget(UserModel *user, const PostModel &post, QWidget *parent,
   // show only post content, not post actions!
   if (!showButtons) {
     ui->bottom_widget->hide();
+    ui->profile_btn->hide();
     ui->bottom_h_line->hide();
   }
   // the post when is liked , should be states liked
@@ -120,4 +122,9 @@ void PostWidget::on_like_link_btn_clicked() {
     ui->like_link_btn->setText("Liked");
   }
   isLiked = !isLiked;
+}
+
+void PostWidget::on_profile_btn_clicked() {
+  ShowProfileDialog *profile = new ShowProfileDialog(&owner, this);
+  profile->exec();
 }

@@ -33,6 +33,8 @@ const QLatin1String FOLLOW_USER(R"(INSERT INTO follow VALUES (:follower,:followi
 const QLatin1String IS_FOLLOWING_USER(R"(SELECT count(*) FROM follow WHERE follower = :follower AND following = :following)");
 
 const QLatin1String UNFOLLOW_USER(R"(DELETE FROM follow WHERE follower = :follower AND following = :following)");
+
+const QLatin1String GET_USER_POSTS(R"(SELECT post_id,posted_from FROM posts WHERE user_id = ?)");
 // clang-format on
 
 UserModel::UserModel(int id) : id(id) {
@@ -224,6 +226,21 @@ bool UserModel::isFollowing(const UserModel &model) {
 
 bool UserModel::operator==(const UserModel &model) const {
   return model.id == id;
+}
+
+QList<PostModel> UserModel::getPosts() {
+  CREATE_SQL(GET_USER_POSTS);
+  SQL_BIND(id);
+  if (!query.exec())
+    SQL_THROW;
+  QList<PostModel> temp;
+  while (query.next()) {
+    PostModel model(query.value(0).toInt());
+    if (!query.value(1).isNull())
+      model.reposted_from = query.value(1).toInt();
+    temp.append(model);
+  }
+  return temp;
 }
 
 UserNotFoundException::~UserNotFoundException() noexcept {}

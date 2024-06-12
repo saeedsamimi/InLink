@@ -140,6 +140,14 @@ border-radius: 10px;
          </widget>
         </item>
         <item>
+         <widget class="QToolButton" name="profile_btn">
+          <property name="icon">
+           <iconset resource="../../resource.qrc">
+            <normaloff>:/businessman.png</normaloff>:/businessman.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="follow_btn">
           <property name="maximumSize">
            <size>

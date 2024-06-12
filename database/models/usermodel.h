@@ -1,5 +1,7 @@
 #ifndef USERMODEL_H
 #define USERMODEL_H
+
+#include <database/models/postmodel.h>
 #include <database/user.h>
 
 #include <QDate>
@@ -64,6 +66,10 @@ public:
   /* usermodel equality check */
 
   bool operator==(const UserModel &model) const;
+
+  /* Get user's posts */
+
+  QList<PostModel> getPosts();
 
 signals:
   void followingChanged(bool newState, int id);

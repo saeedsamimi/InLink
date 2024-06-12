@@ -12,7 +12,7 @@
 const QString
     MeComponent::label(R"(<p><span style=" color:#00557f;">%1:</span> %2</p>)");
 
-MeComponent::MeComponent(UserModel *model, QWidget *parent)
+MeComponent::MeComponent(UserModel *model, bool editable, QWidget *parent)
     : QWidget(parent), ui(new Ui::MeComponent), model(model),
       list_model(model->getAbilities(), this) {
   ui->setupUi(this);
@@ -26,6 +26,15 @@ MeComponent::MeComponent(UserModel *model, QWidget *parent)
     resetProfilePictureText();
   }
   ui->listView->setModel(&list_model);
+  if (!editable) {
+    /* hide something */
+    ui->editAbilityBtn->hide();
+    ui->editBiographyBtn->hide();
+    ui->editPicBtn->hide();
+    ui->delPicBtn->hide();
+    ui->sign_as_company_btn->hide();
+    ui->log_out_btn->hide();
+  }
 }
 
 MeComponent::~MeComponent() {

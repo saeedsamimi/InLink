@@ -31,7 +31,7 @@ const QLatin1String POST_REMOVE_LIKE(R"(DELETE FROM likes WHERE post_id = ? AND 
 const QLatin1String POST_REGISTER_REPOST(R"(INSERT INTO posts(user_id,posted_from) VALUES(?,?))");
 // clang-format on
 
-PostModel::PostModel(int postId, int reposted_from = -1)
+PostModel::PostModel(int postId, int reposted_from)
     : post_id(postId), reposted_from(reposted_from) {}
 
 PostModel::PostModel(const PostModel &m)

@@ -30,6 +30,8 @@ private slots:
 
   void on_like_link_btn_clicked();
 
+  void on_profile_btn_clicked();
+
 private:
   Ui::PostWidget *ui;
   PostModel model;

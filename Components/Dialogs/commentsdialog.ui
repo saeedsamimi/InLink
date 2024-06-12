@@ -108,6 +108,9 @@
        <height>200</height>
       </size>
      </property>
+     <property name="verticalScrollMode">
+      <enum>QAbstractItemView::ScrollPerPixel</enum>
+     </property>
     </widget>
    </item>
   </layout>

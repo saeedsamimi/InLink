@@ -14,7 +14,8 @@ class MeComponent : public QWidget {
   Q_OBJECT
 
 public:
-  explicit MeComponent(UserModel *model, QWidget *parent = nullptr);
+  explicit MeComponent(UserModel *model, bool editable = true,
+                       QWidget *parent = nullptr);
   ~MeComponent();
 
 signals:
