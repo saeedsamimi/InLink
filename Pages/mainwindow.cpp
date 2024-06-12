@@ -28,7 +28,7 @@ MainWindow::MainWindow(UserModel model, QWidget *parent)
 
   /* load and enable style */
 
-  enableStyle(this, "MW.qss");
+  util::enableStyle(this, "MW.qss");
 
   /* set the 0 button for the default first-selected item */
 

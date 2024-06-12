@@ -29,8 +29,8 @@ CompleteProfile::CompleteProfile(int ID, QWidget *parent)
   companyCompleter.setFilterMode(Qt::MatchContains);
   companyCompleter.setCaseSensitivity(Qt::CaseInsensitive);
   ui->mostRecentCompanyInput->setCompleter(&companyCompleter);
-  enableStyle(ui->continueBtn, "PBS.qss");
-  enableStyle(this, "CPS.qss");
+  util::enableStyle(ui->continueBtn, "PBS.qss");
+  util::enableStyle(this, "CPS.qss");
   if (!QSqlDatabase::database().transaction())
     qDebug() << QSqlDatabase::database().lastError();
   connect(&closeFilter, &PreventClosingEventFilter::onCloseRequested, this,

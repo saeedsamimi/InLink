@@ -35,6 +35,8 @@ void HomeComponent::addPost(PostModel &post_model) {
     widget_item->setSizeHint(custom_widget->sizeHint());
     ui->Feed->addItem(widget_item);
     ui->Feed->setItemWidget(widget_item, custom_widget);
+    connect(custom_widget, &PostWidget::reposted, this,
+            &HomeComponent::handlePostCreation);
   } catch (QSqlError &err) {
     qDebug() << err;
   }

@@ -9,8 +9,8 @@
 
 class UserNotFoundException : public std::exception {
 public:
-  ~UserNotFoundException() _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
-  const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override;
+  ~UserNotFoundException() noexcept override;
+  const char *what() const noexcept override;
 };
 
 class UserModel : public QObject {
@@ -23,26 +23,46 @@ private:
   QString m_employment_type;
 
 public:
+  /* Constructors */
+
   UserModel(int id);
   UserModel(const UserModel &other);
+
+  /* Identity getters */
+
   int getId() const;
   const QString &getUsername() const;
   const QString &getFirstName() const;
   const QString &getLastName() const;
   const QString &getEmploymentType() const;
+
+  /* account and jobs getters */
+
   QString getJob() const;
   QPixmap getUserProfile() const;
   QString getBioGraphy() const;
+  QList<QString> getAbilities() const;
+  bool isHaveProfile() const;
+
+  /* account informations setters */
+
   void setBiography(const QString &bio);
   void setUserProfile(const QImage &data);
-  QList<QString> getAbilities() const;
   void setAbilities(const QStringList &newAbilities);
-  bool isHaveProfile() const;
+
+  /* account functions methods */
+
   void deleteProfile();
   void logout() const;
+
+  /* follow and unfollow mechanisem */
+
   void follow(const UserModel &model);
   void unfollow(const UserModel &model);
   bool isFollowing(const UserModel &model);
+
+  /* usermodel equality check */
+
   bool operator==(const UserModel &model) const;
 
 signals:

@@ -8,6 +8,7 @@
 
 #include <QApplication>
 #include <QLocale>
+#include <QMessageBox>
 #include <QTranslator>
 
 #include "loginsignin.h"
@@ -19,11 +20,16 @@ int main(int argc, char *argv[]) {
   QPalette pal = a.palette();
   pal.setColor(QPalette::Window, Qt::white);
   a.setPalette(pal);
-  auto translatorTemporary = installTranslator(&a);
+  auto translatorTemporary = util::installTranslator(&a);
   try {
     initDB();
   } catch (QSqlError &err) {
-    qDebug() << "Could not connect to database: " << err.text();
+    QMessageBox::critical(
+        nullptr, "connection failed",
+        QString("Could not connect to the database because: %1")
+            .arg(err.text()));
+    a.exit(0);
+    exit(0);
   }
   auto account = getActiveAccountUser();
   try {

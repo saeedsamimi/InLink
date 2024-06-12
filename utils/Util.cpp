@@ -3,7 +3,7 @@
 #include <QFile>
 #include <QIODevice>
 
-void enableStyle(QWidget *widget, const QString &&filename) {
+void util::enableStyle(QWidget *widget, const QString &&filename) {
   QString prefix(":/qss/");
   QFile styleFile(prefix.append(filename));
   styleFile.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -12,7 +12,7 @@ void enableStyle(QWidget *widget, const QString &&filename) {
   styleFile.close();
 }
 
-QTranslator *installTranslator(QApplication *app) {
+QTranslator *util::installTranslator(QApplication *app) {
   QTranslator *translator = new QTranslator();
   Q_UNUSED(translator->load("InLink_en_US"));
   app->installTranslator(translator);

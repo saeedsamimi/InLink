@@ -13,7 +13,7 @@ LoginSignIn::LoginSignIn(bool loginMode, QWidget *parent)
     : QWidget(parent), ui(new Ui::LoginSignIn), isLogin(loginMode) {
   ui->setupUi(this);
   changeMethod();
-  enableStyle(ui->SignInBtn, "PBS.qss");
+  util::enableStyle(ui->SignInBtn, "PBS.qss");
   ui->IconImageViewer->setPixmap(QPixmap(":/ico-cap-light.png"));
 }
 

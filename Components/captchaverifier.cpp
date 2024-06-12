@@ -68,8 +68,8 @@ void CaptchaVerifier::setupUi() {
   changeCptcha->setObjectName("updateCaptcha");
   changeCptcha->setText(tr("changeCaptcha"));
   changeCptcha->setIcon(QIcon(changeIcon));
-  enableStyle(this, "PBS.qss");
-  enableStyle(textBox, "CVTBS.qss");
+  util::enableStyle(this, "PBS.qss");
+  util::enableStyle(textBox, "CVTBS.qss");
   textBox->setClearButtonEnabled(true);
   textBox->addAction(QIcon(codeIcon), QLineEdit::LeadingPosition);
   textBox->setMaxLength(5);

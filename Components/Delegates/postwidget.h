@@ -18,7 +18,7 @@ public:
   ~PostWidget();
 
 signals:
-  void closed();
+  void reposted(PostModel post);
 
 private slots:
   void on_follow_btn_clicked();

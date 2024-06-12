@@ -10,7 +10,7 @@
 CodeVerifier::CodeVerifier(int ID, QWidget *parent)
     : QWidget(parent), ui(new Ui::CodeVerifier), ID(ID) {
   ui->setupUi(this);
-  enableStyle(this, "PBS.qss");
+  util::enableStyle(this, "PBS.qss");
 }
 
 CodeVerifier::~CodeVerifier() { delete ui; }

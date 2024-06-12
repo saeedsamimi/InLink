@@ -198,6 +198,18 @@ border-radius: 10px;
        </widget>
       </item>
       <item>
+       <widget class="QLabel" name="posted_at_lbl">
+        <property name="font">
+         <font>
+          <pointsize>7</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>posted_at:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="Line" name="bottom_h_line">
         <property name="styleSheet">
          <string notr="true">background-color: rgb(0, 0, 0);</string>
