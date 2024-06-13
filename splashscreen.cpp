@@ -11,7 +11,7 @@ SplashScreen::SplashScreen(QWidget *parent)
   QPixmap womanPic(":/sp-woman.png");
   QPixmap footerPic(":/city-footer.png");
   ui->setupUi(this);
-  enableStyle(this, "SS.qss");
+  util::enableStyle(this, "SS.qss");
   ui->IconBox->setPixmap(iconPic);
   ui->WomanPicImageViewer->setPixmap(womanPic);
   ui->FooterPic->setPixmap(footerPic);

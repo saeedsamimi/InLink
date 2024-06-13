@@ -1,5 +1,6 @@
 #include <Pages/codeverifier.h>
 #include <Pages/completeprofile.h>
+#include <Pages/mainwindow.h>
 #include <database/dbinit.h>
 #include <database/user.h>
 #include <utils/Util.h>
@@ -7,6 +8,7 @@
 
 #include <QApplication>
 #include <QLocale>
+#include <QMessageBox>
 #include <QTranslator>
 
 #include "loginsignin.h"
@@ -18,25 +20,38 @@ int main(int argc, char *argv[]) {
   QPalette pal = a.palette();
   pal.setColor(QPalette::Window, Qt::white);
   a.setPalette(pal);
-  auto translatorTemporary = installTranslator(&a);
-  initDB();
-  auto account = getActiveAccountUser();
-  if (account == nullptr) {
+  auto translatorTemporary = util::installTranslator(&a);
+  try {
+    initDB();
+  } catch (QSqlError &err) {
+    QMessageBox::critical(
+        nullptr, "connection failed",
+        QString("Could not connect to the database because: %1")
+            .arg(err.text()));
+    a.exit(0);
+    exit(0);
+  }
+  int id;
+  int activationLevel;
+  bool isLoggedIn = getActiveAccountUser(id, activationLevel);
+
+  if (!isLoggedIn) {
     SplashScreen *splash = new SplashScreen();
     splash->show();
   } else {
     // make decision
-    if (account->second == Added) {
-      CodeVerifier *verifier = new CodeVerifier(account->first);
+    if (activationLevel == Added) {
+      CodeVerifier *verifier = new CodeVerifier(id);
       verifier->show();
-    } else if (account->second == Activated) {
-      CompleteProfile *complete = new CompleteProfile(account->second);
+    } else if (activationLevel == Activated) {
+      CompleteProfile *complete = new CompleteProfile(id);
       complete->show();
     } else {
-      WaitForMoreFeature *dialog = new WaitForMoreFeature(account->first);
-      dialog->show();
+      MainWindow *win = new MainWindow(id);
+      win->show();
     }
   }
+
   int exec = a.exec();
   delete translatorTemporary;
   return exec;

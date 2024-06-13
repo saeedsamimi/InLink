@@ -5,7 +5,7 @@
 #include <QRegularExpressionValidator>
 
 // connect to acronym!
-#define CTA(x, y) \
+#define CTA(x, y)                                                              \
   connect(&boxes[i], &CodeVerifyEdit::x, this, &CodeVerifierLayout::y)
 
 CodeVerifierLayout::CodeVerifierLayout(QWidget *parent)
@@ -16,7 +16,8 @@ CodeVerifierLayout::CodeVerifierLayout(QWidget *parent)
 
 QString CodeVerifierLayout::getText() {
   QString temp("");
-  for (auto &box : boxes) temp.append(box.text());
+  for (auto &box : boxes)
+    temp.append(box.text());
   return temp;
 }
 
@@ -25,14 +26,16 @@ void CodeVerifierLayout::onBoxFilled(uchar i) {
     int j;
     for (j = i + 1; j < 4 && !boxes[j].text().isEmpty(); j++)
       ;
-    if (j < 4) boxes[j].setFocus();
+    if (j < 4)
+      boxes[j].setFocus();
   } else {
     const QString &temp = getText();
     if (temp.length() == 4) {
       if (dialog.validate(temp))
         emit onAccepted();
       else {
-        if (dialog.isHidden()) dialog.show();
+        if (dialog.isHidden())
+          dialog.show();
         dialog.randomize();
       }
     }
@@ -56,5 +59,5 @@ void CodeVerifierLayout::setupUI() {
     layout.addWidget(boxes + i);
   }
   setLayout(&layout);
-  enableStyle(this, "CVS.qss");
+  util::enableStyle(this, "CVS.qss");
 }

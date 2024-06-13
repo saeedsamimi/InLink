@@ -5,10 +5,11 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 # cmake C++ standard using
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # find Qt6 neccessary packages and Liguisttools for translations
-find_package(Qt6 REQUIRED COMPONENTS Gui Core Widgets Sql LinguistTools)
+find_package(Qt6 REQUIRED COMPONENTS Gui Core Widgets Sql Network LinguistTools WebSockets)
+find_package(OpenSSL REQUIRED)
 # set main items dirs, such that Components and Database and Resources and Translations
 set(COMPONENTS_DIR Components)
 set(DATABASE_DIR database)
@@ -16,21 +17,34 @@ set(PAGES_DIR Pages)
 set(TS_FILES InLink_en_US.ts)
 set(RESOURCE_FILES resource.qrc icon.rc)
 # fetch files specified by each dir by using GLOB
-file(GLOB DATABASE_FILES ${DATABASE_DIR}/*.h ${DATABASE_DIR}/*.cpp)
-file(GLOB COMPONENTS_FILES ${COMPONENTS_DIR}/*.h ${COMPONENTS_DIR}/*.cpp ${COMPONENTS_DIR}/*.ui)
-file(GLOB PAGES_FILES ${PAGES_DIR}/*.h ${PAGES_DIR}/*.cpp ${PAGES_DIR}/*.ui)
-file(GLOB QSS_FILES qss/*.qss)
-file(GLOB UTILS_FILES utils/*.h utils/*.cpp utils/*.ui)
+file(GLOB_RECURSE DATABASE_FILES ${DATABASE_DIR}/*.h ${DATABASE_DIR}/*.cpp)
+file(GLOB_RECURSE COMPONENTS_FILES ${COMPONENTS_DIR}/*.h ${COMPONENTS_DIR}/*.cpp ${COMPONENTS_DIR}/*.ui)
+file(GLOB_RECURSE PAGES_FILES ${PAGES_DIR}/*.h ${PAGES_DIR}/*.cpp ${PAGES_DIR}/*.ui)
+file(GLOB_RECURSE QSS_FILES qss/*.qss)
+file(GLOB_RECURSE UTILS_FILES utils/*.h utils/*.cpp utils/*.ui)
 # setting test files
 set(TEST_FILES
     test/test_captcha.cpp test/test_captcha.h test/test_captcha.ui # test files for Captcha
 )
+# project secret key configuration
+# 1-first read the secret file
+file(READ "${CMAKE_SOURCE_DIR}/.env" ENV_FILE_CONTENT)
+# 2-second extract the secret needed data and if the data not found give error
+string(REGEX MATCH "SECRET_KEY=([^\n]*)" _ ${ENV_FILE_CONTENT})
+set(SECRET_KEY ${CMAKE_MATCH_1})
+# Check if SECRET_KEY was found
+if (NOT SECRET_KEY)
+    message(FATAL_ERROR "SECRET_KEY not found in .env file")
+endif()
+# 3-third add the defination of the secret key into the source code!
+configure_file(${CMAKE_SOURCE_DIR}/secret_key.h.in ${CMAKE_BINARY_DIR}/secret_key.h @ONLY)
 # Project main runners files
 set(PROJECT_MAIN_FILES
     main.cpp
     splashscreen.cpp splashscreen.h splashscreen.ui
     loginsignin.cpp loginsignin.h loginsignin.ui)
-
+# setup configuring the project using qt6_add_executable macro
+# HINT: this project requires the minimum Qt 6.3
 qt6_standard_project_setup()
 qt6_add_executable(InLink
     MANUAL_FINALIZATION
@@ -42,8 +56,6 @@ qt6_add_executable(InLink
     ${UTILS_FILES}
     ${DATABASE_FILES}
     ${PAGES_FILES}
-    Components/Textboxes/codeverifyedit.h Components/Textboxes/codeverifyedit.cpp
-    Components/Textboxes/codeverifierlayout.h Components/Textboxes/codeverifierlayout.cpp
 )
 # set translations and then install the .qm file into CURRENT_BIN_DIR
 qt6_add_translations(InLink
@@ -60,10 +72,20 @@ set_target_properties(InLink PROPERTIES
 )
 set_target_properties(InLink PROPERTIES FOLDER "qtc_runnable")
 # link Qt6 libraries with the project
-target_link_libraries(InLink PRIVATE
-    Qt6::Widgets Qt6::Core Qt6::Gui Qt6::Sql)
+target_link_libraries(InLink
+    PUBLIC
+        Qt6::Widgets
+        Qt6::Core
+        Qt6::Gui
+        Qt6::Sql
+        Qt6::Network
+        Qt6::WebSockets
+    PRIVATE
+        OpenSSL::SSL
+        OpenSSL::Crypto
+)
 # set master include folder for preventing the relative file path
-target_include_directories(InLink PRIVATE ${CMAKE_SOURCE_DIR})
+target_include_directories(InLink PRIVATE ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR})
 # set GNU install dirs for the install time dirs
 include(GNUInstallDirs)
 install(TARGETS InLink
@@ -77,11 +99,6 @@ if(WIN32)
         COMMAND "${WINDEPLOYQT_EXECUTABLE}" . --no-translations --pdb
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
         COMMENT "The windeploqt is running now!")
-endif()
-# configure files for initial data values
-if(NOT EXISTS "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.db")
-    configure_file(database/Initial.db InLink.db
-        COPYONLY)
 endif()
 # finalize the project
 qt_finalize_executable(InLink)

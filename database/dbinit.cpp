@@ -1,14 +1,14 @@
 #include "dbinit.h"
 
-QSqlError initDB() {
+void initDB() {
   // create connection and try to connect
-  QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-  db.setDatabaseName("InLink.db");
-  if (!db.open()) return db.lastError();
-  // run the query for create table if not exist
-  QSqlQuery query;
-  if (!query.exec(USERS_SQL)) return query.lastError();
-  if (!query.exec(ACCOUNTS_SQL)) return query.lastError();
-  // return empty error
-  return QSqlError();
+  QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
+  db.setHostName("localhost");
+  db.setPort(8080);
+  db.setUserName("postgres");
+  db.setPassword("12345678");
+  db.setDatabaseName("InLink");
+  if (!db.open())
+    throw db.lastError();
+  qDebug() << "cenncted to database successfully!";
 }
