@@ -3,6 +3,8 @@ const { pool } = require("./database/config.js");
 const url = require("url");
 const express = require("express");
 const http = require("http");
+const fs = require("fs");
+const path = require("path");
 
 const app = express();
 const server = http.createServer(app);
@@ -21,7 +23,7 @@ const getUserActiveChats = (ws, user_id) => {
       }
       const initChats = new Set();
       res.rows.forEach(function (row) {
-        if (row.from_id == user_id) initChats.add(row.to_id);
+        if (row.from_id === parseInt(user_id)) initChats.add(row.to_id);
         else initChats.add(row.from_id);
       });
 
@@ -42,7 +44,7 @@ const getUserMessages = (ws, from_id, to_id) => {
   }
 
   pool.query(
-    "SELECT msg,time,to_id FROM messages WHERE to_id = $1 or from_id = $1 or to_id = $2 or from_id = $2",
+    "SELECT msg,time,from_id,picture FROM messages WHERE to_id = $1 or from_id = $1 or to_id = $2 or from_id = $2",
     [from_id, to_id],
     (err, res) => {
       if (err) {
@@ -52,7 +54,8 @@ const getUserMessages = (ws, from_id, to_id) => {
       const initMessages = res.rows.map((msg) => ({
         msg: msg.msg,
         time: msg.time,
-        receiver: msg.to_id,
+        sender: msg.from_id,
+        picture:  msg.picture
       }));
       ws.send(
         JSON.stringify({
@@ -64,7 +67,7 @@ const getUserMessages = (ws, from_id, to_id) => {
   );
 };
 
-const registerMessage = (ws, sender, receiver, msg) => {
+const registerMessage = (ws, sender, receiver, msg,picture) => {
   if (!sender || !receiver || !msg) {
     console.log(
       "Error: some of the inputs in register message function is undefined, values: ",
@@ -79,8 +82,8 @@ const registerMessage = (ws, sender, receiver, msg) => {
   }
 
   pool.query(
-    "INSERT INTO messages (from_id,to_id,msg) VALUES ($1,$2,$3) RETURNING *",
-    [sender,receiver,msg],
+    "INSERT INTO messages (from_id,to_id,msg,picture) VALUES ($1,$2,$3,$4) RETURNING *",
+    [sender,receiver,msg,picture],
     (err,res)=>{
       if(err){
         console.error("got an error from db: ",err);
@@ -113,8 +116,9 @@ wsocket.on("connection", (ws, request) => {
     const receiver = paramaters.query.to_id;
     getUserMessages(ws, user_id, receiver);
     ws.on('message',(msg)=>{
-      const content = JSON.parse(msg).content;
-      registerMessage(ws,user_id,receiver,content);
+      const content = JSON.parse(msg);
+      var picture = content.picture ? content.picture : null;
+      registerMessage(ws,user_id,receiver,content.content,picture);
     });
   }
 

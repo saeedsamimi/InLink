@@ -64,6 +64,12 @@
      </item>
      <item>
       <widget class="QLabel" name="content_lbl">
+       <property name="maximumSize">
+        <size>
+         <width>500</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="font">
         <font>
          <pointsize>12</pointsize>
@@ -71,6 +77,9 @@
        </property>
        <property name="text">
         <string>Content</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

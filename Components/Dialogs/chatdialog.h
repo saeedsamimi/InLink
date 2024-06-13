@@ -19,6 +19,7 @@ public:
   ~ChatDialog();
 
   static void setGlobalUser(UserModel *model);
+  static UserModel *getGlobalUser();
 
 private:
   Ui::ChatDialog *ui;
@@ -26,11 +27,13 @@ private:
   QWebSocket *socket;
   static UserModel *globalUser;
 
-  void addMessage(int sender, QString content, QDateTime time);
+  void addMessage(int sender, QString content, QDateTime time,
+                  const QString &pixmap);
 private slots:
   void textMessageReceived(QString message);
   void handleClickSendAction(bool);
   void on_sendBtn_clicked();
+  void on_addFileBtn_clicked();
 };
 
 #endif // CHATDIALOG_H
