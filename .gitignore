@@ -9,4 +9,5 @@ database/Datas/Excel.xlsx
 repository.txt
 # secret files
 .env
-
+# Node.js moduls
+Server/node_modules/

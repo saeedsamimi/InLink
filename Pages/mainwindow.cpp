@@ -11,8 +11,8 @@ MainWindow::MainWindow(UserModel model, QWidget *parent)
       me_component(new MeComponent(&m_user)),
       home_component(new HomeComponent(&m_user)),
       user_net_component(new UserNetworkComponent()),
-      chat_component(new ChatComponent()), jobs_component(new JobsComponent()),
-      current_index(0) {
+      chat_component(new ChatComponent(&m_user)),
+      jobs_component(new JobsComponent()), current_index(0) {
   ui->setupUi(this);
 
   stackedLayout = new QStackedLayout();

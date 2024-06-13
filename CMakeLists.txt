@@ -8,7 +8,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # find Qt6 neccessary packages and Liguisttools for translations
-find_package(Qt6 REQUIRED COMPONENTS Gui Core Widgets Sql Network LinguistTools)
+find_package(Qt6 REQUIRED COMPONENTS Gui Core Widgets Sql Network LinguistTools WebSockets)
 find_package(OpenSSL REQUIRED)
 # set main items dirs, such that Components and Database and Resources and Translations
 set(COMPONENTS_DIR Components)
@@ -79,6 +79,7 @@ target_link_libraries(InLink
         Qt6::Gui
         Qt6::Sql
         Qt6::Network
+        Qt6::WebSockets
     PRIVATE
         OpenSSL::SSL
         OpenSSL::Crypto
