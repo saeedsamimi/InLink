@@ -36,6 +36,8 @@ private slots:
 
   void on_theme_btn_clicked();
 
+  void on_sign_as_company_btn_clicked();
+
 private:
   Ui::MeComponent *ui;
   UserModel *model = nullptr;

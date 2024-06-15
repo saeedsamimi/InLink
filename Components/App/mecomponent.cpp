@@ -1,6 +1,6 @@
 #include "mecomponent.h"
 
-#include <Components/Dialogs/selectabilitiesdialog.h>
+#include <Components/Dialogs/companysignin.h>
 #include <utils/Util.h>
 
 #include <QApplication>
@@ -115,4 +115,19 @@ void MeComponent::on_theme_btn_clicked() {
                       util::Dark);
     ui->theme_btn->setIcon(QIcon(":/sun.png"));
   }
+}
+
+void MeComponent::on_sign_as_company_btn_clicked() {
+  this->window()->hide();
+  /* show the create company dialog */
+  CompanySignIn dialog(this);
+  connect(&dialog, &CompanySignIn::onSigned, this, []() {
+    qDebug() << "unhandled signed event in mecomponent.cpp: line125";
+  });
+  connect(&dialog, &CompanySignIn::onCanceled, this, []() {
+    qDebug() << "unhandled canceled event in mecomponent.cpp: line 127";
+  });
+  dialog.exec();
+  /* hide the create company dialog */
+  this->window()->show();
 }
