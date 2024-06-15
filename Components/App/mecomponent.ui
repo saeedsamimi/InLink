@@ -208,6 +208,14 @@ background-color: rgb(170, 0, 0);
      </property>
     </widget>
    </item>
+   <item row="0" column="3">
+    <widget class="QToolButton" name="theme_btn">
+     <property name="icon">
+      <iconset resource="../../resource.qrc">
+       <normaloff>:/moon.png</normaloff>:/moon.png</iconset>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources>

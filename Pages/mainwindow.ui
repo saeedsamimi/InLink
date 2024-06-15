@@ -22,6 +22,16 @@
         <property name="text">
          <string>Jobs</string>
         </property>
+        <property name="icon">
+         <iconset resource="../resource.qrc">
+          <normaloff>:/job.png</normaloff>:/job.png</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">tabsButtonGroup</string>
+        </attribute>
        </widget>
       </item>
       <item row="0" column="2">
@@ -29,6 +39,16 @@
         <property name="text">
          <string>My Network</string>
         </property>
+        <property name="icon">
+         <iconset resource="../resource.qrc">
+          <normaloff>:/cloud.png</normaloff>:/cloud.png</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">tabsButtonGroup</string>
+        </attribute>
        </widget>
       </item>
       <item row="0" column="4">
@@ -36,13 +56,50 @@
         <property name="text">
          <string>Messaging</string>
         </property>
+        <property name="icon">
+         <iconset resource="../resource.qrc">
+          <normaloff>:/comment.png</normaloff>:/comment.png</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">tabsButtonGroup</string>
+        </attribute>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QPushButton" name="homeTabBtn">
+        <property name="styleSheet">
+         <string notr="true">#homeTabBtn {
+    qproperty-iconSize: 24px;
+}
+#homeTabBtn::icon {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+#homeTabBtn::text {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}</string>
+        </property>
         <property name="text">
          <string>Home</string>
         </property>
+        <property name="icon">
+         <iconset resource="../resource.qrc">
+          <normaloff>:/home.png</normaloff>:/home.png</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">tabsButtonGroup</string>
+        </attribute>
        </widget>
       </item>
       <item row="0" column="0">
@@ -66,6 +123,16 @@
         <property name="text">
          <string>Me</string>
         </property>
+        <property name="icon">
+         <iconset resource="../resource.qrc">
+          <normaloff>:/user.png</normaloff>:/user.png</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">tabsButtonGroup</string>
+        </attribute>
        </widget>
       </item>
       <item row="1" column="0" colspan="6">
@@ -79,7 +146,7 @@
            <x>0</x>
            <y>0</y>
            <width>774</width>
-           <height>488</height>
+           <height>486</height>
           </rect>
          </property>
         </widget>
@@ -101,6 +168,11 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resource.qrc"/>
+ </resources>
  <connections/>
+ <buttongroups>
+  <buttongroup name="tabsButtonGroup"/>
+ </buttongroups>
 </ui>

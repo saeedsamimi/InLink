@@ -1,9 +1,6 @@
-#tabsButtonGroup QPushButton{
-    qproperty-iconSize: 10px;
-}
-
-#tabsButtonGroup QPushButton::text{
-    left: 50%;
+QWidget{
+    background-color: black;
+    color: white;
 }
 
 QPushButton {
@@ -20,6 +17,7 @@ QPushButton {
 QToolButton{
     border: 1px solid #8C52FF;
     font: bold 14px;
+    background-color: rgb(230,230,230);
 }
 
 QPushButton:hover{
@@ -36,4 +34,5 @@ QPushButton:pressed{
     border: 1px solid blue;
     padding: 5px;
     border-radius: 5px;
+    background-color: black;
 }

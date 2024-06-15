@@ -12,12 +12,38 @@ void util::enableStyle(QWidget *widget, const QString &&filename) {
   styleFile.close();
 }
 
+void util::enableStyle(QApplication *app, const QString &&filename) {
+  QString prefix(":/qss/");
+  QFile styleFile(prefix.append(filename));
+  styleFile.open(QIODevice::ReadOnly | QIODevice::Text);
+  QString styleString(styleFile.readAll());
+  app->setStyleSheet(styleString);
+  styleFile.close();
+}
+
 QTranslator *util::installTranslator(QApplication *app) {
   QTranslator *translator = new QTranslator();
   Q_UNUSED(translator->load("InLink_en_US"));
   app->installTranslator(translator);
   return translator;
 }
+
+void util::changeStyle(QApplication *app, Theme style) {
+  QPalette pal = app->palette();
+  if (style == Theme::Dark) {
+    enableStyle(app, "theme/dark");
+    pal.setColor(QPalette::Window, Qt::black);
+    pal.setColor(QPalette::WindowText, Qt::white);
+  } else {
+    enableStyle(app, "theme/light");
+    pal.setColor(QPalette::Window, Qt::white);
+    pal.setColor(QPalette::WindowText, Qt::black);
+  }
+  theme = style;
+  app->setPalette(pal);
+}
+
+util::Theme util::getTheme() { return theme; }
 
 const QString util::COLORED_TEXT_TEMPLATE(
     R"(<p><span style="color: #%1">%2:</span> %3</p>)");

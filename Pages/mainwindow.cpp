@@ -20,12 +20,11 @@ MainWindow::MainWindow(UserModel model, QWidget *parent)
 
   /* initializing the Buttons Group */
 
-  buttons = new QButtonGroup();
-  buttons->addButton(ui->MeTabBtn, 4);
-  buttons->addButton(ui->messaginTabBtn, 3);
-  buttons->addButton(ui->JobsTabBtn, 2);
-  buttons->addButton(ui->MyNetworkTabBtn, 1);
-  buttons->addButton(ui->homeTabBtn, 0);
+  ui->tabsButtonGroup->addButton(ui->MeTabBtn, 4);
+  ui->tabsButtonGroup->addButton(ui->messaginTabBtn, 3);
+  ui->tabsButtonGroup->addButton(ui->JobsTabBtn, 2);
+  ui->tabsButtonGroup->addButton(ui->MyNetworkTabBtn, 1);
+  ui->tabsButtonGroup->addButton(ui->homeTabBtn, 0);
 
   /* load and enable style */
 
@@ -33,7 +32,8 @@ MainWindow::MainWindow(UserModel model, QWidget *parent)
 
   /* set the 0 button for the default first-selected item */
 
-  buttons->button(current_index)->setStyleSheet("");
+  ui->tabsButtonGroup->button(current_index)
+      ->setStyleSheet("qproperty-iconSize: 24px;");
 
   /* enabling the search box icon action */
 
@@ -59,15 +59,14 @@ MainWindow::MainWindow(UserModel model, QWidget *parent)
   connect(searchAction, &QAction::triggered, this,
           &MainWindow::handleSearchBox);
 
-  connect(buttons, &QButtonGroup::idClicked, this,
+  connect(ui->tabsButtonGroup, &QButtonGroup::idClicked, this,
           &MainWindow::handleChangeTab);
-  connect(buttons, &QButtonGroup::idClicked, stackedLayout,
+  connect(ui->tabsButtonGroup, &QButtonGroup::idClicked, stackedLayout,
           &QStackedLayout::setCurrentIndex);
 }
 
 MainWindow::~MainWindow() {
   delete ui;
-  delete buttons;
   delete stackedLayout;
   delete me_component;
   delete home_component;
@@ -87,7 +86,9 @@ void MainWindow::handleChangeTab(int id) {
   /* change the styles of the current and previuos(current_next) buttons styles
    */
 
-  buttons->button(current_index)->setStyleSheet("");
+  ui->tabsButtonGroup->button(current_index)
+      ->setStyleSheet("qproperty-iconSize: 10px;");
   current_index = id;
-  buttons->button(current_index)->setStyleSheet("background-color: #8C52FF;");
+  ui->tabsButtonGroup->button(current_index)
+      ->setStyleSheet("qproperty-iconSize: 24px;");
 }

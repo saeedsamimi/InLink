@@ -17,10 +17,8 @@
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
-  QPalette pal = a.palette();
-  pal.setColor(QPalette::Window, Qt::white);
-  a.setPalette(pal);
   auto translatorTemporary = util::installTranslator(&a);
+  util::changeStyle(&a, util::Light);
   try {
     initDB();
   } catch (QSqlError &err) {

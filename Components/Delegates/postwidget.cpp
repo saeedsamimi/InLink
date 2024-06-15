@@ -28,8 +28,13 @@ PostWidget::PostWidget(UserModel *user, const PostModel &post, QWidget *parent,
     ui->bottom_h_line->hide();
   }
   // the post when is liked , should be states liked
-  if (isLiked)
+  if (isLiked) {
+    ui->like_link_btn->setText("Like");
+    ui->like_link_btn->setIcon(QIcon(":/like.png"));
+  } else {
     ui->like_link_btn->setText("Liked");
+    ui->like_link_btn->setIcon(QIcon(":/like-filled.png"));
+  }
   // updating the user following state
   updateUserFollowingState();
   // set the content data
@@ -77,10 +82,13 @@ void PostWidget::on_follow_btn_clicked() {
 
 void PostWidget::handleFollowingChanged(bool newState, int id) {
   if (id == owner.getId()) {
-    if (newState)
+    if (newState) {
       ui->follow_btn->setText("Following");
-    else
+      ui->follow_btn->setIcon(QIcon(":/minus.png"));
+    } else {
       ui->follow_btn->setText("Follow");
+      ui->follow_btn->setIcon(QIcon(":/plus.svg"));
+    }
     isFollowing = newState;
   }
 }
@@ -88,9 +96,12 @@ void PostWidget::handleFollowingChanged(bool newState, int id) {
 void PostWidget::updateUserFollowingState() {
   if (user->isFollowing(owner)) {
     ui->follow_btn->setText("Following");
+    ui->follow_btn->setIcon(QIcon(":/minus.png"));
     isFollowing = true;
-  } else
+  } else {
     ui->follow_btn->setText("Follow");
+    ui->follow_btn->setIcon(QIcon(":/plus.svg"));
+  }
 }
 
 void PostWidget::on_comment_link_btn_clicked() {
@@ -117,9 +128,11 @@ void PostWidget::on_like_link_btn_clicked() {
   if (isLiked) {
     model.removeLike(user->getId());
     ui->like_link_btn->setText("Like");
+    ui->like_link_btn->setIcon(QIcon(":/like.png"));
   } else {
     model.addLike(user->getId());
     ui->like_link_btn->setText("Liked");
+    ui->like_link_btn->setIcon(QIcon(":/like-filled.png"));
   }
   isLiked = !isLiked;
 }

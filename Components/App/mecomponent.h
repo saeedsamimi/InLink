@@ -34,6 +34,8 @@ private slots:
 
   void on_log_out_btn_clicked();
 
+  void on_theme_btn_clicked();
+
 private:
   Ui::MeComponent *ui;
   UserModel *model = nullptr;

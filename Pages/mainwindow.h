@@ -8,7 +8,6 @@
 #include <Components/App/usernetworkcomponent.h>
 #include <database/models/usermodel.h>
 
-#include <QButtonGroup>
 #include <QMainWindow>
 #include <QStackedLayout>
 
@@ -32,7 +31,6 @@ private slots:
 
 private:
   Ui::MainWindow *ui;
-  QButtonGroup *buttons;
   QStackedLayout *stackedLayout;
   MeComponent *me_component;
   HomeComponent *home_component;

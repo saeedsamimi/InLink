@@ -1,7 +1,9 @@
 #include "mecomponent.h"
 
 #include <Components/Dialogs/selectabilitiesdialog.h>
+#include <utils/Util.h>
 
+#include <QApplication>
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QMessageBox>
@@ -101,4 +103,16 @@ void MeComponent::handleRejectAbilitiesDialog() {
 void MeComponent::on_log_out_btn_clicked() {
   model->logout();
   emit logout();
+}
+
+void MeComponent::on_theme_btn_clicked() {
+  if (util::getTheme() == util::Dark) {
+    util::changeStyle(qobject_cast<QApplication *>(QApplication::instance()),
+                      util::Light);
+    ui->theme_btn->setIcon(QIcon(":/moon.png"));
+  } else {
+    util::changeStyle(qobject_cast<QApplication *>(QApplication::instance()),
+                      util::Dark);
+    ui->theme_btn->setIcon(QIcon(":/sun.png"));
+  }
 }

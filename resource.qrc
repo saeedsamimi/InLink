@@ -34,6 +34,13 @@
         <file alias="retweet.png">icons/mini-icons/retweet.png</file>
         <file alias="send.png">icons/mini-icons/send.png</file>
         <file alias="logout.png">icons/mini-icons/logout.png</file>
+        <file alias="like-filled.png">icons/mini-icons/like-filled.png</file>
+        <file alias="moon.png">icons/mini-icons/moon.png</file>
+        <file alias="sun.png">icons/mini-icons/sun.png</file>
+        <file alias="home.png">icons/mini-icons/home.png</file>
+        <file alias="cloud.png">icons/mini-icons/cloud.png</file>
+        <file alias="job.png">icons/mini-icons/job.png</file>
+        <file alias="user.png">icons/mini-icons/user.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file alias="FETW.qss">qss/FullExpandedTabbedWidget.qss</file>
@@ -44,5 +51,9 @@
         <file alias="CVS.qss">qss/CodeVerifyStyle.qss</file>
         <file alias="CPS.qss">qss/CompleteProfileStyle.qss</file>
         <file alias="MW.qss">qss/MainWindow.qss</file>
+    </qresource>
+    <qresource prefix="/qss/theme">
+        <file alias="dark">qss/theme/dark.qss</file>
+        <file alias="light">qss/theme/light.qss</file>
     </qresource>
 </RCC>

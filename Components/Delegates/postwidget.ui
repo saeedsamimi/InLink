@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>PostWidget</class>
  <widget class="QWidget" name="PostWidget">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -13,21 +16,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">QCommandLinkButton{
-	background-color: transparent;
-}
-
-QCommandLinkButton:hover{
-	background-color: #e7e7e7;
-	border: 1px solid blue;
-}
-
-QCommandLinkButton:pressed{
-	background-color: #eeeeee;
-	border-radius: 5px;
-}</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
     <number>0</number>
@@ -35,8 +23,8 @@ QCommandLinkButton:pressed{
    <item>
     <widget class="QFrame" name="frame">
      <property name="styleSheet">
-      <string notr="true">QFrame{
-background-color: rgb(235, 235, 235);
+      <string notr="true">#frame{
+border: 1px solid blue;
 border-radius: 10px;
 }</string>
      </property>
