@@ -2,6 +2,7 @@
 #define MECOMPONENT_H
 
 #include <Components/Dialogs/selectabilitiesdialog.h>
+#include <database/models/companymodel.h>
 #include <database/models/usermodel.h>
 
 #include <QWidget>
@@ -45,6 +46,7 @@ private:
   QStringListModel list_model;
 
   void resetProfilePictureText();
+  void changeToCompanyMode(CompanyModel company_model);
 
   const static QString label;
 };

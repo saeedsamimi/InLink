@@ -1,15 +1,13 @@
 #include "mecomponent.h"
+#include "ui_mecomponent.h"
 
 #include <Components/Dialogs/companysignin.h>
-#include <utils/Util.h>
-
+#include <Pages/splashscreen.h>
 #include <QApplication>
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QMessageBox>
-#include <splashscreen.h>
-
-#include "ui_mecomponent.h"
+#include <utils/Util.h>
 
 const QString
     MeComponent::label(R"(<p><span style=" color:#00557f;">%1:</span> %2</p>)");
@@ -36,6 +34,12 @@ MeComponent::MeComponent(UserModel *model, bool editable, QWidget *parent)
     ui->delPicBtn->hide();
     ui->sign_as_company_btn->hide();
     ui->log_out_btn->hide();
+    ui->theme_btn->hide();
+  }
+  if (model->isCompany()) {
+    changeToCompanyMode(CompanyModel::FromUser(model));
+  } else {
+    ui->company_name_lbl->hide();
   }
 }
 
@@ -73,6 +77,12 @@ void MeComponent::resetProfilePictureText() {
   ui->delPicBtn->setEnabled(false);
   ui->profilePicture->clear();
   ui->profilePicture->setText("You don't have profile!");
+}
+
+void MeComponent::changeToCompanyMode(CompanyModel company_model) {
+  ui->sign_as_company_btn->setText("The company already signed in!");
+  ui->company_name_lbl->show();
+  ui->company_name_lbl->setText(label.arg("Company", company_model.getName()));
 }
 
 void MeComponent::on_editBiographyBtn_clicked() {
@@ -118,16 +128,16 @@ void MeComponent::on_theme_btn_clicked() {
 }
 
 void MeComponent::on_sign_as_company_btn_clicked() {
-  this->window()->hide();
-  /* show the create company dialog */
-  CompanySignIn dialog(this);
-  connect(&dialog, &CompanySignIn::onSigned, this, []() {
-    qDebug() << "unhandled signed event in mecomponent.cpp: line125";
-  });
-  connect(&dialog, &CompanySignIn::onCanceled, this, []() {
-    qDebug() << "unhandled canceled event in mecomponent.cpp: line 127";
-  });
-  dialog.exec();
-  /* hide the create company dialog */
-  this->window()->show();
+  if (!model->isCompany()) {
+    this->window()->hide();
+    /* show the create company dialog */
+    CompanySignIn dialog(model, this);
+    connect(&dialog, &CompanySignIn::onSigned, this,
+            [this](CompanyModel company_model) {
+              this->changeToCompanyMode(company_model);
+            });
+    dialog.exec();
+    /* hide the create company dialog */
+    this->window()->show();
+  }
 }

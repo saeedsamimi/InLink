@@ -2,6 +2,8 @@
 #define COMPANYSIGNIN_H
 
 #include <QDialog>
+#include <database/models/companymodel.h>
+#include <database/models/usermodel.h>
 
 namespace Ui {
 class CompanySignIn;
@@ -11,12 +13,11 @@ class CompanySignIn : public QDialog {
   Q_OBJECT
 
 public:
-  explicit CompanySignIn(QWidget *parent = nullptr);
+  explicit CompanySignIn(UserModel *model, QWidget *parent = nullptr);
   ~CompanySignIn();
 
 signals:
-  void onSigned();
-  void onCanceled();
+  void onSigned(CompanyModel company);
 
 private slots:
   void on_dialogButtonBox_accepted();
@@ -25,6 +26,7 @@ private slots:
 
 private:
   Ui::CompanySignIn *ui;
+  UserModel *model;
 };
 
 #endif // COMPANYSIGNIN_H

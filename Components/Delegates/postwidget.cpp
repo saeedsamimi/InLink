@@ -83,10 +83,10 @@ void PostWidget::on_follow_btn_clicked() {
 void PostWidget::handleFollowingChanged(bool newState, int id) {
   if (id == owner.getId()) {
     if (newState) {
-      ui->follow_btn->setText("Following");
+      ui->follow_btn->setText(labels[user->isCompany()][1]);
       ui->follow_btn->setIcon(QIcon(":/minus.png"));
     } else {
-      ui->follow_btn->setText("Follow");
+      ui->follow_btn->setText(labels[user->isCompany()][0]);
       ui->follow_btn->setIcon(QIcon(":/plus.svg"));
     }
     isFollowing = newState;
@@ -95,11 +95,11 @@ void PostWidget::handleFollowingChanged(bool newState, int id) {
 
 void PostWidget::updateUserFollowingState() {
   if (user->isFollowing(owner)) {
-    ui->follow_btn->setText("Following");
+    ui->follow_btn->setText(labels[user->isCompany()][1]);
     ui->follow_btn->setIcon(QIcon(":/minus.png"));
     isFollowing = true;
   } else {
-    ui->follow_btn->setText("Follow");
+    ui->follow_btn->setText(labels[user->isCompany()][0]);
     ui->follow_btn->setIcon(QIcon(":/plus.svg"));
   }
 }

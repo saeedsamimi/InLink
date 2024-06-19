@@ -1,19 +1,4 @@
-#include <Pages/codeverifier.h>
-#include <Pages/completeprofile.h>
-#include <Pages/mainwindow.h>
-#include <database/dbinit.h>
-#include <database/user.h>
-#include <utils/Util.h>
-#include <utils/waitformorefeature.h>
-
-#include <QApplication>
-#include <QLocale>
-#include <QMessageBox>
-#include <QTranslator>
-
-#include "loginsignin.h"
-#include "splashscreen.h"
-#include "test/test_captcha.h"
+#include <main.h>
 
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);

@@ -1,7 +1,7 @@
 #ifndef SPLASHSCREEN_H
 #define SPLASHSCREEN_H
 
-#include <loginsignin.h>
+#include <Pages/loginsignin.h>
 
 #include <QLabel>
 #include <QMainWindow>
@@ -16,16 +16,16 @@ QT_END_NAMESPACE
 class SplashScreen : public QMainWindow {
   Q_OBJECT
 
- public:
+public:
   SplashScreen(QWidget *parent = nullptr);
   ~SplashScreen();
- private slots:
+private slots:
   void on_SignInBtn_clicked();
   void on_LoginBtn_clicked();
 
- private:
+private:
   Ui::SplashScreen *ui;
   QLabel *FindCourceLbl;
   LoginSignIn *loginPage;
 };
-#endif  // SPLASHSCREEN_H
+#endif // SPLASHSCREEN_H

@@ -38,24 +38,20 @@ if (NOT SECRET_KEY)
 endif()
 # 3-third add the defination of the secret key into the source code!
 configure_file(${CMAKE_SOURCE_DIR}/secret_key.h.in ${CMAKE_BINARY_DIR}/secret_key.h @ONLY)
-# Project main runners files
-set(PROJECT_MAIN_FILES
-    main.cpp
-    splashscreen.cpp splashscreen.h splashscreen.ui
-    loginsignin.cpp loginsignin.h loginsignin.ui)
 # setup configuring the project using qt6_add_executable macro
 # HINT: this project requires the minimum Qt 6.3
 qt6_standard_project_setup()
 qt6_add_executable(InLink
     MANUAL_FINALIZATION
+    main.cpp
     ${COMPONENTS_FILES}
-    ${PROJECT_MAIN_FILES}
     ${RESOURCE_FILES}
     ${TEST_FILES}
     ${QSS_FILES}
     ${UTILS_FILES}
     ${DATABASE_FILES}
     ${PAGES_FILES}
+    main.h
 )
 # set translations and then install the .qm file into CURRENT_BIN_DIR
 qt6_add_translations(InLink

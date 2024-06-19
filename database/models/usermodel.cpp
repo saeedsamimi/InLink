@@ -6,7 +6,7 @@
 #include <utils/Util.h>
 
 // clang-format off
-const QLatin1String LOAD_USER_SQL(R"(SELECT username,first_name,last_name,emp_type FROM users WHERE ID = ?)");
+const QLatin1String LOAD_USER_SQL(R"(SELECT username,first_name,last_name,emp_type,iscompany FROM users WHERE ID = ?)");
 
 const QLatin1String GET_USER_PROFILE_PICTURE_EXISTENCE(R"(SELECT profile IS NOT NULL FROM users WHERE ID = ?)");
 
@@ -35,6 +35,8 @@ const QLatin1String IS_FOLLOWING_USER(R"(SELECT count(*) FROM follow WHERE follo
 const QLatin1String UNFOLLOW_USER(R"(DELETE FROM follow WHERE follower = :follower AND following = :following)");
 
 const QLatin1String GET_USER_POSTS(R"(SELECT post_id,posted_from FROM posts WHERE user_id = ?)");
+
+const QLatin1String SIGN_UP_AS_COMPANY(R"(UPDATE users SET iscompany = TRUE WHERE id = ?)");
 // clang-format on
 
 UserModel::UserModel(int id) : id(id) {
@@ -49,6 +51,7 @@ UserModel::UserModel(int id) : id(id) {
       m_firstname = query.value(1).toString();
       m_lastname = query.value(2).toString();
       m_employment_type = query.value(3).toString();
+      m_is_company = query.value(4).toBool();
     } else {
       throw UserNotFoundException();
     }
@@ -59,7 +62,8 @@ UserModel::UserModel(int id) : id(id) {
 UserModel::UserModel(const UserModel &other)
     : id(other.id), m_firstname(other.m_firstname),
       m_username(other.m_username), m_lastname(other.m_lastname),
-      m_employment_type(other.m_employment_type) {}
+      m_employment_type(other.m_employment_type),
+      m_is_company(other.m_is_company) {}
 
 int UserModel::getId() const { return id; }
 
@@ -223,6 +227,16 @@ bool UserModel::isFollowing(const UserModel &model) {
   query.next();
   return query.value(0).toInt() == 1;
 }
+
+void UserModel::signUpAsCompany() {
+  CREATE_SQL(SIGN_UP_AS_COMPANY);
+  SQL_BIND(id);
+  if (!query.exec())
+    SQL_THROW;
+  m_is_company = true;
+}
+
+bool UserModel::isCompany() const { return m_is_company; }
 
 bool UserModel::operator==(const UserModel &model) const {
   return model.id == id;

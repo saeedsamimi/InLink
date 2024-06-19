@@ -1,6 +1,6 @@
 #include "splashscreen.h"
 
-#include <loginsignin.h>
+#include <Pages/loginsignin.h>
 #include <utils/Util.h>
 
 #include "ui_splashscreen.h"

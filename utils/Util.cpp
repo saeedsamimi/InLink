@@ -29,18 +29,11 @@ QTranslator *util::installTranslator(QApplication *app) {
 }
 
 void util::changeStyle(QApplication *app, Theme style) {
-  QPalette pal = app->palette();
-  if (style == Theme::Dark) {
+  if (style == Theme::Dark)
     enableStyle(app, "theme/dark");
-    pal.setColor(QPalette::Window, Qt::black);
-    pal.setColor(QPalette::WindowText, Qt::white);
-  } else {
+  else
     enableStyle(app, "theme/light");
-    pal.setColor(QPalette::Window, Qt::white);
-    pal.setColor(QPalette::WindowText, Qt::black);
-  }
   theme = style;
-  app->setPalette(pal);
 }
 
 util::Theme util::getTheme() { return theme; }

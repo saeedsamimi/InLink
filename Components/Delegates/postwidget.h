@@ -1,6 +1,5 @@
 #ifndef POSTWIDGET_H
 #define POSTWIDGET_H
-
 #include <database/models/postmodel.h>
 
 #include <QWidget>
@@ -41,6 +40,8 @@ private:
   bool isFollowing = false;
 
   void updateUserFollowingState();
+  inline static const QString labels[2][2]{{"Connection", "Connected"},
+                                           {"Follow", "Following"}};
 };
 
 #endif // POSTWIDGET_H

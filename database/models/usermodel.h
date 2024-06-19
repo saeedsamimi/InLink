@@ -23,6 +23,7 @@ private:
   QString m_firstname;
   QString m_lastname;
   QString m_employment_type;
+  bool m_is_company;
 
 public:
   /* Constructors */
@@ -63,6 +64,11 @@ public:
   void unfollow(const UserModel &model);
   bool isFollowing(const UserModel &model);
 
+  /* company manipulations */
+
+  void signUpAsCompany();
+  bool isCompany() const;
+
   /* usermodel equality check */
 
   bool operator==(const UserModel &model) const;
@@ -73,6 +79,7 @@ public:
 
 signals:
   void followingChanged(bool newState, int id);
+  void onSignedUpAsCompany();
 };
 
 #endif // USERMODEL_H
