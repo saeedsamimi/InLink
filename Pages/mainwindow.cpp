@@ -10,7 +10,7 @@ MainWindow::MainWindow(UserModel model, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), m_user(model),
       me_component(new MeComponent(&m_user)),
       home_component(new HomeComponent(&m_user)),
-      user_net_component(new UserNetworkComponent()),
+      user_net_component(new UserNetworkComponent(&m_user)),
       chat_component(new ChatComponent(&m_user)),
       jobs_component(new JobsComponent()), current_index(0) {
   ui->setupUi(this);

@@ -21,7 +21,7 @@ signals:
 
 private slots:
   void on_follow_btn_clicked();
-  void handleFollowingChanged(bool newState, int id);
+  void handleFollowingChanged(UserModel::FollowingStates newState, int id);
 
   void on_comment_link_btn_clicked();
 
@@ -37,9 +37,11 @@ private:
   UserModel owner;
   UserModel *user;
   bool isLiked;
-  bool isFollowing = false;
+  UserModel::FollowingStates followState =
+      UserModel::FollowingStates::NoFollowed;
 
   void updateUserFollowingState();
+  void updateUserFollowingStateUtil(UserModel::FollowingStates);
   inline static const QString labels[2][2]{{"Connection", "Connected"},
                                            {"Follow", "Following"}};
 };

@@ -26,6 +26,10 @@ private:
   bool m_is_company;
 
 public:
+  /* Utility enumerators */
+
+  enum FollowingStates { Followed, NoFollowed, PendingFollowing, Rejected };
+
   /* Constructors */
 
   UserModel(int id);
@@ -62,7 +66,10 @@ public:
 
   void follow(const UserModel &model);
   void unfollow(const UserModel &model);
-  bool isFollowing(const UserModel &model);
+  QList<QPair<int, bool>> getAllPendingInvitations();
+  void rejectFollow(int user);
+  void acceptFollow(int user);
+  FollowingStates getFollowingState(const UserModel &model);
 
   /* company manipulations */
 
@@ -78,8 +85,11 @@ public:
   QList<PostModel> getPosts();
 
 signals:
-  void followingChanged(bool newState, int id);
+  void followingChanged(FollowingStates newState, int id);
   void onSignedUpAsCompany();
+
+private:
+  void changeFollowState(int user, bool state);
 };
 
 #endif // USERMODEL_H

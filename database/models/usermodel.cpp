@@ -30,7 +30,11 @@ const QLatin1String LOGOUT_USER(R"(DELETE FROM accounts WHERE user_ID = ?)");
 
 const QLatin1String FOLLOW_USER(R"(INSERT INTO follow VALUES (:follower,:following))");
 
-const QLatin1String IS_FOLLOWING_USER(R"(SELECT count(*) FROM follow WHERE follower = :follower AND following = :following)");
+const QLatin1String IS_FOLLOWING_USER(R"(SELECT following_state FROM follow WHERE follower = :follower AND following = :following)");
+
+const QLatin1String GET_ALL_PENDING_INVITATIONS(R"(SELECT follower,following_state IS null FROM follow where following = ? AND (following_state is null OR following_state = false);)");
+
+const QLatin1String SET_INVITATION_STATUS(R"(UPDATE follow SET following_state = :state WHERE follower = :follower AND following = :following;)");
 
 const QLatin1String UNFOLLOW_USER(R"(DELETE FROM follow WHERE follower = :follower AND following = :following)");
 
@@ -202,7 +206,7 @@ void UserModel::follow(const UserModel &model) {
   query.bindValue(":following", model.id);
   if (!query.exec())
     throw query.lastError();
-  emit followingChanged(true, model.id);
+  emit followingChanged(FollowingStates::PendingFollowing, model.id);
 }
 
 void UserModel::unfollow(const UserModel &model) {
@@ -213,19 +217,42 @@ void UserModel::unfollow(const UserModel &model) {
   query.bindValue(":following", model.id);
   if (!query.exec())
     throw query.lastError();
-  emit followingChanged(false, model.id);
+  emit followingChanged(FollowingStates::NoFollowed, model.id);
 }
 
-bool UserModel::isFollowing(const UserModel &model) {
+QList<QPair<int, bool>> UserModel::getAllPendingInvitations() {
   QSqlQuery query;
-  if (!query.prepare(IS_FOLLOWING_USER))
-    throw query.lastError();
-  query.bindValue(":follower", id);
-  query.bindValue(":following", model.id);
+  if (!query.prepare(GET_ALL_PENDING_INVITATIONS))
+    SQL_THROW;
+  query.addBindValue(id);
+  if (query.exec()) {
+    QList<QPair<int, bool>> allPendingInvitations;
+    while (query.next())
+      allPendingInvitations.emplace_back(query.value(0).toInt(),
+                                         query.value(1).toBool());
+    return allPendingInvitations;
+  } else
+    SQL_THROW;
+}
+
+void UserModel::rejectFollow(int user) { changeFollowState(user, false); }
+
+void UserModel::acceptFollow(int user) { changeFollowState(user, true); }
+
+UserModel::FollowingStates
+UserModel::getFollowingState(const UserModel &model) {
+  CREATE_SQL(IS_FOLLOWING_USER);
+  SQL_BIND_PLACED(":follower", id);
+  SQL_BIND_PLACED(":following", model.id);
   if (!query.exec())
-    throw query.lastError();
-  query.next();
-  return query.value(0).toInt() == 1;
+    SQL_THROW;
+  if (query.next()) {
+    auto val = query.value(0);
+    if (val.isNull())
+      return FollowingStates::PendingFollowing;
+    return val.toBool() ? FollowingStates::Followed : FollowingStates::Rejected;
+  }
+  return FollowingStates::NoFollowed;
 }
 
 void UserModel::signUpAsCompany() {
@@ -255,6 +282,15 @@ QList<PostModel> UserModel::getPosts() {
     temp.append(model);
   }
   return temp;
+}
+
+void UserModel::changeFollowState(int user, bool state) {
+  CREATE_SQL(SET_INVITATION_STATUS);
+  SQL_BIND_PLACED(":state", state);
+  SQL_BIND_PLACED(":follower", user);
+  SQL_BIND_PLACED(":following", id);
+  if (!query.exec())
+    SQL_THROW;
 }
 
 UserNotFoundException::~UserNotFoundException() noexcept {}

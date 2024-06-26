@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>747</width>
-    <height>431</height>
+    <height>432</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -139,7 +139,7 @@ border-radius: 10px;
          <widget class="QPushButton" name="follow_btn">
           <property name="maximumSize">
            <size>
-            <width>100</width>
+            <width>110</width>
             <height>16777215</height>
            </size>
           </property>

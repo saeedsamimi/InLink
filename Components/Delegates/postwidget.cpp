@@ -29,14 +29,15 @@ PostWidget::PostWidget(UserModel *user, const PostModel &post, QWidget *parent,
   }
   // the post when is liked , should be states liked
   if (isLiked) {
-    ui->like_link_btn->setText("Like");
-    ui->like_link_btn->setIcon(QIcon(":/like.png"));
-  } else {
     ui->like_link_btn->setText("Liked");
     ui->like_link_btn->setIcon(QIcon(":/like-filled.png"));
+  } else {
+    ui->like_link_btn->setText("Like");
+    ui->like_link_btn->setIcon(QIcon(":/like.png"));
   }
   // updating the user following state
-  updateUserFollowingState();
+  followState = user->getFollowingState(owner);
+  updateUserFollowingStateUtil(followState);
   // set the content data
   ui->content_lbl->setText(
       util::buildColoredLabeled("Content", "3434FF", model.getContent()));
@@ -73,34 +74,48 @@ PostWidget::PostWidget(UserModel *user, const PostModel &post, QWidget *parent,
 PostWidget::~PostWidget() { delete ui; }
 
 void PostWidget::on_follow_btn_clicked() {
-  if (!isFollowing)
+  if (followState == UserModel::FollowingStates::NoFollowed)
     user->follow(owner);
-  else
+  else if (followState == UserModel::FollowingStates::Followed)
     user->unfollow(owner);
+  else
+    return;
   updateUserFollowingState();
 }
 
-void PostWidget::handleFollowingChanged(bool newState, int id) {
+void PostWidget::handleFollowingChanged(UserModel::FollowingStates newState,
+                                        int id) {
   if (id == owner.getId()) {
-    if (newState) {
-      ui->follow_btn->setText(labels[user->isCompany()][1]);
-      ui->follow_btn->setIcon(QIcon(":/minus.png"));
-    } else {
-      ui->follow_btn->setText(labels[user->isCompany()][0]);
-      ui->follow_btn->setIcon(QIcon(":/plus.svg"));
-    }
-    isFollowing = newState;
+    updateUserFollowingStateUtil(newState);
+    followState = newState;
   }
 }
 
 void PostWidget::updateUserFollowingState() {
-  if (user->isFollowing(owner)) {
-    ui->follow_btn->setText(labels[user->isCompany()][1]);
-    ui->follow_btn->setIcon(QIcon(":/minus.png"));
-    isFollowing = true;
-  } else {
+  updateUserFollowingStateUtil(user->getFollowingState(owner));
+}
+
+void PostWidget::updateUserFollowingStateUtil(
+    UserModel::FollowingStates state) {
+  switch (state) {
+  case UserModel::FollowingStates::NoFollowed:
     ui->follow_btn->setText(labels[user->isCompany()][0]);
     ui->follow_btn->setIcon(QIcon(":/plus.svg"));
+    break;
+  case UserModel::FollowingStates::Followed:
+    ui->follow_btn->setText(labels[user->isCompany()][1]);
+    ui->follow_btn->setIcon(QIcon(":/minus.png"));
+    break;
+  case UserModel::FollowingStates::PendingFollowing:
+    ui->follow_btn->setText("Pending");
+    ui->follow_btn->setEnabled(false);
+    break;
+  case UserModel::FollowingStates::Rejected:
+    ui->follow_btn->setText("Rejected");
+    ui->follow_btn->setEnabled(false);
+    break;
+  default:
+    break;
   }
 }
 
