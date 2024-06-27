@@ -2,6 +2,7 @@
 #include "ui_chatcomponent.h"
 #include <Components/Delegates/chatdelegate.h>
 #include <Components/Dialogs/chatdialog.h>
+#include <Components/Dialogs/showfollowings.h>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -41,7 +42,7 @@ void ChatComponent::onConnected() { qDebug() << "connected to server"; }
 void ChatComponent::onDisconnected() { qDebug() << "server disconnected!"; }
 
 void ChatComponent::onError(QAbstractSocket::SocketError err) {
-  qDebug() << "Error occured" << err;
+  qDebug() << "Error occured: " << err;
 }
 
 void ChatComponent::textMessageReceived(QString message) {
@@ -60,4 +61,9 @@ void ChatComponent::addChat(int id) {
   item->setSizeHint(chat_delegate->sizeHint());
   ui->Chats_list->addItem(item);
   ui->Chats_list->setItemWidget(item, chat_delegate);
+}
+
+void ChatComponent::on_startChatBtn_clicked() {
+  ShowFollowings show_followings_dialog(model, this);
+  show_followings_dialog.exec();
 }

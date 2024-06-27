@@ -34,12 +34,13 @@ public:
 class PostModel {
 private:
   int post_id;
-  int reposted_from = -1;
+  int reposted_from;
+  bool suggested;
 
 public:
   /* Constructors */
 
-  PostModel(int postId, int reposted_from = -1);
+  PostModel(int postId, int reposted_from = -1, bool suggested = false);
   PostModel(const PostModel &m);
 
   /* static object creators */
@@ -49,7 +50,9 @@ public:
 
   /* static function to get all posts */
 
-  static QList<PostModel> getAllPosts();
+  static QList<PostModel> getLastTenPosts(int count = 10);
+  static QList<PostModel> getRelativePosts(int user_id);
+  static QList<PostModel> getFollowedPosts(int user_id);
 
   /* Post Model getters */
 
@@ -59,6 +62,7 @@ public:
   UserModel getUser() const;
   bool isHavePicture() const;
   QDateTime getPostedAtTime() const;
+  bool isSuggested() const;
 
   /* Post Model like functions */
 

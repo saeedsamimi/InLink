@@ -66,6 +66,10 @@ PostWidget::PostWidget(UserModel *user, const PostModel &post, QWidget *parent,
     ui->post_pic_lbl->hide();
   else
     ui->post_pic_lbl->setPixmap(post.getPostPixture());
+
+  // hide the suggested tag for not suggested users
+  if (!post.isSuggested())
+    ui->suggest_lbl->hide();
   // connect following changed signal to handleFollowingChanged slot
   connect(user, &UserModel::followingChanged, this,
           &PostWidget::handleFollowingChanged);

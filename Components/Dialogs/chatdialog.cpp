@@ -37,7 +37,6 @@ ChatDialog::ChatDialog(UserModel *model, QWidget *parent)
 
 ChatDialog::~ChatDialog() {
   delete ui;
-  delete model;
   delete socket;
 }
 

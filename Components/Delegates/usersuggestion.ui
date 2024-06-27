@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>202</width>
+    <width>227</width>
     <height>245</height>
    </rect>
   </property>
@@ -31,6 +31,20 @@
      <property name="spacing">
       <number>1</number>
      </property>
+     <item>
+      <widget class="QToolButton" name="view_profile_btn">
+       <property name="text">
+        <string>view profile</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../resource.qrc">
+         <normaloff>:/businessman.png</normaloff>:/businessman.png</iconset>
+       </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextBesideIcon</enum>
+       </property>
+      </widget>
+     </item>
      <item>
       <spacer name="hspacer_item">
        <property name="orientation">

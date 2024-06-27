@@ -22,6 +22,8 @@ private slots:
   void onError(QAbstractSocket::SocketError err);
   void textMessageReceived(QString message);
 
+  void on_startChatBtn_clicked();
+
 private:
   Ui::ChatComponent *ui;
   QWebSocket *socket;

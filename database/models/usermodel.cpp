@@ -48,6 +48,8 @@ RelatedUsers AS (SELECT u.id FROM users u JOIN jobs j ON j.job_name = u.recent_j
 FollowedUsers AS (SELECT f.following FROM follow f WHERE f.follower = :id)
 SELECT r.id FROM RelatedUsers r WHERE r.id NOT IN (SELECT following FROM FollowedUsers);)"
 );
+
+const QLatin1String GET_FOLLOWED_USERS(R"(select follower,u.id FROM follow JOIN users u ON u.id = follower WHERE following = ? AND following_state != FALSE)");
 // clang-format on
 
 UserModel::UserModel(int id) : id(id) {
@@ -303,6 +305,18 @@ QList<UserModel> UserModel::getRelatedUsers() {
     QList<UserModel> users;
     while (query.next())
       users.emplace_back(query.value(0).toInt());
+    return users;
+  } else
+    SQL_THROW;
+}
+
+QList<int> UserModel::getFollowedUsers() {
+  CREATE_SQL(GET_FOLLOWED_USERS);
+  SQL_BIND(id);
+  if (query.exec()) {
+    QList<int> users;
+    while (query.next())
+      users.push_back(query.value(0).toInt());
     return users;
   } else
     SQL_THROW;

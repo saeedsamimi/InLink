@@ -1,5 +1,5 @@
 #ifdef MAIN_HEADER
-#error THE MAIN HEADER ONLY CAN INCLUDE ONCE
+#error THE MAIN HEADER SHOULD INCLUDE ONCE
 #else
 #define MAIN_HEADER
 
@@ -21,8 +21,5 @@
 // Qt reuqired libraries include
 #include <QApplication>
 #include <QMessageBox>
-
-// test headers
-#include <test/test_captcha.h>
 
 #endif // MAIN_HEADER

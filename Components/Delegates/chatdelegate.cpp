@@ -7,10 +7,13 @@ ChatDelegate::ChatDelegate(int id, QWidget *parent)
       dialog(nullptr) {
   ui->setupUi(this);
   QPixmap picture(model->getUserProfile());
-  picture = picture.scaled(ui->icon_lbl->size(), Qt::KeepAspectRatio,
-                           Qt::SmoothTransformation);
   ui->username_lbl->setText(model->getFirstName() + ' ' + model->getLastName());
-  ui->icon_lbl->setPixmap(picture);
+  if (!picture.isNull()) {
+    picture = picture.scaled(ui->icon_lbl->size(), Qt::KeepAspectRatio,
+                             Qt::SmoothTransformation);
+    ui->icon_lbl->setPixmap(picture);
+  } else
+    ui->icon_lbl->setText("No Picture");
 }
 
 ChatDelegate::~ChatDelegate() {
@@ -21,7 +24,7 @@ ChatDelegate::~ChatDelegate() {
 
 void ChatDelegate::mousePressEvent(QMouseEvent *event) {
   if (event->button() == Qt::LeftButton) {
-    dialog = new ChatDialog(model, this);
+    dialog = new ChatDialog(model, QApplication::activeWindow());
     dialog->exec();
   }
   QWidget::mousePressEvent(event);

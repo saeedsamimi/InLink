@@ -25,6 +25,8 @@ private slots:
 
   void on_follow_btn_clicked();
 
+  void on_view_profile_btn_clicked();
+
 private:
   Ui::UserSuggestion *ui;
   UserModel model;

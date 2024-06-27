@@ -22,10 +22,6 @@ file(GLOB_RECURSE COMPONENTS_FILES ${COMPONENTS_DIR}/*.h ${COMPONENTS_DIR}/*.cpp
 file(GLOB_RECURSE PAGES_FILES ${PAGES_DIR}/*.h ${PAGES_DIR}/*.cpp ${PAGES_DIR}/*.ui)
 file(GLOB_RECURSE QSS_FILES qss/*.qss)
 file(GLOB_RECURSE UTILS_FILES utils/*.h utils/*.cpp utils/*.ui)
-# setting test files
-set(TEST_FILES
-    test/test_captcha.cpp test/test_captcha.h test/test_captcha.ui # test files for Captcha
-)
 # project secret key configuration
 # 1-first read the secret file
 file(READ "${CMAKE_SOURCE_DIR}/.env" ENV_FILE_CONTENT)
@@ -46,7 +42,6 @@ qt6_add_executable(InLink
     main.cpp main.h
     ${COMPONENTS_FILES}
     ${RESOURCE_FILES}
-    ${TEST_FILES}
     ${QSS_FILES}
     ${UTILS_FILES}
     ${DATABASE_FILES}

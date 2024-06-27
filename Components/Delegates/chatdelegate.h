@@ -17,8 +17,6 @@ public:
   explicit ChatDelegate(int id, QWidget *parent = nullptr);
   ~ChatDelegate();
 
-  UserModel *getGlobalUser() const;
-
 protected:
   void mousePressEvent(QMouseEvent *event) override;
 

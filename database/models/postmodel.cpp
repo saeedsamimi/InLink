@@ -2,7 +2,11 @@
 #include <utils/Util.h>
 
 // clang-format off
-const QLatin1String GET_ALL_POSTS(R"(SELECT post_id,posted_from FROM posts)");
+const QLatin1String GET_LAST_TEN_POSTS(R"(SELECT post_id,posted_from FROM posts ORDER BY created_at DESC LIMIT ?)");
+
+const QLatin1String GET_MOST_RELATIVE_POSTS(R"(SELECT p.post_id,p.posted_from FROM posts p JOIN users u ON p.user_id = u.id JOIN jobs j ON u.recent_job = j.job_name JOIN users target_user ON target_user.id = :id JOIN jobs target_job ON target_user.recent_job = target_job.job_name WHERE p.user_id != :id AND ( j.job_group_id = target_job.job_group_id OR u.city = target_user.city OR u.country = target_user.country) ORDER BY created_at DESC)");
+
+const QLatin1String GET_MOST_FOLLOWED_POSTS(R"(SELECT p.post_id,p.posted_from FROM posts p JOIN users u ON p.user_id = u.id JOIN follow f ON f.following = u.id WHERE p.user_id != :id AND f.follower = :id AND f.following_state = TRUE ORDER BY created_at DESC)");
 
 const QLatin1String GET_POST_CONTENT(R"(SELECT content FROM posts WHERE post_id = ?)");
 
@@ -31,28 +35,52 @@ const QLatin1String POST_REMOVE_LIKE(R"(DELETE FROM likes WHERE post_id = ? AND 
 const QLatin1String POST_REGISTER_REPOST(R"(INSERT INTO posts(user_id,posted_from) VALUES(?,?))");
 // clang-format on
 
-PostModel::PostModel(int postId, int reposted_from)
-    : post_id(postId), reposted_from(reposted_from) {}
+PostModel::PostModel(int postId, int reposted_from, bool is_suggested)
+    : post_id(postId), reposted_from(reposted_from), suggested(is_suggested) {}
 
 PostModel::PostModel(const PostModel &m)
-    : post_id(m.post_id), reposted_from(m.reposted_from) {}
+    : post_id(m.post_id), reposted_from(m.reposted_from),
+      suggested(m.suggested) {}
 
 int PostModel::getPostId() const {
   return isReposted() ? PostModel(reposted_from).getPostId() : post_id;
 }
 
-QList<PostModel> PostModel::getAllPosts() {
-  CREATE_SQL(GET_ALL_POSTS);
+QList<PostModel> PostModel::getLastTenPosts(int count) {
+  CREATE_SQL(GET_LAST_TEN_POSTS);
+  SQL_BIND(count);
   if (!query.exec())
     SQL_THROW;
   QList<PostModel> models;
-  while (query.next()) {
-    PostModel model(query.value(0).toInt());
-    if (!query.value(1).isNull())
-      model.reposted_from = query.value(1).toInt();
-    models.append(model);
-  }
+  while (query.next())
+    models.emplace_back(query.value(0).toInt(),
+                        query.value(1).isNull() ? -1 : query.value(1).toInt());
   return models;
+}
+
+QList<PostModel> PostModel::getRelativePosts(int user_id) {
+  CREATE_SQL(GET_MOST_RELATIVE_POSTS);
+  SQL_BIND_PLACED(":id", user_id);
+  if (!query.exec())
+    SQL_THROW;
+  QList<PostModel> posts;
+  while (query.next())
+    posts.emplace_back(query.value(0).toInt(),
+                       query.value(1).isNull() ? -1 : query.value(1).toInt(),
+                       true);
+  return posts;
+}
+
+QList<PostModel> PostModel::getFollowedPosts(int user_id) {
+  CREATE_SQL(GET_MOST_FOLLOWED_POSTS);
+  SQL_BIND_PLACED(":id", user_id);
+  if (!query.exec())
+    SQL_THROW;
+  QList<PostModel> posts;
+  while (query.next())
+    posts.emplace_back(query.value(0).toInt(),
+                       query.value(1).isNull() ? -1 : query.value(1).toInt());
+  return posts;
 }
 
 PostModel PostModel::registerNewPost(int user_id, const QString *content,
@@ -124,6 +152,8 @@ QDateTime PostModel::getPostedAtTime() const {
   }
   SQL_THROW;
 }
+
+bool PostModel::isSuggested() const { return suggested; }
 
 void PostModel::addLike(int user_id) {
   CREATE_SQL(POST_ADD_LIKE);

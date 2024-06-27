@@ -86,7 +86,9 @@ public:
   [[nodiscard]] QList<PostModel> getPosts();
 
   /* Get related users */
+
   [[nodiscard]] QList<UserModel> getRelatedUsers();
+  [[nodiscard]] QList<int> getFollowedUsers();
 
 signals:
   void followingChanged(FollowingStates newState, int id);

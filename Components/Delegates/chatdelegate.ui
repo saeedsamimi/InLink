@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>ChatDelegate</class>
  <widget class="QWidget" name="ChatDelegate">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>143</width>
+    <height>72</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -25,6 +33,11 @@
        <width>50</width>
        <height>50</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>5</pointsize>
+      </font>
      </property>
      <property name="text">
       <string/>

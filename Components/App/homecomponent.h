@@ -3,6 +3,8 @@
 
 #include <database/models/postmodel.h>
 
+#include <QListWidgetItem>
+#include <QPushButton>
 #include <QSqlQueryModel>
 #include <QWidget>
 #include <database/models/usermodel.h>
@@ -21,14 +23,17 @@ public:
 private slots:
   void handleActionCreatePost();
   void handlePostCreation(PostModel model);
+  void handleLoadMorePost();
 
 private:
   Ui::HomeComponent *ui;
   QAction *startPost_action;
   UserModel *model;
   QList<PostModel> posts;
+  QListWidgetItem *btn;
+  QPushButton *load_more_btn;
 
-  void addPost(PostModel &model);
+  void addPost(PostModel &model, int insert = -1);
 };
 
 #endif // HOMECOMPONENT_H

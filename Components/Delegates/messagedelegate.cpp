@@ -14,8 +14,10 @@ MessageDelegate::MessageDelegate(int sender_id, QString content,
   ui->time_lbl->setText(time.toString("yy/MM/dd - hh:mm:ss"));
   ui->content_lbl->setText(content);
   ui->name_lbl->setText(sender.getFirstName() + " " + sender.getLastName());
-  ui->icon_lbl->setPixmap(sender.getUserProfile().scaled(
-      ui->icon_lbl->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+  auto userProfile = sender.getUserProfile();
+  if (!userProfile.isNull()) // prevent from scaling null pixmap
+    ui->icon_lbl->setPixmap(userProfile.scaled(
+        ui->icon_lbl->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
   if (!pixmap_path.isEmpty()) {
     pic_lbl = new QLabel;
     QByteArray imageData = QByteArray::fromBase64(pixmap_path.toLatin1());

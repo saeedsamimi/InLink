@@ -1,5 +1,6 @@
 #include "usersuggestion.h"
 #include "ui_usersuggestion.h"
+#include <Components/Dialogs/showprofiledialog.h>
 #include <utils/Util.h>
 
 UserSuggestion::UserSuggestion(bool isCompany, const UserModel &model,
@@ -21,4 +22,9 @@ void UserSuggestion::on_close_btn_clicked() { emit onClosed(); }
 void UserSuggestion::on_follow_btn_clicked() {
   emit onFollow();
   emit onClosed();
+}
+
+void UserSuggestion::on_view_profile_btn_clicked() {
+  ShowProfileDialog dialog(&model, this);
+  dialog.exec();
 }

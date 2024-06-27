@@ -44,7 +44,7 @@ const getUserMessages = (ws, from_id, to_id) => {
   }
 
   pool.query(
-    "SELECT msg,time,from_id,picture FROM messages WHERE to_id = $1 or from_id = $1 or to_id = $2 or from_id = $2",
+    "SELECT msg,time,from_id,picture FROM messages WHERE (to_id = $1 AND from_id = $2) or (to_id = $2 AND from_id = $1)",
     [from_id, to_id],
     (err, res) => {
       if (err) {
