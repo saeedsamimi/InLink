@@ -43,7 +43,7 @@ configure_file(${CMAKE_SOURCE_DIR}/secret_key.h.in ${CMAKE_BINARY_DIR}/secret_ke
 qt6_standard_project_setup()
 qt6_add_executable(InLink
     MANUAL_FINALIZATION
-    main.cpp
+    main.cpp main.h
     ${COMPONENTS_FILES}
     ${RESOURCE_FILES}
     ${TEST_FILES}
@@ -51,7 +51,6 @@ qt6_add_executable(InLink
     ${UTILS_FILES}
     ${DATABASE_FILES}
     ${PAGES_FILES}
-    main.h
 )
 # set translations and then install the .qm file into CURRENT_BIN_DIR
 qt6_add_translations(InLink

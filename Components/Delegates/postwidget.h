@@ -42,8 +42,6 @@ private:
 
   void updateUserFollowingState();
   void updateUserFollowingStateUtil(UserModel::FollowingStates);
-  inline static const QString labels[2][2]{{"Connection", "Connected"},
-                                           {"Follow", "Following"}};
 };
 
 #endif // POSTWIDGET_H

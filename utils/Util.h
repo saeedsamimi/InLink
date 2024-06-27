@@ -12,6 +12,8 @@ private:
   const static QString COLORED_TEXT_TEMPLATE;
 
 public:
+  inline static const QString labels[2][2]{{"Connection", "Connected"},
+                                           {"Follow", "Following"}};
   enum Theme { Light, Dark };
   static QString buildColoredLabeled(QString label, QString color,
                                      QString content);

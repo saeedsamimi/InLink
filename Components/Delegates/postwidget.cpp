@@ -99,11 +99,11 @@ void PostWidget::updateUserFollowingStateUtil(
     UserModel::FollowingStates state) {
   switch (state) {
   case UserModel::FollowingStates::NoFollowed:
-    ui->follow_btn->setText(labels[user->isCompany()][0]);
+    ui->follow_btn->setText(util::labels[user->isCompany()][0]);
     ui->follow_btn->setIcon(QIcon(":/plus.svg"));
     break;
   case UserModel::FollowingStates::Followed:
-    ui->follow_btn->setText(labels[user->isCompany()][1]);
+    ui->follow_btn->setText(util::labels[user->isCompany()][1]);
     ui->follow_btn->setIcon(QIcon(":/minus.png"));
     break;
   case UserModel::FollowingStates::PendingFollowing:

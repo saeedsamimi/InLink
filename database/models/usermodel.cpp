@@ -41,6 +41,13 @@ const QLatin1String UNFOLLOW_USER(R"(DELETE FROM follow WHERE follower = :follow
 const QLatin1String GET_USER_POSTS(R"(SELECT post_id,posted_from FROM posts WHERE user_id = ?)");
 
 const QLatin1String SIGN_UP_AS_COMPANY(R"(UPDATE users SET iscompany = TRUE WHERE id = ?)");
+
+const QLatin1String GET_RELATED_USERS(
+R"(WITH TargetUserJobGroup AS (SELECT j.job_group_id FROM users u JOIN jobs j ON j.job_name = u.recent_job WHERE u.id = :id),
+RelatedUsers AS (SELECT u.id FROM users u JOIN jobs j ON j.job_name = u.recent_job WHERE j.job_group_id = (SELECT job_group_id FROM TargetUserJobGroup) AND u.id != :id),
+FollowedUsers AS (SELECT f.following FROM follow f WHERE f.follower = :id)
+SELECT r.id FROM RelatedUsers r WHERE r.id NOT IN (SELECT following FROM FollowedUsers);)"
+);
 // clang-format on
 
 UserModel::UserModel(int id) : id(id) {
@@ -68,6 +75,11 @@ UserModel::UserModel(const UserModel &other)
       m_username(other.m_username), m_lastname(other.m_lastname),
       m_employment_type(other.m_employment_type),
       m_is_company(other.m_is_company) {}
+
+UserModel UserModel::operator=(const UserModel &other) {
+  UserModel model(other);
+  return other;
+}
 
 int UserModel::getId() const { return id; }
 
@@ -282,6 +294,18 @@ QList<PostModel> UserModel::getPosts() {
     temp.append(model);
   }
   return temp;
+}
+
+QList<UserModel> UserModel::getRelatedUsers() {
+  CREATE_SQL(GET_RELATED_USERS);
+  SQL_BIND_PLACED(":id", id);
+  if (query.exec()) {
+    QList<UserModel> users;
+    while (query.next())
+      users.emplace_back(query.value(0).toInt());
+    return users;
+  } else
+    SQL_THROW;
 }
 
 void UserModel::changeFollowState(int user, bool state) {

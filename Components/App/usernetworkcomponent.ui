@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>278</width>
+    <height>580</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -58,12 +58,31 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Suggests:</string>
+      <string>Suggestations::</string>
      </property>
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="suggests_grid"/>
+    <widget class="QListWidget" name="suggest_list">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>225</height>
+      </size>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="flow">
+      <enum>QListView::LeftToRight</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <spacer name="verticalSpacer">

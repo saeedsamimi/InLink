@@ -34,6 +34,7 @@ public:
 
   UserModel(int id);
   UserModel(const UserModel &other);
+  UserModel operator=(const UserModel &other);
 
   /* Identity getters */
 
@@ -82,7 +83,10 @@ public:
 
   /* Get user's posts */
 
-  QList<PostModel> getPosts();
+  [[nodiscard]] QList<PostModel> getPosts();
+
+  /* Get related users */
+  [[nodiscard]] QList<UserModel> getRelatedUsers();
 
 signals:
   void followingChanged(FollowingStates newState, int id);
