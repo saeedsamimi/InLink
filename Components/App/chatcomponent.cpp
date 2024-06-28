@@ -14,7 +14,6 @@ ChatComponent::ChatComponent(UserModel *model, QWidget *parent)
     : QWidget(parent), ui(new Ui::ChatComponent), socket(new QWebSocket),
       model(model) {
   ui->setupUi(this);
-
   /* init the web socket */
   connect(socket, &QWebSocket::connected, this, &ChatComponent::onConnected);
   connect(socket, &QWebSocket::disconnected, this,
@@ -37,12 +36,20 @@ ChatComponent::~ChatComponent() {
   delete socket;
 }
 
-void ChatComponent::onConnected() { qDebug() << "connected to server"; }
+void ChatComponent::onConnected() {
+  qDebug() << "connected to server";
+  ui->error_lbl->hide();
+  ui->retry_btn->hide();
+}
 
 void ChatComponent::onDisconnected() { qDebug() << "server disconnected!"; }
 
 void ChatComponent::onError(QAbstractSocket::SocketError err) {
   qDebug() << "Error occured: " << err;
+  if (err == QAbstractSocket::ConnectionRefusedError) {
+    ui->error_lbl->show();
+    ui->retry_btn->show();
+  }
 }
 
 void ChatComponent::textMessageReceived(QString message) {
@@ -66,4 +73,11 @@ void ChatComponent::addChat(int id) {
 void ChatComponent::on_startChatBtn_clicked() {
   ShowFollowings show_followings_dialog(model, this);
   show_followings_dialog.exec();
+}
+
+void ChatComponent::on_retry_btn_clicked() {
+  socket->open(
+      QUrl(QString("ws://localhost:3000/chat?user_id=%1").arg(model->getId())));
+  ui->error_lbl->hide();
+  ui->retry_btn->hide();
 }

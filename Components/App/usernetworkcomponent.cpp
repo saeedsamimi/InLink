@@ -15,19 +15,24 @@ UserNetworkComponent::UserNetworkComponent(UserModel *model, QWidget *parent)
     connect(custom_widget, &UserInvitation::finished, this,
             &UserNetworkComponent::handleFinishInvitation);
   }
-  for (auto &user : model->getRelatedUsers()) {
-    auto widget_item = new QListWidgetItem();
-    auto custom_widget = new UserSuggestion(model->isCompany(), user);
-    widget_item->setSizeHint(custom_widget->sizeHint());
-    ui->suggest_list->addItem(widget_item);
-    ui->suggest_list->setItemWidget(widget_item, custom_widget);
-    connect(custom_widget, &UserSuggestion::onClosed, this,
-            [this, widget_item]() {
-              ui->suggest_list->removeItemWidget(widget_item);
-              delete widget_item;
-            });
-    connect(custom_widget, &UserSuggestion::onFollow, this,
-            [this, user]() { this->model->follow(user); });
+  if (model->isCompany()) {
+    ui->suggest_list->hide();
+    ui->suggest_lbl->hide();
+  } else {
+    for (auto &user : model->getRelatedUsers()) {
+      auto widget_item = new QListWidgetItem();
+      auto custom_widget = new UserSuggestion(model->isCompany(), user);
+      widget_item->setSizeHint(custom_widget->sizeHint());
+      ui->suggest_list->addItem(widget_item);
+      ui->suggest_list->setItemWidget(widget_item, custom_widget);
+      connect(custom_widget, &UserSuggestion::onClosed, this,
+              [this, widget_item]() {
+                ui->suggest_list->removeItemWidget(widget_item);
+                delete widget_item;
+              });
+      connect(custom_widget, &UserSuggestion::onFollow, this,
+              [this, user]() { this->model->follow(user); });
+    }
   }
 }
 

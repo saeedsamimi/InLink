@@ -63,7 +63,8 @@ we preffer you to install `OpenSSL` library by `vcpkg`.
     ```bash
     cmake --build . --target InLink --parallel 4
     ```
-5. **Running the server:** please go back to the project's root and run this to install the Server node js requirement libraries:
+### Server-Side (JavaScript)
+1. **Running the server:** please go back to the project's root and run this to install the Server(node.js) requirement libraries:
     ```bash
     cd Server & npm i
     ```

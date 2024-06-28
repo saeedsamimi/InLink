@@ -24,6 +24,8 @@ private slots:
 
   void on_startChatBtn_clicked();
 
+  void on_retry_btn_clicked();
+
 private:
   Ui::ChatComponent *ui;
   QWebSocket *socket;

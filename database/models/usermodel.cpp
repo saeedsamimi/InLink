@@ -49,7 +49,7 @@ FollowedUsers AS (SELECT f.following FROM follow f WHERE f.follower = :id)
 SELECT r.id FROM RelatedUsers r WHERE r.id NOT IN (SELECT following FROM FollowedUsers);)"
 );
 
-const QLatin1String GET_FOLLOWED_USERS(R"(select follower,u.id FROM follow JOIN users u ON u.id = follower WHERE following = ? AND following_state != FALSE)");
+const QLatin1String GET_FOLLOWED_USERS(R"(select following FROM follow JOIN users u ON u.id = following WHERE follower = ? AND following_state != FALSE)");
 // clang-format on
 
 UserModel::UserModel(int id) : id(id) {

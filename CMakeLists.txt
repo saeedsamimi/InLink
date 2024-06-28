@@ -22,6 +22,7 @@ file(GLOB_RECURSE COMPONENTS_FILES ${COMPONENTS_DIR}/*.h ${COMPONENTS_DIR}/*.cpp
 file(GLOB_RECURSE PAGES_FILES ${PAGES_DIR}/*.h ${PAGES_DIR}/*.cpp ${PAGES_DIR}/*.ui)
 file(GLOB_RECURSE QSS_FILES qss/*.qss)
 file(GLOB_RECURSE UTILS_FILES utils/*.h utils/*.cpp utils/*.ui)
+file(GLOB SCHEMA_FILES Schematics/*.cpp Schematics/*.h)
 # project secret key configuration
 # 1-first read the secret file
 file(READ "${CMAKE_SOURCE_DIR}/.env" ENV_FILE_CONTENT)
@@ -46,6 +47,9 @@ qt6_add_executable(InLink
     ${UTILS_FILES}
     ${DATABASE_FILES}
     ${PAGES_FILES}
+    ${SCHEMA_FILES}
+    Schematics/person.h Schematics/person.cpp
+    Schematics/company.h Schematics/company.cpp
 )
 # set translations and then install the .qm file into CURRENT_BIN_DIR
 qt6_add_translations(InLink
