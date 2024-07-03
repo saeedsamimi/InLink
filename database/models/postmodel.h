@@ -8,6 +8,7 @@
 
 class PostModel;
 class UserModel;
+class Likes;
 
 class Comment {
 private:
@@ -82,8 +83,10 @@ public:
   QList<Comment> getComments() const;
 
   friend class UserModel;
+  friend class Likes;
 };
 
+#include <database/models/likes.h>
 #include <database/models/usermodel.h>
 
 #endif // POSTMODEL_H

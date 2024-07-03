@@ -48,8 +48,6 @@ qt6_add_executable(InLink
     ${DATABASE_FILES}
     ${PAGES_FILES}
     ${SCHEMA_FILES}
-    Schematics/person.h Schematics/person.cpp
-    Schematics/company.h Schematics/company.cpp
 )
 # set translations and then install the .qm file into CURRENT_BIN_DIR
 qt6_add_translations(InLink

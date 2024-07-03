@@ -18,7 +18,7 @@
     <item>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="3">
-       <widget class="QPushButton" name="JobsTabBtn">
+       <widget class="RippleButton" name="JobsTabBtn">
         <property name="text">
          <string>Jobs</string>
         </property>
@@ -35,7 +35,7 @@
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QPushButton" name="MyNetworkTabBtn">
+       <widget class="RippleButton" name="MyNetworkTabBtn">
         <property name="text">
          <string>My Network</string>
         </property>
@@ -52,7 +52,7 @@
        </widget>
       </item>
       <item row="0" column="4">
-       <widget class="QPushButton" name="messaginTabBtn">
+       <widget class="RippleButton" name="messaginTabBtn">
         <property name="text">
          <string>Messaging</string>
         </property>
@@ -69,10 +69,11 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QPushButton" name="homeTabBtn">
+       <widget class="RippleButton" name="homeTabBtn">
         <property name="styleSheet">
          <string notr="true">#homeTabBtn {
     qproperty-iconSize: 24px;
+	border-radius: 0px;
 }
 #homeTabBtn::icon {
     position: absolute;
@@ -119,7 +120,7 @@
        </widget>
       </item>
       <item row="0" column="5">
-       <widget class="QPushButton" name="MeTabBtn">
+       <widget class="RippleButton" name="MeTabBtn">
         <property name="text">
          <string>Me</string>
         </property>
@@ -146,7 +147,7 @@
            <x>0</x>
            <y>0</y>
            <width>774</width>
-           <height>486</height>
+           <height>489</height>
           </rect>
          </property>
         </widget>
@@ -168,6 +169,13 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>RippleButton</class>
+   <extends>QPushButton</extends>
+   <header>Components/Buttons/ripplebutton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../resource.qrc"/>
  </resources>

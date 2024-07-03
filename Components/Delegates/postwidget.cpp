@@ -1,6 +1,7 @@
 #include "postwidget.h"
 
 #include <QMessageBox>
+#include <QStandardItemModel>
 #include <utils/Util.h>
 
 #include "ui_postwidget.h"
@@ -10,7 +11,8 @@
 PostWidget::PostWidget(UserModel *user, const PostModel &post, QWidget *parent,
                        bool showButtons)
     : QWidget(parent), ui(new Ui::PostWidget), model(post), user(user),
-      owner(model.getUser()), isLiked(model.isLiked(user->getId())) {
+      owner(model.getUser()), isLiked(model.isLiked(user->getId())),
+      likes(Likes::fromPost(post)) {
   /* setup UI */
 
   ui->setupUi(this);
@@ -61,18 +63,20 @@ PostWidget::PostWidget(UserModel *user, const PostModel &post, QWidget *parent,
       posted_at_lbl, "3030F0",
       std::move(model.getPostedAtTime().toString("yyyy/MM/dd - HH:mm:SS"))));
   ui->icon_lbl->setPixmap(owner.getUserProfile());
+  // adjust the likes container
+  likes.syncWithWidget(ui->likes);
   // hide the picture lbl is needed
   if (!post.isHavePicture())
     ui->post_pic_lbl->hide();
   else
     ui->post_pic_lbl->setPixmap(post.getPostPixture());
-
   // hide the suggested tag for not suggested users
   if (!post.isSuggested())
     ui->suggest_lbl->hide();
   // connect following changed signal to handleFollowingChanged slot
   connect(user, &UserModel::followingChanged, this,
           &PostWidget::handleFollowingChanged);
+  connect(ui->likes, &IconBadges::clicked, this, &PostWidget::handleShowLikes);
 }
 
 PostWidget::~PostWidget() { delete ui; }
@@ -148,15 +152,28 @@ void PostWidget::on_like_link_btn_clicked() {
     model.removeLike(user->getId());
     ui->like_link_btn->setText("Like");
     ui->like_link_btn->setIcon(QIcon(":/like.png"));
+    likes.popUser(user);
   } else {
     model.addLike(user->getId());
     ui->like_link_btn->setText("Liked");
     ui->like_link_btn->setIcon(QIcon(":/like-filled.png"));
+    likes.pushUser(user);
   }
+  likes.syncWithWidget(ui->likes);
   isLiked = !isLiked;
 }
 
 void PostWidget::on_profile_btn_clicked() {
   ShowProfileDialog *profile = new ShowProfileDialog(&owner, this);
   profile->exec();
+}
+
+void PostWidget::handleShowLikes() {
+  QListView *view = new QListView;
+  IconBadges *sender_badges = qobject_cast<IconBadges *>(sender());
+  view->move(sender_badges->geometry().bottomRight());
+  likes.syncWithView(view);
+  view->show();
+  connect(view, &QListView::destroyed, view, &QListView::deleteLater);
+  connect(this, &PostWidget::destroyed, view, &QListView::deleteLater);
 }

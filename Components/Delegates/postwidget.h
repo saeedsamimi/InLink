@@ -1,5 +1,6 @@
 #ifndef POSTWIDGET_H
 #define POSTWIDGET_H
+#include <database/models/likes.h>
 #include <database/models/postmodel.h>
 
 #include <QWidget>
@@ -31,11 +32,14 @@ private slots:
 
   void on_profile_btn_clicked();
 
+  void handleShowLikes();
+
 private:
   Ui::PostWidget *ui;
   PostModel model;
   UserModel owner;
   UserModel *user;
+  Likes likes;
   bool isLiked;
   UserModel::FollowingStates followState =
       UserModel::FollowingStates::NoFollowed;
