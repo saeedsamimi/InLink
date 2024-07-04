@@ -16,6 +16,8 @@ public:
   static CompanyModel SignUpByUser(UserModel *model, QString name);
   int getId() const;
   QString getName() const;
+  void createJob(const QString &name, const QString &jobType,
+                 const QString &location, const QString &jobMode);
 
 private:
   int ownerId;

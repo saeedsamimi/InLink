@@ -2,6 +2,7 @@
 
 #include "dbinit.h"
 #include "encryption.hpp"
+#include <utils/Util.h>
 
 const char *identity_list[12] = {"first_name", "last_name", "birth_date",
                                  "country",    "city",      "school",
@@ -9,13 +10,10 @@ const char *identity_list[12] = {"first_name", "last_name", "birth_date",
                                  "recent_job", "emp_type",  "recent_company"};
 
 void insertUser(const QString &username, const QString &password) {
-  QSqlQuery query;
-  // handle in-server errors
-  if (!query.prepare(INSERT_USER_SQL))
-    throw query.lastError();
+  CREATE_SQL(INSERT_USER_SQL);
   // handle in-insert errors
-  query.addBindValue(username);
-  query.addBindValue(hashUsingSHA256(password));
+  SQL_BIND(username);
+  SQL_BIND(hashUsingSHA256(password));
   // error codes:
   //        23505:
   //            the user is already exists!
@@ -23,19 +21,16 @@ void insertUser(const QString &username, const QString &password) {
     if (query.lastError().nativeErrorCode().toInt() == 23505)
       throw QObject::tr("This username already exists!");
     else
-      throw query.lastError();
+      SQL_THROW;
 }
 
 int validateUser(const QString &username, const QString &password) {
-  QSqlQuery query;
-  // handle in-server errors
-  if (!query.prepare(FIND_USER_SQL))
-    throw query.lastError();
+  CREATE_SQL(FIND_USER_SQL);
   // handle in-find errors
-  query.addBindValue(username);
+  SQL_BIND(username);
   // no error code is provided
   if (!query.exec())
-    throw query.lastError();
+    SQL_THROW;
   if (query.next()) {
     // returns if the user password correct otherwise gives an exception
     if (query.value(1).toString() != hashUsingSHA256(password))
@@ -50,15 +45,12 @@ int validateUser(const QString &username, const QString &password) {
 }
 
 int getUserID(const QString &username) {
-  QSqlQuery query;
-  // handle in-server errors
-  if (!query.prepare(GET_USERS_ID_SQL))
-    throw query.lastError();
+  CREATE_SQL(GET_USERS_ID_SQL);
   // find the user's ID in db
-  query.addBindValue(username);
+  SQL_BIND(username);
   // the returns always win if the argument username is true!
   if (!query.exec())
-    qDebug() << query.lastError();
+    SQL_THROW;
   query.next();
   return query.value(query.record().indexOf("ID")).toInt();
 }
@@ -69,15 +61,12 @@ int addAccount(const QString &username, const QString &password) {
 }
 
 void changeAccountLevel(int ID, UserLevel level) {
-  QSqlQuery query;
-  // handle in-server errors
-  if (!query.prepare(UPDATE_ACCOUNT_LEVEL_SQL))
-    throw query.lastError();
+  CREATE_SQL(UPDATE_ACCOUNT_LEVEL_SQL);
   // handle in-find errors
-  query.addBindValue(level);
-  query.addBindValue(ID);
+  SQL_BIND(level);
+  SQL_BIND(ID);
   if (!query.exec())
-    throw query.lastError();
+    SQL_THROW;
 }
 
 bool getActiveAccountUser(int &user_id, int &active_level) {
@@ -103,20 +92,14 @@ bool getActiveAccountUser(int &user_id, int &active_level) {
 }
 
 void updateUserIdentity(int ID, const char *identity, const QVariant &value) {
-  QSqlQuery query;
-  // handle in-server errors
-  if (!query.prepare(UPDATE_USER_IDENTITIES_SQL.arg(identity)))
-    throw query.lastError();
+  CREATE_SQL(UPDATE_USER_IDENTITIES_SQL.arg(identity));
   // this function is capable to have errors so the error handling have to
   // enabled for that
-  query.addBindValue(value);
-  query.addBindValue(ID);
+  SQL_BIND(value);
+  SQL_BIND(ID);
   // execute the query
-  if (!query.exec()) {
-    QSqlError lasterr = query.lastError();
-    qDebug() << "Line 114 of user.cpp throws an error : " << lasterr;
-    throw lasterr;
-  }
+  if (!query.exec())
+    SQL_THROW;
 }
 
 void updateUserIdentity(int ID, UserIdentity identity, const QVariant &value) {
@@ -124,25 +107,21 @@ void updateUserIdentity(int ID, UserIdentity identity, const QVariant &value) {
 }
 
 QString getUsername(int ID) {
-  QSqlQuery query;
-  // handle in-server errors
-  if (!query.prepare(GET_USERNAME_SQL))
-    throw query.lastError();
+  CREATE_SQL(GET_USERNAME_SQL);
   query.addBindValue(ID);
   if (!query.exec())
-    qDebug() << query.lastError();
+    SQL_THROW;
   query.next();
   return query.value(0).toString();
 }
 
 int getUserActivationLevel(const QString &username) {
-  QSqlQuery query;
-  if (!query.prepare(GET_USER_ACTIVATION_LEVEL))
-    throw query.lastError();
-  query.addBindValue(username);
+  CREATE_SQL(GET_USER_ACTIVATION_LEVEL);
+  SQL_BIND(username);
   if (query.exec()) {
     query.next();
     return (UserLevel)query.value(0).toInt();
   } else
-    return -1;
+    SQL_THROW;
+  return -1;
 }

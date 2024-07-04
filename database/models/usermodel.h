@@ -1,6 +1,7 @@
 #ifndef USERMODEL_H
 #define USERMODEL_H
 
+#include <database/models/jobmodel.h>
 #include <database/models/postmodel.h>
 #include <database/user.h>
 
@@ -22,7 +23,6 @@ private:
   QString m_username;
   QString m_firstname;
   QString m_lastname;
-  QString m_employment_type;
   bool m_is_company;
 
 public:
@@ -42,7 +42,6 @@ public:
   const QString &getUsername() const;
   const QString &getFirstName() const;
   const QString &getLastName() const;
-  const QString &getEmploymentType() const;
 
   /* account and jobs getters */
 
@@ -89,6 +88,14 @@ public:
 
   [[nodiscard]] QList<UserModel> getRelatedUsers();
   [[nodiscard]] QList<int> getFollowedUsers();
+
+  /* Global Functions */
+
+  [[nodiscard]] static QList<UserModel> getAllUsers();
+
+  /* Get Related Jobs */
+
+  [[nodiscard]] QList<JobModel> getAllRelatedJobs();
 
 signals:
   void followingChanged(FollowingStates newState, int id);

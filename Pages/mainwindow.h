@@ -3,13 +3,14 @@
 
 #include <Components/App/chatcomponent.h>
 #include <Components/App/homecomponent.h>
-#include <Components/App/jobscomponent.h>
 #include <Components/App/mecomponent.h>
 #include <Components/App/usernetworkcomponent.h>
 #include <database/models/usermodel.h>
 
+#include <QCompleter>
 #include <QMainWindow>
 #include <QStackedLayout>
+#include <QStandardItemModel>
 
 namespace Ui {
 class MainWindow;
@@ -25,18 +26,19 @@ public:
   ~MainWindow();
 
 private slots:
-  void handleSearchBox();
   void handleLogOut();
   void handleChangeTab(int);
 
 private:
   Ui::MainWindow *ui;
+  QCompleter searchBoxCompleter;
+  QStandardItemModel usersModel;
   QStackedLayout *stackedLayout;
   MeComponent *me_component;
   HomeComponent *home_component;
   UserNetworkComponent *user_net_component;
   ChatComponent *chat_component;
-  JobsComponent *jobs_component;
+  QWidget *jobs_component;
   int current_index = 0;
 };
 

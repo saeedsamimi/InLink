@@ -2,6 +2,9 @@
 
 #include <utils/Util.h>
 
+#include <Components/App/companyjobcomponent.h>
+#include <Components/App/userjobscomponent.h>
+#include <QCompleter>
 #include <QPushButton>
 
 #include "ui_mainwindow.h"
@@ -11,9 +14,23 @@ MainWindow::MainWindow(UserModel model, QWidget *parent)
       me_component(new MeComponent(&m_user)),
       home_component(new HomeComponent(&m_user)),
       user_net_component(new UserNetworkComponent(&m_user)),
-      chat_component(new ChatComponent(&m_user)),
-      jobs_component(new JobsComponent()), current_index(0) {
+      chat_component(new ChatComponent(&m_user)), current_index(0),
+      searchBoxCompleter(this), usersModel(this) {
+  // choose the jobs view
+  if (model.isCompany())
+    jobs_component = new CompanyJobComponent(CompanyModel::FromUser(&m_user));
+  else
+    jobs_component = new UserJobsComponent(&m_user);
+
   ui->setupUi(this);
+
+  QList<UserModel> all_users(std::move(UserModel::getAllUsers()));
+  for (const UserModel &iuser : all_users)
+    usersModel.appendRow(
+        new QStandardItem(iuser.getUserProfile(), iuser.getUsername()));
+  searchBoxCompleter.setModel(&usersModel);
+  searchBoxCompleter.setCaseSensitivity(Qt::CaseInsensitive);
+  ui->SearchBoxTabButton->setCompleter(&searchBoxCompleter);
 
   stackedLayout = new QStackedLayout();
   ui->scrollAreaWidgetContents->setLayout(stackedLayout);
@@ -32,13 +49,14 @@ MainWindow::MainWindow(UserModel model, QWidget *parent)
 
   /* set the 0 button for the default first-selected item */
 
+  ui->tabsButtonGroup->button(current_index)->setChecked(true);
   ui->tabsButtonGroup->button(current_index)
       ->setStyleSheet("qproperty-iconSize: 24px;");
 
   /* enabling the search box icon action */
 
-  QAction *searchAction = ui->SearchBoxTabButton->addAction(
-      QIcon(QPixmap(":/search.svg")), QLineEdit::TrailingPosition);
+  ui->SearchBoxTabButton->addAction(QIcon(QPixmap(":/search.svg")),
+                                    QLineEdit::TrailingPosition);
 
   /* initializing the stacked layout widgets! */
 
@@ -50,14 +68,10 @@ MainWindow::MainWindow(UserModel model, QWidget *parent)
 
   /* connect the slots :
    * 1- logout handler
-   * 2- search action handler
-   * 3- change current button handler(s)!
+   * 2- change current button handler(s)!
    */
 
   connect(me_component, &MeComponent::logout, this, &MainWindow::handleLogOut);
-
-  connect(searchAction, &QAction::triggered, this,
-          &MainWindow::handleSearchBox);
 
   connect(ui->tabsButtonGroup, &QButtonGroup::idClicked, this,
           &MainWindow::handleChangeTab);
@@ -75,12 +89,7 @@ MainWindow::~MainWindow() {
   delete jobs_component;
 }
 
-void MainWindow::handleSearchBox() { qDebug() << "Unhandled search box"; }
-
-void MainWindow::handleLogOut() {
-  qDebug() << "handle logout in mainwindow called";
-  this->close();
-}
+void MainWindow::handleLogOut() { this->close(); }
 
 void MainWindow::handleChangeTab(int id) {
   /* change the styles of the current and previuos(current_next) buttons styles

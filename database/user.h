@@ -1,5 +1,6 @@
 #ifndef USER_H
 #define USER_H
+#include <QStandardItemModel>
 #include <QtSql>
 
 enum UserLevel { Added, Activated, FullyActivated };

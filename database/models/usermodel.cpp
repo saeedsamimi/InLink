@@ -6,7 +6,7 @@
 #include <utils/Util.h>
 
 // clang-format off
-const QLatin1String LOAD_USER_SQL(R"(SELECT username,first_name,last_name,emp_type,iscompany FROM users WHERE ID = ?)");
+const QLatin1String LOAD_USER_SQL(R"(SELECT username,first_name,last_name,iscompany FROM users WHERE ID = ?)");
 
 const QLatin1String GET_USER_PROFILE_PICTURE_EXISTENCE(R"(SELECT profile IS NOT NULL FROM users WHERE ID = ?)");
 
@@ -50,6 +50,14 @@ SELECT r.id FROM RelatedUsers r WHERE r.id NOT IN (SELECT following FROM Followe
 );
 
 const QLatin1String GET_FOLLOWED_USERS(R"(select following FROM follow JOIN users u ON u.id = following WHERE follower = ? AND following_state != FALSE)");
+
+const QLatin1String GET_ALL_USERS(R"(SELECT id FROM users)");
+
+const QLatin1String GET_RELATED_JOBS(
+R"(WITH target_group AS (SELECT job_group_id FROM job_groups JOIN jobs ON jobs.job_group_id = job_groups.group_id WHERE job_name = ?)
+,related_jobs AS (SELECT job_name FROM jobs JOIN job_groups j ON jobs.job_group_id = j.group_id WHERE j.group_id = (select * from target_group))
+select job_id,jp.job_name,job_type,job_location,job_mode from job_positions jp WHERE job_name IN (select  * from related_jobs);)"
+);
 // clang-format on
 
 UserModel::UserModel(int id) : id(id) {
@@ -63,8 +71,7 @@ UserModel::UserModel(int id) : id(id) {
       m_username = query.value(0).toString();
       m_firstname = query.value(1).toString();
       m_lastname = query.value(2).toString();
-      m_employment_type = query.value(3).toString();
-      m_is_company = query.value(4).toBool();
+      m_is_company = query.value(3).toBool();
     } else {
       throw UserNotFoundException();
     }
@@ -75,7 +82,6 @@ UserModel::UserModel(int id) : id(id) {
 UserModel::UserModel(const UserModel &other)
     : id(other.id), m_firstname(other.m_firstname),
       m_username(other.m_username), m_lastname(other.m_lastname),
-      m_employment_type(other.m_employment_type),
       m_is_company(other.m_is_company) {}
 
 UserModel UserModel::operator=(const UserModel &other) {
@@ -90,10 +96,6 @@ const QString &UserModel::getUsername() const { return m_username; }
 const QString &UserModel::getFirstName() const { return m_firstname; }
 
 const QString &UserModel::getLastName() const { return m_lastname; }
-
-const QString &UserModel::getEmploymentType() const {
-  return m_employment_type;
-}
 
 QString UserModel::getJob() const {
   QSqlQuery query;
@@ -318,6 +320,32 @@ QList<int> UserModel::getFollowedUsers() {
     while (query.next())
       users.push_back(query.value(0).toInt());
     return users;
+  } else
+    SQL_THROW;
+}
+
+QList<UserModel> UserModel::getAllUsers() {
+  CREATE_SQL(GET_ALL_USERS);
+  if (query.exec()) {
+    QList<UserModel> users;
+    while (query.next())
+      users.emplace_back(query.value(0).toInt());
+    return users;
+  } else
+    SQL_THROW;
+}
+
+QList<JobModel> UserModel::getAllRelatedJobs() {
+  CREATE_SQL(GET_RELATED_JOBS);
+  SQL_BIND(getJob());
+  if (query.exec()) {
+    QList<JobModel> jobs;
+    while (query.next()) {
+      jobs.emplace_back(query.value(0).toUInt(), query.value(1).toString(),
+                        query.value(2).toString(), query.value(3).toString(),
+                        query.value(4).toString());
+    }
+    return jobs;
   } else
     SQL_THROW;
 }

@@ -4,6 +4,8 @@
 const QLatin1String GET_COMPANY_FROM_USER(R"(SELECT name FROM app_companies WHERE owner = ?)");
 
 const QLatin1String SIGNUP_NEW_COMPANY(R"(INSERT INTO app_companies (owner,name) VALUES (?,?))");
+
+const QLatin1String REGISTER_NEW_JOB(R"(INSERT INTO job_positions (owner_id,job_name,job_mode,job_location,job_type) VALUES (?,?,?,?,?))");
 // clang-format on
 
 CompanyModel::CompanyModel(QObject *parent) : QObject{parent} {}
@@ -43,3 +45,15 @@ CompanyModel CompanyModel::SignUpByUser(UserModel *model, QString name) {
 int CompanyModel::getId() const { return ownerId; }
 
 QString CompanyModel::getName() const { return name; }
+
+void CompanyModel::createJob(const QString &name, const QString &jobMode,
+                             const QString &location, const QString &jobType) {
+  CREATE_SQL(REGISTER_NEW_JOB);
+  SQL_BIND(ownerId);
+  SQL_BIND(name);
+  SQL_BIND(jobMode);
+  SQL_BIND(location);
+  SQL_BIND(jobType);
+  if (!query.exec())
+    SQL_THROW;
+}
