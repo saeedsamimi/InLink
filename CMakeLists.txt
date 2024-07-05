@@ -53,7 +53,7 @@ qt6_add_executable(InLink
 qt6_add_translations(InLink
     TS_FILES ${TS_FILES}
     QM_FILES_OUTPUT_VARIABLE qm_files)
-install(FILES ${qm_files} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+install(FILES ${qm_files} DESTINATION ${CMAKE_INSTALL_BINDIR})
 # set bundle properties and Win32 runnable
 set_target_properties(InLink PROPERTIES
     ${BUNDLE_ID_OPTION}
@@ -79,18 +79,45 @@ target_link_libraries(InLink
 # set master include folder for preventing the relative file path
 target_include_directories(InLink PRIVATE ${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR})
 # set GNU install dirs for the install time dirs
+qt_standard_project_setup()
 include(GNUInstallDirs)
 install(TARGETS InLink
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
-# configure deployement for windows
+qt_generate_deploy_app_script(
+    TARGET InLink
+    OUTPUT_SCRIPT deploy_script
+    NO_TRANSLATIONS
+    NO_UNSUPPORTED_PLATFORM_ERROR
+)
+install(SCRIPT ${deploy_script})
+# configure deployement for mac and windows
 if(WIN32)
+    set(DEPLOY_COMMAND ${WINDEPLOYQT_EXECUTABLE})
+elseif(APPLE)
+    set(DEPLOY_COMMAND ${MACDEPLOYQT_EXECUTABLE})
+endif()
+if(NOT LINUX)
     add_custom_command(TARGET InLink POST_BUILD
-        COMMAND "${WINDEPLOYQT_EXECUTABLE}" . --no-translations --pdb
-        WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-        COMMENT "The windeploqt is running now!")
+        COMMAND ${DEPLOY_COMMAND} $<TARGET_FILE:InLink> --no-translations
+        COMMENT "Deploying Qt dependencies"
+    )
 endif()
 # finalize the project
 qt_finalize_executable(InLink)
+# configuring the CPACK
+include(CPack)
+set(CPACK_PACKAGE_NAME "InLink")
+set(CPACK_PACKAGE_VERSION "1.0.0")
+set(CPACK_PACKAGE_CONTACT "doob.fooy@gmail.com")
+set(CPACK_PACKAGE_DESCRIPTION "This platfrom offers you to connect to the employers and employees!")
+if(WIN32)
+    set(CPACK_GENERATOR "ZIP;NSIS")
+elseif(UNIX)
+    set(CPACK_GENERATOR "TGZ")
+endif()
+
+set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_NAME}")
+# end of configuration
