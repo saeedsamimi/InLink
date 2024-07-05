@@ -6,6 +6,12 @@ const QLatin1String GET_COMPANY_FROM_USER(R"(SELECT name FROM app_companies WHER
 const QLatin1String SIGNUP_NEW_COMPANY(R"(INSERT INTO app_companies (owner,name) VALUES (?,?))");
 
 const QLatin1String REGISTER_NEW_JOB(R"(INSERT INTO job_positions (owner_id,job_name,job_mode,job_location,job_type) VALUES (?,?,?,?,?))");
+
+const QLatin1String GET_ALL_REQUESTS(
+R"(WITH t_companies AS(SELECT c.owner,c.name FROM app_companies c JOIN users u ON u.id = c.owner WHERE u.isCompany = true)
+SELECT request_id,user_id, r.job_id, job_name,status
+FROM job_requests r JOIN job_positions j ON r.job_id = j.job_id JOIN t_companies t ON t.owner = j.owner_id WHERE j.owner_id = ?)"
+);
 // clang-format on
 
 CompanyModel::CompanyModel(QObject *parent) : QObject{parent} {}
@@ -55,5 +61,19 @@ void CompanyModel::createJob(const QString &name, const QString &jobMode,
   SQL_BIND(location);
   SQL_BIND(jobType);
   if (!query.exec())
+    SQL_THROW;
+}
+
+QList<JobRequestModel> CompanyModel::getRequests() const {
+  CREATE_SQL(GET_ALL_REQUESTS);
+  SQL_BIND(ownerId);
+  if (query.exec()) {
+    QList<JobRequestModel> requests;
+    while (query.next())
+      requests.emplace_back(query.value(0).toUInt(), query.value(1).toUInt(),
+                            query.value(2).toUInt(), query.value(3).toString(),
+                            JobModel::statusFromVariant(query.value(4)));
+    return requests;
+  } else
     SQL_THROW;
 }

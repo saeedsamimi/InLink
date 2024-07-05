@@ -97,6 +97,10 @@ public:
 
   [[nodiscard]] QList<JobModel> getAllRelatedJobs();
 
+  /* Job requests */
+
+  void requestJob(unsigned int job_id);
+
 signals:
   void followingChanged(FollowingStates newState, int id);
   void onSignedUpAsCompany();

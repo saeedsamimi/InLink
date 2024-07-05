@@ -13,7 +13,13 @@ UserJobsComponent::UserJobsComponent(UserModel *model, QWidget *parent)
     item->setSizeHint(delegate->sizeHint());
     ui->jobs_list->addItem(item);
     ui->jobs_list->setItemWidget(item, delegate);
+    connect(delegate, &JobDelegate::onJobRequsted, this,
+            &UserJobsComponent::handleJobRequest);
   }
 }
 
 UserJobsComponent::~UserJobsComponent() { delete ui; }
+
+void UserJobsComponent::handleJobRequest(JobModel *job_model) {
+  model->requestJob(job_model->getId());
+}

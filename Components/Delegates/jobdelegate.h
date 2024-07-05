@@ -15,6 +15,12 @@ public:
   explicit JobDelegate(const JobModel &job, QWidget *parent = nullptr);
   ~JobDelegate();
 
+signals:
+  void onJobRequsted(JobModel *job);
+
+private slots:
+  void on_apply_btn_clicked();
+
 private:
   Ui::JobDelegate *ui;
   JobModel m_job;

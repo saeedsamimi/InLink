@@ -58,6 +58,8 @@ R"(WITH target_group AS (SELECT job_group_id FROM job_groups JOIN jobs ON jobs.j
 ,related_jobs AS (SELECT job_name FROM jobs JOIN job_groups j ON jobs.job_group_id = j.group_id WHERE j.group_id = (select * from target_group))
 select job_id,jp.job_name,job_type,job_location,job_mode from job_positions jp WHERE job_name IN (select  * from related_jobs);)"
 );
+
+const QLatin1String REQUEST_JOB(R"(INSERT INTO job_requests(user_id,job_id) VALUES (?,?))");
 // clang-format on
 
 UserModel::UserModel(int id) : id(id) {
@@ -341,12 +343,22 @@ QList<JobModel> UserModel::getAllRelatedJobs() {
   if (query.exec()) {
     QList<JobModel> jobs;
     while (query.next()) {
-      jobs.emplace_back(query.value(0).toUInt(), query.value(1).toString(),
-                        query.value(2).toString(), query.value(3).toString(),
-                        query.value(4).toString());
+      JobModel temp(query.value(0).toUInt(), query.value(1).toString(),
+                    query.value(2).toString(), query.value(3).toString(),
+                    query.value(4).toString());
+      temp.loadStatus(this);
+      jobs.append(temp);
     }
     return jobs;
   } else
+    SQL_THROW;
+}
+
+void UserModel::requestJob(unsigned int job_id) {
+  CREATE_SQL(REQUEST_JOB);
+  SQL_BIND(id);
+  SQL_BIND(job_id);
+  if (!query.exec())
     SQL_THROW;
 }
 

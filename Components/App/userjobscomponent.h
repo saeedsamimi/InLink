@@ -15,6 +15,9 @@ public:
   explicit UserJobsComponent(UserModel *model, QWidget *parent = nullptr);
   ~UserJobsComponent();
 
+private slots:
+  void handleJobRequest(JobModel *);
+
 private:
   Ui::UserJobsComponent *ui;
   UserModel *model;

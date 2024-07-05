@@ -2,6 +2,7 @@
 #define COMPANYMODEL_H
 
 #include <QObject>
+#include <database/models/jobrequestmodel.h>
 #include <database/models/usermodel.h>
 #include <utils/Util.h>
 
@@ -18,6 +19,7 @@ public:
   QString getName() const;
   void createJob(const QString &name, const QString &jobType,
                  const QString &location, const QString &jobMode);
+  [[nodiscard]] QList<JobRequestModel> getRequests() const;
 
 private:
   int ownerId;
