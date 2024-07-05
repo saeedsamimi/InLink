@@ -6,6 +6,7 @@
 // include the requirable headers for components and widgets
 #include <Pages/codeverifier.h>
 #include <Pages/completeprofile.h>
+#include <Pages/loaderwindow.h>
 #include <Pages/loginsignin.h>
 #include <Pages/mainwindow.h>
 #include <Pages/splashscreen.h>

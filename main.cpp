@@ -11,8 +11,8 @@ int main(int argc, char *argv[]) {
         nullptr, "connection failed",
         QString("Could not connect to the database because: %1")
             .arg(err.text()));
-    a.exit(0);
-    exit(0);
+    a.exit(1);
+    exit(1);
   }
   int id;
   int activationLevel;
@@ -21,18 +21,13 @@ int main(int argc, char *argv[]) {
   if (!isLoggedIn) {
     SplashScreen *splash = new SplashScreen();
     splash->show();
+    splash->connect(splash, &SplashScreen::destroyed,
+                    &SplashScreen::deleteLater);
   } else {
-    // make decision
-    if (activationLevel == Added) {
-      CodeVerifier *verifier = new CodeVerifier(id);
-      verifier->show();
-    } else if (activationLevel == Activated) {
-      CompleteProfile *complete = new CompleteProfile(id);
-      complete->show();
-    } else {
-      MainWindow *win = new MainWindow(id);
-      win->show();
-    }
+    LoaderWindow *loader = new LoaderWindow(id, activationLevel);
+    loader->show();
+    loader->connect(loader, &LoaderWindow::destroyed,
+                    &LoaderWindow::deleteLater);
   }
 
   int exec = a.exec();
