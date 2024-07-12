@@ -33,7 +33,7 @@ jobs:
         run: ls -ls ${{env.QT_ROOT_DIR}}/bin | grep -E '(qt-cmake|lupdate|lrelease|lconvert)' -
 
       - name: Install Ninja
-        run: sudo apt install ninja-build -y
+        run: sudo apt install ninja-build cmake -y
 
       - name: create a .env file
         run: rm -f .env && touch .env && echo "SECRET_KEY=${{secrets.UBUNTO_BUILD_SECRET}}" > ./.env
@@ -41,7 +41,7 @@ jobs:
       - name: Run Qt-Cmake for building the project
         run: |
           ${{env.QT_ROOT_DIR}}/bin/qt-cmake . -B build
-          cd build && ${{env.QT_ROOT_DIR}}/bin/qt-cmake --build . --parallel 4
+          cd build && cmake --build . --parallel 4
           
       # - name: Save build and report files
       #   uses: actions/upload-artifact@v4.3.1
