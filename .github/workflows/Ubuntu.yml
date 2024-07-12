@@ -42,7 +42,7 @@ jobs:
           cmake --build . --parallel 4
         
       - name: pack the bundle
-        run: cpack -S ${{github.workspace}}/build -B ../pack
+        run: cd ${{github.workspace}}/build && cpack -B ../pack
           
       - name: Save build and report files
         uses: actions/upload-artifact@v4.3.1
