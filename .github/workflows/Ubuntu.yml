@@ -6,8 +6,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-  workflow_dispatch:
-
 env:
   ARTIFACT: QtCiCd
 
@@ -29,23 +27,26 @@ jobs:
           setup-python: 'false'
           modules: 'qtwebsockets'
 
-      - name: List and find the Qt-Cmake Executable
-        run: ls -ls ${{env.QT_ROOT_DIR}}/bin | grep -E '(qt-cmake|lupdate|lrelease|lconvert)' -
-
       - name: Install Ninja
         run: sudo apt install ninja-build cmake -y
 
       - name: create a .env file
         run: rm -f .env && touch .env && echo "SECRET_KEY=${{secrets.UBUNTO_BUILD_SECRET}}" > ./.env
 
-      - name: Run Qt-Cmake for building the project
+      - name: configure project using qt-cmake
+        run: ${{env.QT_ROOT_DIR}}/bin/qt-cmake . -B build
+
+      - name: build the configuration using cmake
         run: |
-          ${{env.QT_ROOT_DIR}}/bin/qt-cmake . -B build
-          cd build && cmake --build . --parallel 4
+          cd build
+          cmake --build . --parallel 4
+        
+      - name: pack the bundle
+        run: cpack -S ${{github.workspace}}/build -B ../pack
           
       - name: Save build and report files
         uses: actions/upload-artifact@v4.3.1
         with:
-          name: 'build'
+          name: 'pack'
           path: |
-              ${{github.workspace}}/build
+              ${{github.workspace}}/pack
