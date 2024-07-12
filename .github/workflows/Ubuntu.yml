@@ -6,8 +6,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-  workflow_dispatch:
-
 env:
   ARTIFACT: QtCiCd
 
@@ -21,27 +19,33 @@ jobs:
         uses: actions/checkout@v4.1.1
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3.3.0
+        uses: jurplel/install-qt-action@v4
         with:
           version: '6.6.*'
           cache: 'false'
           install-deps: 'true'
           setup-python: 'false'
-
-      - name: List and find the Qt-Cmake Executable
-        run: ls -ls ${{env.Qt6_DIR}}/bin | grep -E '(qt-cmake|lupdate|lrelease|lconvert)' -
+          modules: 'qtwebsockets'
 
       - name: Install Ninja
-        run: sudo apt install ninja-build -y
+        run: sudo apt install ninja-build cmake -y
 
-      - name: Run Qt-Cmake for building the project
+      - name: create a .env file
+        run: rm -f .env && touch .env && echo "SECRET_KEY=${{secrets.UBUNTO_BUILD_SECRET}}" > ./.env
+
+      - name: configure project using qt-cmake
+        run: ${{env.QT_ROOT_DIR}}/bin/qt-cmake . -B build
+
+      - name: build the configuration using cmake
         run: |
-          ${{env.Qt6_DIR}}/bin/qt-cmake . -B build
-          cd build && ${{env.Qt6_DIR}}/bin/qt-cmake --build . --parallel 4
+          cd build
+          cmake --build . --parallel 4
+        
+      - name: pack the bundle
+        run: cd ${{github.workspace}}/build && cpack -B ../pack -G TGZ
           
-      # - name: Save build and report files
-      #   uses: actions/upload-artifact@v4.3.1
-      #   with:
-      #     name: 'build'
-      #     path: |
-      #         ${{github.workspace}}/build
+      - name: Save build and report files
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: 'pack'
+          path: ${{github.workspace}}/pack/InLink-0.1-Linux.tar.gz
