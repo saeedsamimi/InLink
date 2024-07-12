@@ -36,7 +36,7 @@ jobs:
         run: sudo apt install ninja-build -y
 
       - name: create a .env file
-        run: rm .env && touch .env && echo "SECRET_KEY=${{secrets.UBUNTO_BUILD_SECRET}}" > ./.env
+        run: rm -f .env && touch .env && echo "SECRET_KEY=${{secrets.UBUNTO_BUILD_SECRET}}" > ./.env
 
       - name: Run Qt-Cmake for building the project
         run: |
