@@ -42,11 +42,10 @@ jobs:
           cmake --build . --parallel 4
         
       - name: pack the bundle
-        run: cd ${{github.workspace}}/build && cpack -B ../pack
+        run: cd ${{github.workspace}}/build && cpack -B ../pack -G TGZ
           
       - name: Save build and report files
         uses: actions/upload-artifact@v4.3.1
         with:
           name: 'pack'
-          path: |
-              ${{github.workspace}}/pack
+          path: ${{github.workspace}}/pack/InLink-0.1-Linux.tar.gz
