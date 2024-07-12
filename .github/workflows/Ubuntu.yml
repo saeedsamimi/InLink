@@ -29,13 +29,16 @@ jobs:
           setup-python: 'false'
           modules: 'qtwebsockets'
 
+      - name: List and find the Qt-Cmake Executable
+        run: ls -ls ${{env.QT_ROOT_DIR}}/bin | grep -E '(qt-cmake|lupdate|lrelease|lconvert)' -
+
       - name: Install Ninja
         run: sudo apt install ninja-build -y
 
       - name: Run Qt-Cmake for building the project
         run: |
-          ${{env.Qt6_DIR}}/bin/qt-cmake . -B build
-          cd build && ${{env.Qt6_DIR}}/bin/qt-cmake --build . --parallel 4
+          ${{env.QT_ROOT_DIR}}/bin/qt-cmake . -B build
+          cd build && ${{env.QT_ROOT_DIR}}/bin/qt-cmake --build . --parallel 4
           
       # - name: Save build and report files
       #   uses: actions/upload-artifact@v4.3.1
