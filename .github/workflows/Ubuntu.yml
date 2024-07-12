@@ -29,9 +29,6 @@ jobs:
           setup-python: 'false'
           modules: 'qtwebsockets'
 
-      - name: List and find the Qt-Cmake Executable
-        run: ls -ls ${{env.Qt6_DIR}}/bin | grep -E '(qt-cmake|lupdate|lrelease|lconvert)' -
-
       - name: Install Ninja
         run: sudo apt install ninja-build -y
 
