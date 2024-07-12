@@ -43,9 +43,9 @@ jobs:
           ${{env.QT_ROOT_DIR}}/bin/qt-cmake . -B build
           cd build && cmake --build . --parallel 4
           
-      # - name: Save build and report files
-      #   uses: actions/upload-artifact@v4.3.1
-      #   with:
-      #     name: 'build'
-      #     path: |
-      #         ${{github.workspace}}/build
+      - name: Save build and report files
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: 'build'
+          path: |
+              ${{github.workspace}}/build
